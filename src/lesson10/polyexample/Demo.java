@@ -10,6 +10,8 @@ public class Demo {
         User user = new User("Jack");
         run(user);
 
+        run("TTT");
+        run(null);
 
     }
 

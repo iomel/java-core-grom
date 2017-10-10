@@ -4,8 +4,11 @@ public class Demo {
     public static void main(String[] args) {
         SavingAccount savingAccount = new SavingAccount("SomeBank", "Denis", 1000, 50);
         savingAccount.depositMoney(100);
+        savingAccount.depositMoney(-100);
+        savingAccount.depositMoney(10000);
 
         savingAccount.changeOwnerName("Oleg");
+        savingAccount.changeOwnerName(null);
 
         System.out.println(savingAccount.ownerName);
 

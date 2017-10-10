@@ -19,9 +19,23 @@ public class Main {
         System.out.println(user1.getBalance());
         bankSystem.withdraw(user1, 150);
         System.out.println(user1.getBalance());
+        bankSystem.withdraw(null, 150);
+
+        bankSystem.withdraw(user1, 150000);
+        System.out.println(user1.getBalance());
+
+        bankSystem.withdraw(user1, -150);
+        System.out.println(user1.getBalance());
+
 
         bankSystem.fund(user1, 21000);
         System.out.println(user1.getBalance());
+        bankSystem.fund(user1, -2100);
+        System.out.println(user1.getBalance());
+        bankSystem.fund(user1, 1000);
+        System.out.println(user1.getBalance());
+        bankSystem.fund(null, 21000);
+
 
     }
 }

@@ -9,12 +9,24 @@ public class BanksPractice {
 
         System.out.println(Arrays.toString(findClientsByBalance(names, balances, -100)));
         System.out.println(Arrays.toString(findClientsWithNegativeBalance(names, balances)));
+        System.out.println(Arrays.toString(findClientsByBalance(null, balances, 100)));
+        System.out.println(Arrays.toString(findClientsWithNegativeBalance(names, null)));
+        System.out.println(Arrays.toString(findClientsByBalance(names, null, 100)));
+        System.out.println(Arrays.toString(findClientsWithNegativeBalance(null, balances)));
+
 
         depositMoney(names, balances, "Ann", 2000);
         System.out.println(Arrays.toString(balances));
+        depositMoney(names, balances, null, 2000);
+        System.out.println(Arrays.toString(balances));
+        depositMoney(names, balances, "Nikolay", -2000000);
+        System.out.println(Arrays.toString(balances));
+
 
         System.out.println(withdraw(names,balances, "Ann", 10000));
         System.out.println(withdraw(names,balances, "Ann", 1000));
+        System.out.println(withdraw(names,balances, null, -10000));
+        System.out.println(withdraw(names,balances, "Nikolay", -1000));
 
 
     }

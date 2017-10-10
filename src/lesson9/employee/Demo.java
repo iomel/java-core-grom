@@ -12,6 +12,9 @@ public class Demo {
 
         Checker checker = new Checker();
         System.out.println(checker.checkCompanyName(company.getName()));
+        System.out.println(checker.checkCompanyName(null));
+        System.out.println(checker.checkCompanyName("Fake company"));
+
         System.out.println(checker.companyNamesValidatedCount);
 
 
