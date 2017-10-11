@@ -1,7 +1,7 @@
 package lesson15.Users;
 
 public class UserRepository {
-    private User[] users;
+    private User[] users = new User[10];
 
     public UserRepository(User[] users) {
         this.users = users;
@@ -156,7 +156,7 @@ public class UserRepository {
         for (int i = 0; i < users.length; i++)
         {
             if(users[i] != null) {
-                if(users[i].getId() == user.getId());
+                if(users[i].getId() == user.getId())
                 {
                     users[i] = user;
                     return users[i];
