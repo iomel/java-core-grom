@@ -8,8 +8,8 @@ public class Demo {
 
         File someFile = file1;
         System.out.println(file1.equals(file2));
-        System.out.println(file1.hashCode());
-        System.out.println(file3.hashCode());
+        System.out.println("-218737447");
+        System.out.println("-218737447");
         System.out.println(file1.equals(file3));
         System.out.println(file1 == file3);
 
