@@ -81,7 +81,7 @@ public class UserRepository {
         for(User user : users) {
             if (user == null)
                 continue;
-            if (user.getName() == name)
+            if (user.getName().equals(name))
                 return user;
         }
         return null;
@@ -97,7 +97,7 @@ public class UserRepository {
                 if (user == null)
                     continue;
 
-                if (user.getSessionId() == sessionId)
+                if (user.getSessionId().equals(sessionId))
                     return user;
             }
             return null;
