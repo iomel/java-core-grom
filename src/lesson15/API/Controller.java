@@ -40,7 +40,7 @@ public class Controller {
         {
             for (Room api2Room : api2.getAll())
             {
-                if(api1Room.equals(api2Room))
+                if(api1Room.equals(api2Room) && api1Room.hashCode() == api2Room.hashCode())
                     count++;
             }
         }
@@ -52,7 +52,7 @@ public class Controller {
         {
             for (Room api2Room : api2.getAll())
             {
-                if(api1Room.equals(api2Room))
+                if(api1Room.equals(api2Room) && api1Room.hashCode() == api2Room.hashCode())
                     sameRooms[count++] = api1Room;
             }
         }
