@@ -78,7 +78,7 @@ public class UserRepository {
 
     public User getUserByName(String name)
     {
-        if (users == null ||  name == null)
+        if (users == null)
             return null;
 
         for(User user : users) {
@@ -93,13 +93,12 @@ public class UserRepository {
 
     public User getUserBySessionId(String sessionId)
     {
-            if (users == null || sessionId == null)
+            if (users == null)
                 return null;
 
             for (User user : users) {
                 if (user == null)
                     continue;
-
                 if (user.getSessionId().equals(sessionId))
                     return user;
             }
@@ -116,7 +115,6 @@ public class UserRepository {
         for(User user : users) {
             if (user == null)
                 continue;
-
             if (user.getId() == id)
                 return user;
         }
@@ -155,7 +153,6 @@ public class UserRepository {
         if (findById(user.getId()) == null)
             return null;
 
-
         for (int i = 0; i < users.length; i++)
         {
             if(users[i] != null) {
@@ -172,6 +169,9 @@ public class UserRepository {
 
     public void delete(long id)
     {
+        if (users == null)
+            return null;
+
         if(findById(id) != null)
             for (int i = 0; i < users.length; i++)
                 if(users[i] != null)
