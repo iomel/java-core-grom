@@ -170,7 +170,7 @@ public class UserRepository {
     public void delete(long id)
     {
         if (users == null)
-            return null;
+            return;
 
         if(findById(id) != null)
             for (int i = 0; i < users.length; i++)
