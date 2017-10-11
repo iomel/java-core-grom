@@ -7,7 +7,10 @@ public class UserRepository {
         this.users = users;
     }
 
-        //----- TASK 2 ---------------------
+    public UserRepository() {
+    }
+
+    //----- TASK 2 ---------------------
 
     public User[] getUsers() {
         return users;
