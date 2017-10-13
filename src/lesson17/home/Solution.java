@@ -6,8 +6,10 @@ public class Solution {
     public int countWords(String input) {
         if (input == null)
             return 0;
+
         while (input.contains("  "))
             input = input.replaceAll("  ", " ");
+
         int count = 0;
         for (String str : input.split(" "))
             if (checkLetter(str))
@@ -18,11 +20,15 @@ public class Solution {
     public void maxWord(String input) {
         if (input == null)
             return;
+
         while (input.contains("  "))
             input = input.replaceAll("  ", " ");
+
         String[] strArray = input.split(" ");
         String maxW = strArray[0];
         for (String s : strArray) {
+            if (!checkLetter(s))
+                continue;
             if (s.length() > maxW.length())
                 maxW = s;
         }
@@ -37,6 +43,8 @@ public class Solution {
         String[] strArray = input.split(" ");
         String minW = strArray[0];
         for (String s : strArray) {
+            if (!checkLetter(s))
+                continue;
             if (s.length() < minW.length())
                 minW = s;
         }

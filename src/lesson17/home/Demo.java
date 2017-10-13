@@ -5,6 +5,9 @@ public class Demo {
         Solution solution = new Solution();
         String testInput = "dfgdfg dfgdg   dfgg sdfs  345 %^&sd";
         System.out.println(solution.countWords(testInput));
+        String testInput1 = "dfgdfg аыва   dfgg sdfs  345 %^&sd";
+        System.out.println(solution.countWords(testInput1));
+
         System.out.println(solution.countWords("    "));
         System.out.println(solution.countWords(null));
 
