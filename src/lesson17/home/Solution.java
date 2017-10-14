@@ -23,7 +23,7 @@ public class Solution {
     }
 
     public void maxWord(String input) {
-        if (input == null)
+        if (input == null || input.isEmpty())
             return;
 
         while (input.contains("  "))
@@ -41,7 +41,7 @@ public class Solution {
     }
 
     public void minWord(String input) {
-        if (input == null)
+        if (input == null || input.isEmpty())
             return;
         while (input.contains("  "))
             input = input.replaceAll("  ", " ");
