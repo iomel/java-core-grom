@@ -33,11 +33,8 @@ public class Solution {
             input = input.replaceAll("  ", " ");
         }
 
-        String[] strArray = input.split(" ");
-        if (strArray.length == 0)
-            return null;
         String maxW = "";
-        for (String s : strArray) {
+        for (String s : input.split(" ")) {
             s = s.trim();
             if (!checkLetter(s) || s.isEmpty() || s.equals(" "))
                 continue;
@@ -54,19 +51,18 @@ public class Solution {
             return null;
         while (input.contains("  "))
             input = input.replaceAll("  ", " ");
-        String[] strArray = input.split(" ");
-        if (strArray.length == 0)
-            return null;
 
-        String minW = strArray[0];
-        for (String s : strArray) {
+        String minW = "";
+        for (String s : input.split(" ")) {
+            s = s.trim();
             if (!checkLetter(s) || s.isEmpty() || s.equals(" "))
                 continue;
-            if (s.length() < minW.length())
+            if (s.length() <= minW.length() && minW.isEmpty())
                 minW = s;
         }
+        if (minW.isEmpty() || minW.equals(" "))
+            return null;
         return minW;
-
     }
 
     public String mostCountedWord(String input) {
