@@ -53,11 +53,15 @@ public class Solution {
             input = input.replaceAll("  ", " ");
 
         String minW = "";
+        boolean first = false;
         for (String s : input.split(" ")) {
             s = s.trim();
             if (!checkLetter(s) || s.isEmpty() || s.equals(" "))
                 continue;
-            if (s.length() <= minW.length() && minW.isEmpty())
+            first = true;
+            if (first && minW.isEmpty())
+                minW = s;
+            else if (s.length() < minW.length())
                 minW = s;
         }
         if (minW.isEmpty() || minW.equals(" "))
