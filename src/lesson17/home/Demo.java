@@ -21,13 +21,15 @@ public class Demo {
         solution.maxWord(testInput);
         solution.minWord(testInput);
 */
-        System.out.println(solution.mostCountedWord("ppp ss ppp dssdf ppp ss ss gfdg ppp"));
-        System.out.println(solution.mostCountedWord("ppp ss ppp dssdf ppp ss ss gfdg ppp"));
+        System.out.println(solution.mostCountedWord("ppp ss ppp ss ss dssdf ppp ss gfdg ppp"));
+        System.out.println(solution.mostCountedWord(" ppp2 ss ppp dssdf ppp ss ss gfdg ppp"));
         System.out.println(solution.mostCountedWord(" ppp ss   ppp dssdf  gfdg sppp"));
         System.out.println(solution.mostCountedWord(""));
+        System.out.println(solution.mostCountedWord("      "));
+
         System.out.println(solution.mostCountedWord(null));
         System.out.println(solution.mostCountedWord(" dd   dd"));
-        System.out.println(solution.mostCountedWord(" d$d   dd"));
+        System.out.println(solution.mostCountedWord(" d$d   d$d"));
 
         System.out.println(solution.validate("htt://sdf.ss"));
         System.out.println(solution.validate("https://sdf.ss.com"));

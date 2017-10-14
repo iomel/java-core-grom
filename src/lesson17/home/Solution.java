@@ -83,7 +83,7 @@ public class Solution {
         for (int i = 0; i < strArray.length; i++) {
             int count = 1;
             for (int j = i + 1; j < strArray.length; j++) {
-                if (strArray[i].equals(strArray[j]))
+                if (strArray[i].equals(strArray[j]) && checkLetter(strArray[i]))
                     count++;
             }
             if (count > maxCount) {
