@@ -30,6 +30,8 @@ public class Demo {
         System.out.println(solution.mostCountedWord(null));
         System.out.println(solution.mostCountedWord(" dd   dd"));
         System.out.println(solution.mostCountedWord(" d$d   d$d"));
+        System.out.println(solution.mostCountedWord(" dd d$d"));
+
 
         System.out.println(solution.validate("htt://sdf.ss"));
         System.out.println(solution.validate("https://sdf.ss.com"));

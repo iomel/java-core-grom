@@ -78,17 +78,19 @@ public class Solution {
             input = input.replaceAll("  ", " ");
 
         String[] strArray = input.split(" ");
-        int maxCount = 1;
+        int maxCount = 0;
         String resString = "";
         for (int i = 0; i < strArray.length; i++) {
+            if (!checkLetter(strArray[i]))
+                continue;
             int count = 1;
             for (int j = i + 1; j < strArray.length; j++) {
-                if (strArray[i].equals(strArray[j]) && checkLetter(strArray[i]))
+                if (strArray[i].equals(strArray[j]))
                     count++;
             }
             if (count > maxCount) {
                 maxCount = count;
-                resString = strArray[i];
+                resString = checkLetter(strArray[i]) ? strArray[i] : "";
             }
         }
         return resString.isEmpty() ? null : resString;
