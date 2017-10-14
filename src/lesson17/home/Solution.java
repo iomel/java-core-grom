@@ -79,11 +79,10 @@ public class Solution {
 
         String[] strArray = input.split(" ");
         int maxCount = 1;
-        String resString = strArray[0];
+        String resString = "";
         for (int i = 0; i < strArray.length; i++) {
             int count = 1;
             for (int j = i + 1; j < strArray.length; j++) {
-
                 if (strArray[i].equals(strArray[j]))
                     count++;
             }
@@ -92,7 +91,7 @@ public class Solution {
                 resString = strArray[i];
             }
         }
-        return resString;
+        return resString.isEmpty() ? null : resString;
     }
 
     public boolean validate(String address) {

@@ -26,7 +26,8 @@ public class Demo {
         System.out.println(solution.mostCountedWord(" ppp ss   ppp dssdf  gfdg sppp"));
         System.out.println(solution.mostCountedWord(""));
         System.out.println(solution.mostCountedWord(null));
-        System.out.println(solution.mostCountedWord(" dd"));
+        System.out.println(solution.mostCountedWord(" dd   dd"));
+        System.out.println(solution.mostCountedWord(" d$d   dd"));
 
         System.out.println(solution.validate("htt://sdf.ss"));
         System.out.println(solution.validate("https://sdf.ss.com"));
