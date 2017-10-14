@@ -1,5 +1,7 @@
 package lesson17.home;
 
+import java.util.Arrays;
+
 public class Demo {
     public static void main(String[] args) {
         Solution solution = new Solution();
@@ -7,6 +9,8 @@ public class Demo {
         System.out.println(solution.countWords(testInput));
         System.out.println(solution.countWords(""));
         System.out.println(solution.countWords("     "));
+        System.out.println(solution.countWords(" sdg&"));
+        System.out.println(Arrays.toString("   sdg".split(" ")));
 
 
         String testInput1 = "dfgdfg аыва   dfgg sdfs  345 %^&sd";

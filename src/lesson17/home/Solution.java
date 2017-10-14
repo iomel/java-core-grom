@@ -11,9 +11,14 @@ public class Solution {
             input = input.replaceAll("  ", " ");
 
         int count = 0;
-        for (String str : input.split(" "))
+        for (String str : input.split(" ")) {
+            if (str.isEmpty() || str.equals(" "))
+                continue;
+            if (str.toCharArray()[0] == ' ')
+                str = str.replace(" ", "");
             if (checkLetter(str))
                 count++;
+        }
         return count;
     }
 
