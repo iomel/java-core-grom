@@ -6,11 +6,10 @@ public class Demo {
     public static void main(String[] args) {
         Solution solution = new Solution();
         String testInput = "dfgdfg dfgdg   dfgg sdfs  345 %^&sd";
-        System.out.println(solution.countWords(testInput));
-        System.out.println(solution.countWords(""));
-        System.out.println(solution.countWords("     "));
-        System.out.println(solution.countWords(" sdg&"));
-        System.out.println(Arrays.toString("   sdg".split(" ")));
+        solution.maxWord(testInput);
+        solution.maxWord("");
+        solution.maxWord("     ");
+        solution.maxWord(" sdg&");
 
 
         String testInput1 = "dfgdfg аыва   dfgg sdfs  345 %^&sd";

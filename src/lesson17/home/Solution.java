@@ -1,5 +1,6 @@
 package lesson17.home;
 
+
 public class Solution {
 
 
@@ -22,53 +23,60 @@ public class Solution {
         return count;
     }
 
-    public void maxWord(String input) {
+    public String maxWord(String input) {
         if (input == null || input.isEmpty())
-            return;
-
-        while (input.contains("  "))
-            input = input.replaceAll("  ", " ");
-
-        String[] strArray = input.split(" ");
-        String maxW = strArray[0];
-        for (String s : strArray) {
-            if (!checkLetter(s))
-                continue;
-            if (s.length() > maxW.length())
-                maxW = s;
-        }
-        System.out.println(maxW);
-    }
-
-    public void minWord(String input) {
-        if (input == null || input.isEmpty())
-            return;
-        while (input.contains("  "))
-            input = input.replaceAll("  ", " ");
-        String[] strArray = input.split(" ");
-        String minW = strArray[0];
-        for (String s : strArray) {
-            if (!checkLetter(s))
-                continue;
-            if (s.length() < minW.length())
-                minW = s;
-        }
-        System.out.println(minW);
-
-    }
-
-    public String mostCountedWord(String input) {
-        if (input == null)
             return null;
 
         while (input.contains("  "))
             input = input.replaceAll("  ", " ");
+
+        String[] strArray = input.split(" ");
+        if (strArray.length == 0)
+            return null;
+        String maxW = strArray[0];
+        for (String s : strArray) {
+            if (!checkLetter(s) || s.isEmpty() || s.equals(" "))
+                continue;
+            if (s.length() > maxW.length())
+                maxW = s;
+        }
+        return maxW;
+    }
+
+    public String minWord(String input) {
+        if (input == null || input.isEmpty())
+            return null;
+        while (input.contains("  "))
+            input = input.replaceAll("  ", " ");
+        String[] strArray = input.split(" ");
+        if (strArray.length == 0)
+            return null;
+
+        String minW = strArray[0];
+        for (String s : strArray) {
+            if (!checkLetter(s) || s.isEmpty() || s.equals(" "))
+                continue;
+            if (s.length() < minW.length())
+                minW = s;
+        }
+        return minW;
+
+    }
+
+    public String mostCountedWord(String input) {
+        if (input == null || input.isEmpty())
+            return null;
+
+        while (input.contains("  "))
+            input = input.replaceAll("  ", " ");
+
         String[] strArray = input.split(" ");
         int maxCount = 1;
         String resString = strArray[0];
         for (int i = 0; i < strArray.length; i++) {
             int count = 1;
             for (int j = i + 1; j < strArray.length; j++) {
+
                 if (strArray[i].equals(strArray[j]))
                     count++;
             }
