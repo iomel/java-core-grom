@@ -1,6 +1,8 @@
 package lesson17.home;
 
 
+import java.util.Arrays;
+
 public class Solution {
 
 
@@ -27,19 +29,18 @@ public class Solution {
         if (input == null || input.isEmpty())
             return null;
 
-        while (input.contains("  "))
+        while (input.contains("  ")) {
             input = input.replaceAll("  ", " ");
+        }
 
         String[] strArray = input.split(" ");
         if (strArray.length == 0)
             return null;
         String maxW = "";
         for (String s : strArray) {
+            s = s.trim();
             if (!checkLetter(s) || s.isEmpty() || s.equals(" "))
                 continue;
-            if (s.toCharArray()[0] == ' ')
-                s = s.replace(" ", "");
-
             if (s.length() > maxW.length())
                 maxW = s;
         }

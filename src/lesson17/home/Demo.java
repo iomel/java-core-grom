@@ -1,7 +1,5 @@
 package lesson17.home;
 
-import java.util.Arrays;
-
 public class Demo {
     public static void main(String[] args) {
         Solution solution = new Solution();
@@ -10,6 +8,8 @@ public class Demo {
         System.out.println(solution.maxWord(""));
         System.out.println(solution.maxWord("     "));
         System.out.println(solution.maxWord(" sdg&"));
+        System.out.println(solution.maxWord(" sdg"));
+        System.out.println(solution.maxWord(" sdg& "));
 
 
         String testInput1 = "dfgdfg аыва   dfgg sdfs  345 %^&sd";
