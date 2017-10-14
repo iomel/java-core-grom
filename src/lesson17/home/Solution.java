@@ -97,10 +97,16 @@ public class Solution {
     }
 
     public boolean validate(String address) {
-        if (address == null)
+        if (address == null || address.isEmpty())
             return false;
 
         address = address.toLowerCase();
+
+        if (!(address.endsWith("com") || address.endsWith("net") || address.endsWith("org")))
+            return false;
+        if (address.contains(".."))
+            return false;
+
         int startBit;
         if (!(address.startsWith("http://") || address.startsWith("https://")))
             return false;
@@ -109,10 +115,6 @@ public class Solution {
         else
             startBit = 8;
 
-        if (!(address.endsWith("com") || address.endsWith("net") || address.endsWith("org")))
-            return false;
-        if (address.contains(".."))
-            return false;
 
         String exectAddress = address.substring(startBit);
         String[] domains = exectAddress.split("\\.");
