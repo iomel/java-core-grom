@@ -33,7 +33,7 @@ public class Solution {
         String[] strArray = input.split(" ");
         if (strArray.length == 0)
             return null;
-        String maxW = strArray[0];
+        String maxW = "";
         for (String s : strArray) {
             if (!checkLetter(s) || s.isEmpty() || s.equals(" "))
                 continue;
@@ -43,6 +43,8 @@ public class Solution {
             if (s.length() > maxW.length())
                 maxW = s;
         }
+        if (maxW.isEmpty())
+            return null;
         return maxW;
     }
 
