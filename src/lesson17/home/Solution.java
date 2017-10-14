@@ -125,7 +125,7 @@ public class Solution {
 
     private boolean checkLetterNumber(String word) {
         for (char ch : word.toCharArray())
-            if (!((ch > 47 && ch < 58) || (ch > 64 && ch < 91) || (ch > 96 && ch < 123)))
+            if (!(Character.isLetter(ch) || Character.isDigit(ch)))
                 return false;
         return true;
     }
@@ -134,7 +134,7 @@ public class Solution {
 
     {
         for (char ch : word.toCharArray())
-            if (!((ch > 64 && ch < 91) || (ch > 96 && ch < 123)))
+            if (!Character.isLetter(ch))
                 return false;
 
         return true;
