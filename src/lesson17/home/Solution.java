@@ -73,6 +73,7 @@ public class Solution {
         if (input == null || input.isEmpty())
             return null;
 
+        input = input.trim();
         while (input.contains("  "))
             input = input.replaceAll("  ", " ");
 
