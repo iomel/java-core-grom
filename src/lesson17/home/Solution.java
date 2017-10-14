@@ -4,12 +4,12 @@ public class Solution {
 
 
     public int countWords(String input) {
-        if (input == null)
+/*        if (input == null)
             return 0;
 
         while (input.contains("  "))
             input = input.replaceAll("  ", " ");
-
+*/
         int count = 0;
         for (String str : input.split(" "))
             if (checkLetter(str))
