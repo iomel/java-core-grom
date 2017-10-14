@@ -33,13 +33,14 @@ public class Demo {
         System.out.println(solution.mostCountedWord(" d$d   d$d"));
         System.out.println(solution.mostCountedWord(" dd d$d"));
 */
-        System.out.println(solution.validate("htt://sdf.ss"));
-        System.out.println(solution.validate("https://sdf.ss.com"));
         System.out.println(solution.validate(""));
         System.out.println(solution.validate(null));
         System.out.println(solution.validate("http:// "));
-
         System.out.println(solution.validate("https://.sdf.ss.fd"));
+
+        System.out.println(solution.validate("http://www.ssdfgs.com"));
+        System.out.println(solution.validate("http://ssdfgs.com"));
+
         System.out.println(solution.validate("http://www.sdf.ss.com"));
         System.out.println(solution.validate("http://www.sd%f.ss.com"));
 

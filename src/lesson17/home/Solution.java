@@ -116,8 +116,11 @@ public class Solution {
             startBit = 8;
 
 
-        String exectAddress = address.substring(startBit);
-        String[] domains = exectAddress.split("\\.");
+        String exectAddress = address.substring(startBit, address.length()-4);
+        if(exectAddress.startsWith("www."))
+            exectAddress = exectAddress.substring(4);
+
+/*        String[] domains = exectAddress.split("\\.");
         if (domains[0].isEmpty())
             return false;
 
@@ -125,7 +128,9 @@ public class Solution {
             if (!checkLetterNumber(str))
                 return false;
         }
-        return true;
+*/
+
+        return checkLetterNumber(exectAddress);
     }
 
     public String replace(String input, String target, String replacement) {
