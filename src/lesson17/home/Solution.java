@@ -37,6 +37,9 @@ public class Solution {
         for (String s : strArray) {
             if (!checkLetter(s) || s.isEmpty() || s.equals(" "))
                 continue;
+            if (s.toCharArray()[0] == ' ')
+                s = s.replace(" ", "");
+
             if (s.length() > maxW.length())
                 maxW = s;
         }
