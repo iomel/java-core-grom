@@ -23,46 +23,48 @@ public class Demo {
         String[] allFormats = {"txt", "jpg", "doc", "avi", "mp3"};
 
         Storage smallStorage = new Storage(1298, smallFiles,smallFormats, "UA", 200);
+        Storage smallStorage2 = new Storage(1498, smallFiles,smallFormats, "UA", 200);
+
         Storage largeStorage = new Storage(1238, largeFiles,largeFormats, "UA", 700);
         Storage allStorage = new Storage(9298, oneFiles,allFormats, "UA", 700);
 
         Controller controller = new Controller();
 
         File longFileName = new File(8273,"bookershtrasse van der gemakkileg", "txt", 12);
-
+/*
         // put TEST1 - put large file
         try {
-            controller.put(smallStorage, file4);
+            System.out.println(controller.put(smallStorage, file4));
             smallStorage.printStorage();
 
-        } catch (IOException e)
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
         // put TEST2 put normal file
         try {
-            controller.put(smallStorage, new File(8273,"book", "txt", 12));
-            smallStorage.printStorage();
+            System.out.println(controller.put(smallStorage, new File(8273,"book", "txt", 12)));
+//            smallStorage.printStorage();
 
-        } catch (IOException e)
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
         // put TEST3 put file with long name
         try {
-            controller.put(smallStorage, longFileName);
-            smallStorage.printStorage();
+            System.out.println(controller.put(smallStorage, longFileName));
+//            smallStorage.printStorage();
 
-        } catch (IOException e)
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
         // put TEST4 put null file
         try {
-            controller.put(smallStorage, null);
-            smallStorage.printStorage();
+            System.out.println(controller.put(smallStorage, null));
+//            smallStorage.printStorage();
 
-        } catch (IOException e)
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -72,7 +74,7 @@ public class Demo {
             controller.delete(smallStorage, null);
             smallStorage.printStorage();
 
-        } catch (IOException e)
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
@@ -81,27 +83,45 @@ public class Demo {
             controller.delete(smallStorage, file1);
             smallStorage.printStorage();
 
-        } catch (IOException e)
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
-
+*/
         // transferAll TEST1 smallStor to allStor
         try {
             controller.transferAll(smallStorage, allStorage);
+            smallStorage.printStorage();
             allStorage.printStorage();
 
-        } catch (IOException e)
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
+        // transferAll TEST2 smallStor to allStor
+        smallStorage2.printStorage();
+        allStorage.printStorage();
+
+        try {
+            controller.transferAll(smallStorage2, allStorage);
+            smallStorage2.printStorage();
+            allStorage.printStorage();
+
+        } catch (Exception e)
+
+        {
+            System.out.println(e.getMessage());
+        }
+
+        smallStorage2.printStorage();
+        allStorage.printStorage();
 
         // transferFile TEST1 file6 to allStor
         try {
             controller.transferFile(largeStorage, allStorage, 9134);
             allStorage.printStorage();
 
-        } catch (IOException e)
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }

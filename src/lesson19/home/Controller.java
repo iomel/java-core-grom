@@ -1,14 +1,14 @@
 package lesson19.home;
 
 import java.io.IOException;
-import java.util.Arrays;
+
 
 public class Controller {
 
-    public void put(Storage storage, File file) throws IOException
+    public File put(Storage storage, File file) throws Exception
     {
         if (storage == null || file == null || file.isEmpty())
-            return;
+            return null;
 
         String errorMessage = "";
         File[] files = storage.getFiles();
@@ -18,21 +18,21 @@ public class Controller {
         {
             errorMessage = "Not enough space in storage:" + storage.getId() + " to put file:" + file.getId();
             System.out.println(errorMessage);
-            throw new IOException(errorMessage);
+            throw new Exception(errorMessage);
         }
 
         if (!storage.checkFormat(file))
         {
             errorMessage = "Wrong file format! storage:" + storage.getId() + "    file:" + file.getId();
             System.out.println(errorMessage);
-            throw new IOException(errorMessage);
+            throw new Exception(errorMessage);
         }
 
         if (storage.hasFile(file))
         {
             errorMessage = "There is such file in the storage already! storage:" + storage.getId() + "    file:" + file.getId();
             System.out.println(errorMessage);
-            throw new IOException(errorMessage);
+            throw new Exception(errorMessage);
         }
 
         for (File f : files)
@@ -48,6 +48,7 @@ public class Controller {
                     break;
                 }
                 storage.setFiles(files);
+                return file;
         } else
         {
             File[] newFiles = new File[files.length + 1];
@@ -55,11 +56,12 @@ public class Controller {
                 newFiles[i] = files[i];
             newFiles[newFiles.length - 1] = file;
             storage.setFiles(newFiles);
+            return file;
         }
 
     }
 
-    public void delete (Storage storage, File file) throws IOException
+    public void delete (Storage storage, File file) throws Exception
     {
         if (storage == null || file == null || file.isEmpty())
             return;
@@ -72,7 +74,7 @@ public class Controller {
         {
             errorMessage = "There is no such file in the storage already! storage:" + storage.getId() + "    file:" + file.getId();
             System.out.println(errorMessage);
-            throw new IOException(errorMessage);
+            throw new Exception(errorMessage);
         }
 
         for (int i = 0, j = 0; i < files.length; i++)
@@ -87,18 +89,20 @@ public class Controller {
         storage.setFiles(newFiles);
     }
 
-    public void transferAll (Storage storageFrom, Storage storageTo) throws IOException
+    public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
     {
         if (storageFrom == null || storageTo == null)
             return;
 
+        File[] emptyStorage = new File[0];
         for(File fFrom : storageFrom.getFiles())
         {
             this.put(storageTo, fFrom);
         }
+        storageFrom.setFiles(emptyStorage);
     }
 
-    public void transferFile (Storage storageFrom, Storage storageTo, long id) throws IOException
+    public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
         if (storageFrom == null || storageTo == null)
             return;
