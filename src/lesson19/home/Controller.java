@@ -5,7 +5,7 @@ public class Controller {
 
     public File put(Storage storage, File file) throws Exception
     {
-        if (storage == null || file == null || file.isEmpty())
+        if (storage == null || file == null || file.isEmpty() || file.getName().isEmpty() || file.getFormat().isEmpty())
             return null;
 
         String errorMessage = "";

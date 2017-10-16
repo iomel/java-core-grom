@@ -48,7 +48,7 @@ public class Demo {
         try {
             System.out.println("TEST 2 : ");
             System.out.println(controller.put(smallStorage, new File(8273,"book", "txt", 12)));
-//            smallStorage.printStorage();
+            smallStorage.printStorage();
 
         } catch (Exception e)
         {
@@ -58,7 +58,6 @@ public class Demo {
         try {
             System.out.println("TEST 3 : ");
             System.out.println(controller.put(smallStorage, longFileName));
-//            smallStorage.printStorage();
 
         } catch (Exception e)
         {
@@ -68,7 +67,6 @@ public class Demo {
         try {
             System.out.println("TEST 4 : ");
             System.out.println(controller.put(smallStorage, null));
-//            smallStorage.printStorage();
 
         } catch (Exception e)
         {
@@ -78,17 +76,34 @@ public class Demo {
         try {
             System.out.println("TEST 5 : ");
             System.out.println(controller.put(smallStorage, new File(1294, "wordFile", "docs", 35)));
-//            smallStorage.printStorage();
 
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
+        // put TEST6 put file with empty format
+        try {
+            System.out.println("TEST 6 : ");
+            System.out.println(controller.put(smallStorage, new File(1294, "wordFile", "", 35)));
+
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        // put TEST6.1 put file with empty name
+        try {
+            System.out.println("TEST 6.1 : ");
+            System.out.println(controller.put(smallStorage, new File(1294, "", "txt", 35)));
+
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
         // put TEST7 put file with null filename
         try {
             System.out.println("TEST 7 : ");
             System.out.println(controller.put(smallStorage, new File(1294, null, "doc", 35)));
-//            smallStorage.printStorage();
 
         } catch (Exception e)
         {
