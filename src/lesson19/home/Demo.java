@@ -14,6 +14,8 @@ public class Demo {
         File file7 = new File(3134, "audio", "mp3", 110);
 
         File[] smallFiles = {file1, file2, file3, file4};
+        File[] smallFiles2 = {file5, file7, file3, file4};
+
         File[] largeFiles = {file5, file6, file7};
         File[] oneFiles = {file7};
 
@@ -23,7 +25,7 @@ public class Demo {
         String[] allFormats = {"txt", "jpg", "doc", "avi", "mp3"};
 
         Storage smallStorage = new Storage(1298, smallFiles,smallFormats, "UA", 200);
-        Storage smallStorage2 = new Storage(1498, smallFiles,smallFormats, "UA", 200);
+        Storage smallStorage2 = new Storage(1498, smallFiles2,allFormats, "UA", 200);
 
         Storage largeStorage = new Storage(1238, largeFiles,largeFormats, "UA", 700);
         Storage allStorage = new Storage(9298, oneFiles,allFormats, "UA", 700);
@@ -99,16 +101,10 @@ public class Demo {
             System.out.println(e.getMessage());
         }
         // transferAll TEST2 smallStor to allStor
-        smallStorage2.printStorage();
-        allStorage.printStorage();
-
         try {
             controller.transferAll(smallStorage2, allStorage);
-            smallStorage2.printStorage();
-            allStorage.printStorage();
 
         } catch (Exception e)
-
         {
             System.out.println(e.getMessage());
         }

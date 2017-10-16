@@ -91,27 +91,29 @@ public class Controller {
 
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
     {
-        if (storageFrom == null || storageTo == null)
+        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId())
             return;
 
-        File[] emptyStorage = new File[0];
-        for(File fFrom : storageFrom.getFiles())
+        File[] source = storageFrom.getFiles();
+        for(File fFrom : source)
         {
             this.put(storageTo, fFrom);
+            this.delete(storageFrom, fFrom);
         }
-        storageFrom.setFiles(emptyStorage);
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
-        if (storageFrom == null || storageTo == null)
+        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId())
             return;
 
-        for(File fFrom : storageFrom.getFiles())
+        File[] source = storageFrom.getFiles();
+        for(File fFrom : source)
         {
             if (fFrom.getId() == id)
             {
                 this.put(storageTo, fFrom);
+                this.delete(storageFrom, fFrom);
                 break;
             }
         }
