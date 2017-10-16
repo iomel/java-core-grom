@@ -19,6 +19,8 @@ public class Controller {
             throw new Exception(errorMessage);
         }
 
+        if(file.getFormat() == null)
+            return null;
         if (!storage.checkFormat(file))
         {
             errorMessage = "Wrong file format! storage:" + storage.getId() + "    file:" + file.getId();

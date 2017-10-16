@@ -33,9 +33,10 @@ public class Demo {
         Controller controller = new Controller();
 
         File longFileName = new File(8273,"bookershtrasse van der gemakkileg", "txt", 12);
-/*
+
         // put TEST1 - put large file
         try {
+            System.out.println("TEST 1 : ");
             System.out.println(controller.put(smallStorage, file4));
             smallStorage.printStorage();
 
@@ -45,6 +46,7 @@ public class Demo {
         }
         // put TEST2 put normal file
         try {
+            System.out.println("TEST 2 : ");
             System.out.println(controller.put(smallStorage, new File(8273,"book", "txt", 12)));
 //            smallStorage.printStorage();
 
@@ -54,6 +56,7 @@ public class Demo {
         }
         // put TEST3 put file with long name
         try {
+            System.out.println("TEST 3 : ");
             System.out.println(controller.put(smallStorage, longFileName));
 //            smallStorage.printStorage();
 
@@ -63,6 +66,7 @@ public class Demo {
         }
         // put TEST4 put null file
         try {
+            System.out.println("TEST 4 : ");
             System.out.println(controller.put(smallStorage, null));
 //            smallStorage.printStorage();
 
@@ -70,9 +74,40 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
+        // put TEST5 put file with wrong format
+        try {
+            System.out.println("TEST 5 : ");
+            System.out.println(controller.put(smallStorage, new File(1294, "wordFile", "docs", 35)));
+//            smallStorage.printStorage();
+
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        // put TEST7 put file with null filename
+        try {
+            System.out.println("TEST 7 : ");
+            System.out.println(controller.put(smallStorage, new File(1294, null, "doc", 35)));
+//            smallStorage.printStorage();
+
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        // put TEST8 put file with null format
+        try {
+            System.out.println("TEST 8 : ");
+            System.out.println(controller.put(smallStorage, new File(1294, "word2", null, 35)));
+//            smallStorage.printStorage();
+
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
 
         // delete TEST1 del null file
-        try {
+/*        try {
             controller.delete(smallStorage, null);
             smallStorage.printStorage();
 
@@ -89,7 +124,7 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
-*/
+
         // transferAll TEST1 smallStor to allStor
         try {
             controller.transferAll(smallStorage, allStorage);
@@ -121,6 +156,6 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
-
+*/
     }
 }
