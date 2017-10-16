@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class Demo {
     public static void main(String[] args) {
 
+        // TEST Files
         File file1 = new File(1234, "testText", "txt", 25);
         File file2 = new File(1274, "justText", "txt", 15);
         File file3 = new File(1934, "picture", "jpg", 45);
@@ -13,30 +14,32 @@ public class Demo {
         File file5 = new File(9234, "movie", "avi", 250);
         File file6 = new File(9134, "movie2", "avi", 260);
         File file7 = new File(3134, "audio", "mp3", 110);
+        File longFileName = new File(8273,"bookershtrasse van der gemakkileg", "txt", 12);
 
+        // TEST file sets
         File[] smallFiles = {file1, file2, file3, file4};
         File[] smallFiles2 = {file5, file7, file3, file4};
-
         File[] largeFiles = {file5, file6, file7};
         File[] oneFiles = {file7};
         File[] emptyStor = null;
 
+        // TEST file formats
         String[] smallFormats = {"txt", "jpg", "doc"};
         String[] largeFormats = {"avi", "mp3"};
         String[] allFormats = {"txt", "jpg", "doc", "avi", "mp3"};
 
-        Storage smallStorage = new Storage(1298, smallFiles,smallFormats, "UA", 200);
-        Storage smallStorage2 = new Storage(1498, smallFiles2,allFormats, "UA", 200);
-        Storage emptyStorage = new Storage(1798, emptyStor,allFormats, "UA", 200);
+        // CONTROLLER
+        Controller controller = new Controller();
 
+        // TEST storages
+        Storage smallStorage = new Storage(1298, smallFiles, smallFormats, "UA", 200);
+        Storage smallStorage2 = new Storage(1498, smallFiles2, allFormats, "UA", 200);
+        Storage emptyStorage = new Storage(1798, emptyStor, allFormats, "UA", 200);
         Storage largeStorage = new Storage(1238, largeFiles,largeFormats, "UA", 700);
         Storage allStorage = new Storage(9298, oneFiles,allFormats, "UA", 700);
 
-        Controller controller = new Controller();
 
-        File longFileName = new File(8273,"bookershtrasse van der gemakkileg", "txt", 12);
-
-/*        // put TEST1 - put large file
+        // put TEST1 - put large file
         try {
             System.out.println("TEST 1 : ");
             System.out.println(controller.put(smallStorage, file4));
@@ -101,18 +104,20 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
- */       // put TEST6.2 put file to empty storage
+        // put TEST6.2 put file to empty storage
         try {
             System.out.println("TEST 6.2 : ");
+            File[] testFileSet = emptyStorage.getFiles();
+            System.out.println(testFileSet.length);
             System.out.println(emptyStorage.getFiles().length);
-            System.out.println(controller.put(emptyStorage, file1));
+            System.out.println(controller.put(emptyStorage, file3));
 
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
 
-/*        // put TEST7 put file with null filename
+        // put TEST7 put file with null filename
         try {
             System.out.println("TEST 7 : ");
             System.out.println(controller.put(smallStorage, new File(1294, null, "doc", 35)));
@@ -192,6 +197,6 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
-*/
+
     }
 }
