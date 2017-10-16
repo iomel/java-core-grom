@@ -10,6 +10,7 @@ public class Controller {
 
         String errorMessage = "";
         File[] files = storage.getFiles();
+
         boolean hasPlace = false;
 
         if (file.getSize() > storage.getStorageFreeSpace())
@@ -33,6 +34,11 @@ public class Controller {
             errorMessage = "There is such file in the storage already! storage:" + storage.getId() + "    file:" + file.getId();
             System.out.println(errorMessage);
             throw new Exception(errorMessage);
+        }
+        if (files == null){
+            File[] newFile = {file};
+            storage.setFiles(newFile);
+            return file;
         }
 
         for (File f : files)
@@ -68,6 +74,7 @@ public class Controller {
 
         String errorMessage = "";
         File[] files = storage.getFiles();
+
         File[] newFiles = new File[files.length-1];
 
         if (!storage.hasFile(file)) {

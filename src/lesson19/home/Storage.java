@@ -32,6 +32,9 @@ public class Storage {
 
     public long getStorageFreeSpace ()
     {
+        if (files == null)
+            return storageSize;
+
         long totalSize = 0;
         for (File f : files)
         {
@@ -45,6 +48,9 @@ public class Storage {
 
     public boolean hasFile (File file){
         // null check ?
+        if (files == null)
+            return false;
+
         for (File f : files)
         {
             if (f.equals(file) || f.getId() == file.getId())
@@ -56,8 +62,10 @@ public class Storage {
     public void printStorage()
     {
         System.out.println("Storage (id:" + id + ") contains: ");
-        if(files == null)
+        if(files == null) {
             System.out.println(" Nothing - is empty!");
+            return;
+        }
         for (File f : files)
             System.out.println(f.toString());
     }

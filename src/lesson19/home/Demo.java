@@ -1,6 +1,7 @@
 package lesson19.home;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Demo {
     public static void main(String[] args) {
@@ -18,7 +19,7 @@ public class Demo {
 
         File[] largeFiles = {file5, file6, file7};
         File[] oneFiles = {file7};
-
+        File[] emptyStor = null;
 
         String[] smallFormats = {"txt", "jpg", "doc"};
         String[] largeFormats = {"avi", "mp3"};
@@ -26,6 +27,7 @@ public class Demo {
 
         Storage smallStorage = new Storage(1298, smallFiles,smallFormats, "UA", 200);
         Storage smallStorage2 = new Storage(1498, smallFiles2,allFormats, "UA", 200);
+        Storage emptyStorage = new Storage(1798, emptyStor,allFormats, "UA", 200);
 
         Storage largeStorage = new Storage(1238, largeFiles,largeFormats, "UA", 700);
         Storage allStorage = new Storage(9298, oneFiles,allFormats, "UA", 700);
@@ -34,7 +36,7 @@ public class Demo {
 
         File longFileName = new File(8273,"bookershtrasse van der gemakkileg", "txt", 12);
 
-        // put TEST1 - put large file
+/*        // put TEST1 - put large file
         try {
             System.out.println("TEST 1 : ");
             System.out.println(controller.put(smallStorage, file4));
@@ -99,8 +101,18 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
+ */       // put TEST6.2 put file to empty storage
+        try {
+            System.out.println("TEST 6.2 : ");
+            System.out.println(emptyStorage.getFiles().length);
+            System.out.println(controller.put(emptyStorage, file1));
 
-        // put TEST7 put file with null filename
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+/*        // put TEST7 put file with null filename
         try {
             System.out.println("TEST 7 : ");
             System.out.println(controller.put(smallStorage, new File(1294, null, "doc", 35)));
@@ -122,7 +134,7 @@ public class Demo {
 
 
         // delete TEST1 del null file
-/*        try {
+        try {
             controller.delete(smallStorage, null);
             smallStorage.printStorage();
 
@@ -130,9 +142,18 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
-        // delete TEST2 del null file
+        // delete TEST2 del file
         try {
             controller.delete(smallStorage, file1);
+            smallStorage.printStorage();
+
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        // delete TEST3 del large name file
+        try {
+            controller.delete(smallStorage, longFileName);
             smallStorage.printStorage();
 
         } catch (Exception e)
