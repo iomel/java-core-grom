@@ -184,9 +184,15 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
+        // transferAll TEST3 emptyStorage to allStor
+        try {
+            controller.transferAll(emptyStorage, allStorage);
 
-        smallStorage2.printStorage();
-        allStorage.printStorage();
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
 
         // transferFile TEST1 file6 to allStor
         try {

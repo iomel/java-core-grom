@@ -97,20 +97,23 @@ public class Controller {
         if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId())
             return;
 
-//        String errorMessage = "";
+        String errorMessage = "";
         File[] source = storageFrom.getFiles();
+
+        if (source == null) {
+            errorMessage = "Can't transfer file! storage:" + storageTo.getId();
+            System.out.println(errorMessage);
+            throw new Exception(errorMessage);
+        }
+
         for(File fFrom : source)
         {
-            if (this.put(storageTo, fFrom) == null)
-                continue;
-            this.delete(storageFrom, fFrom);
-/*            else
-            {
+            if (this.put(storageTo, fFrom) == null) {
                 errorMessage = "Can't transfer file! storage:" + storageTo.getId() + "    file:" + fFrom.getId();
                 System.out.println(errorMessage);
                 throw new Exception(errorMessage);
             }
-*/
+            this.delete(storageFrom, fFrom);
         }
     }
 
