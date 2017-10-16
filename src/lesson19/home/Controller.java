@@ -90,11 +90,18 @@ public class Controller {
         if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId())
             return;
 
+        String errorMessage = "";
         File[] source = storageFrom.getFiles();
         for(File fFrom : source)
         {
             if (this.put(storageTo, fFrom) != null)
                 this.delete(storageFrom, fFrom);
+            else
+            {
+                errorMessage = "Can't transfer file! storage:" + storageTo.getId() + "    file:" + fFrom.getId();
+                System.out.println(errorMessage);
+                throw new Exception(errorMessage);
+            }
         }
     }
 
@@ -103,6 +110,7 @@ public class Controller {
         if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId())
             return;
 
+        String errorMessage = "";
         File[] source = storageFrom.getFiles();
         for(File fFrom : source)
         {
@@ -110,6 +118,10 @@ public class Controller {
             {
                 if (this.put(storageTo, fFrom) != null) {
                     this.delete(storageFrom, fFrom);
+                } else {
+                    errorMessage = "Can't transfer file! storage:" + storageTo.getId() + "    file:" + fFrom.getId();
+                    System.out.println(errorMessage);
+                    throw new Exception(errorMessage);
                 }
                 break;
             }
