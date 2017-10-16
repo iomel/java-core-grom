@@ -101,7 +101,7 @@ public class Controller {
         File[] source = storageFrom.getFiles();
 
         if (source == null) {
-            errorMessage = "Can't transfer file! storage:" + storageTo.getId();
+            errorMessage = "Can't transfer file from storage:" + storageFrom.getId();
             System.out.println(errorMessage);
             throw new Exception(errorMessage);
         }
@@ -124,22 +124,32 @@ public class Controller {
 
         String errorMessage = "";
         File[] source = storageFrom.getFiles();
+
+        if (source == null) {
+            errorMessage = "Can't transfer file from storage:" + storageFrom.getId();
+            System.out.println(errorMessage);
+            throw new Exception(errorMessage);
+        }
+
         for(File fFrom : source)
         {
+            if (fFrom == null)
+                return;
+
             if (fFrom.getId() == id)
             {
-                if (this.put(storageTo, fFrom) != null) {
-                    this.delete(storageFrom, fFrom);
-                } else {
+                if (this.put(storageTo, fFrom) == null) {
                     errorMessage = "Can't transfer file! storage:" + storageTo.getId() + "    file:" + fFrom.getId();
                     System.out.println(errorMessage);
                     throw new Exception(errorMessage);
                 }
-                break;
+                this.delete(storageFrom, fFrom);
             }
+            break;
         }
-
     }
 
-
 }
+
+
+
