@@ -43,12 +43,11 @@ public class Controller {
                 if(f == null)
                 {
                     f = file;
-                    break;
+                    storage.setFiles(files);
+                    return file;
                 }
-                storage.setFiles(files);
-                return file;
-        } else
-        {
+        }
+        else {
             File[] newFiles = new File[files.length + 1];
             for (int i = 0; i < files.length; i++)
                 newFiles[i] = files[i];
@@ -57,6 +56,7 @@ public class Controller {
             return file;
         }
 
+        return null;
     }
 
     public void delete (Storage storage, File file) throws Exception
@@ -68,21 +68,17 @@ public class Controller {
         File[] files = storage.getFiles();
         File[] newFiles = new File[files.length-1];
 
-        if (!storage.hasFile(file))
-        {
-            errorMessage = "There is no such file in the storage already! storage:" + storage.getId() + "    file:" + file.getId();
+        if (!storage.hasFile(file)) {
+            errorMessage = "There is no such file in the storage! storage:" + storage.getId() + "    file:" + file.getId();
             System.out.println(errorMessage);
             throw new Exception(errorMessage);
         }
 
-        for (int i = 0, j = 0; i < files.length; i++)
-        {
+        for (int i = 0, j = 0; i < files.length; i++) {
             if (files[i].equals(file))
                 continue;
             else
-            {
                 newFiles[j++] = files[i];
-            }
         }
         storage.setFiles(newFiles);
     }
