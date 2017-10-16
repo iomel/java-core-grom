@@ -1,7 +1,5 @@
 package lesson19.home;
 
-import java.io.IOException;
-
 
 public class Controller {
 
@@ -97,8 +95,8 @@ public class Controller {
         File[] source = storageFrom.getFiles();
         for(File fFrom : source)
         {
-            this.put(storageTo, fFrom);
-            this.delete(storageFrom, fFrom);
+            if (this.put(storageTo, fFrom) != null)
+                this.delete(storageFrom, fFrom);
         }
     }
 
@@ -112,8 +110,9 @@ public class Controller {
         {
             if (fFrom.getId() == id)
             {
-                this.put(storageTo, fFrom);
-                this.delete(storageFrom, fFrom);
+                if (this.put(storageTo, fFrom) != null) {
+                    this.delete(storageFrom, fFrom);
+                }
                 break;
             }
         }
