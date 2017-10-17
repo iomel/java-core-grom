@@ -60,37 +60,35 @@ public class Controller {
 
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
     {
-        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId() || storageFrom.getFiles() == null)
-            throw new Exception("Can't transfer file from storage:" + storageFrom.getId() + " source [destination] storage is empty or it's same storage!");
+        checkStorageForTransfer(storageFrom, storageTo);
 
-        for(File fileToTransfer : storageFrom.getFiles())
-        {
-            if (put(storageTo, fileToTransfer) == null) {
+        for(File fileToTransfer : storageFrom.getFiles()){
+            if (put(storageTo, fileToTransfer) != null)
+                delete(storageFrom,fileToTransfer);
+            else
                 transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
-            }
-            delete(storageFrom,fileToTransfer);
         }
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
-        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId() || storageFrom.getFiles() == null)
-            throw new Exception("Can't transfer file from storage:" + storageFrom.getId() + " source [destination] storage is empty or it's same storage!");
+        checkStorageForTransfer(storageFrom, storageTo);
 
         for(File fileToTransfer : storageFrom.getFiles())
         {
-            if (fileToTransfer == null || fileToTransfer.isEmpty())
-                continue;
-
-            if (fileToTransfer.getId() == id)
-            {
-                if (put(storageTo, fileToTransfer) == null) {
-                    transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
-                }
-                delete(storageFrom, fileToTransfer);
-            }
-            break;
+            if (fileToTransfer != null && !fileToTransfer.isEmpty() && fileToTransfer.getId() == id)
+                if (put(storageTo, fileToTransfer) != null) {
+                    delete(storageFrom, fileToTransfer);
+                    return;
+            } else
+                transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
         }
+    }
+
+    private void checkStorageForTransfer(Storage storageFrom, Storage storageTo) throws Exception
+    {
+        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId() || storageFrom.getFiles() == null)
+            throw new Exception("Can't transfer file from storage:" + storageFrom.getId() + " source [destination] storage is empty or it's same storage!");
     }
 
     private void transferErrorMessage (long storageId, long fileId ) throws Exception {
