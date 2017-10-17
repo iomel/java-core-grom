@@ -72,28 +72,29 @@ public class Controller {
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
         checkStorageForTransfer(storageFrom, storageTo);
-
-        for(File fileToTransfer : storageFrom.getFiles())
+        File fileToTransfer = getFileById(storageFrom, id);
+        if (contains(storageFrom, fileToTransfer))
         {
-            if (fileToTransfer == null || fileToTransfer.isEmpty())
-                continue;
-
-            if (fileToTransfer.getId() == id)
-            {
-                if (put(storageTo, fileToTransfer) == null) {
-                    transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
-                } else {
-                    delete(storageFrom, fileToTransfer);
-                    break;
-                }
-            }
+            put(storageTo, fileToTransfer);
+            delete(storageFrom, fileToTransfer);
         }
     }
 
+    private File getFileById (Storage storage, long id)
+    {
+        for (File f : storage.getFiles())
+            if ( f!=null && !f.isEmpty() && f.getId() == id)
+                return f;
+
+        return null;
+    }
     private void checkStorageForTransfer(Storage storageFrom, Storage storageTo) throws Exception
     {
-        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId() || storageFrom.getFiles() == null)
-            throw new Exception("Can't transfer file from storage:" + storageFrom.getId() + " source [destination] storage is empty or it's same storage!");
+        if (storageFrom == null || storageTo == null
+                || storageFrom.getId() == storageTo.getId()
+                || storageFrom.getFiles() == null || storageFrom.getFiles().length == 0)
+            throw new Exception("Can't transfer file from storage:" + storageFrom.getId()
+                    + " source [destination] storage is empty or it's same storage!");
     }
 
     private void transferErrorMessage (long storageId, long fileId ) throws Exception {
