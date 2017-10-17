@@ -62,26 +62,31 @@ public class Controller {
     {
         checkStorageForTransfer(storageFrom, storageTo);
 
-        for(File fileToTransfer : storageFrom.getFiles()){
-            if (put(storageTo, fileToTransfer) != null)
-                delete(storageFrom,fileToTransfer);
-            else
+        for(File fileToTransfer : storageFrom.getFiles())
+        {
+            if (put(storageTo, fileToTransfer) == null) {
                 transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
+            }
+            delete(storageFrom,fileToTransfer);
         }
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
         checkStorageForTransfer(storageFrom, storageTo);
-
         for(File fileToTransfer : storageFrom.getFiles())
         {
-            if (fileToTransfer != null && !fileToTransfer.isEmpty() && fileToTransfer.getId() == id)
-                if (put(storageTo, fileToTransfer) != null) {
-                    delete(storageFrom, fileToTransfer);
-                    return;
-            } else
-                transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
+            if (fileToTransfer == null || fileToTransfer.isEmpty())
+                continue;
+
+            if (fileToTransfer.getId() == id)
+            {
+                if (put(storageTo, fileToTransfer) == null) {
+                    transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
+                }
+                delete(storageFrom, fileToTransfer);
+                break;
+            }
         }
     }
 
