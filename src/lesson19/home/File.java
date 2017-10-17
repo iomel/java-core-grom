@@ -7,10 +7,11 @@ public class File {
     private long size;
 
     public File(long id, String name, String format, long size) {
-        if (name.length() > 10) {
-            System.out.println("Wrong file name length!File will not be created");
-            return;
-        }
+        if (name != null)
+            if (name.length() > 10) {
+                System.out.println("Wrong file name length! File will not be created");
+                return;
+            }
         this.id = id;
         this.name = name;
         this.format = format;

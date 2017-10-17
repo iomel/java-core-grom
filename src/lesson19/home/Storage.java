@@ -27,7 +27,19 @@ public class Storage {
         this.files = files;
     }
 
-    public boolean canAddCheck (File file) throws Exception
+
+    public void printStorage()
+    {
+        System.out.println("Storage (id:" + id + ") contains: ");
+        if(files == null) {
+            System.out.println(" Nothing - is empty!");
+            return;
+        }
+        for (File f : files)
+            System.out.println(f.toString());
+    }
+
+/*        public boolean canAddCheck (File file) throws Exception
     {
         return (checkFormat(file) && checkSpaceToAdd(file) && !duplicatedFilesCheck(file)) ? true : false;
     }
@@ -54,18 +66,8 @@ public class Storage {
         return false;
     }
 
-    public void printStorage()
-    {
-        System.out.println("Storage (id:" + id + ") contains: ");
-        if(files == null) {
-            System.out.println(" Nothing - is empty!");
-            return;
-        }
-        for (File f : files)
-            System.out.println(f.toString());
-    }
 
-    private boolean checkSpaceToAdd (File file) throws Exception {
+        private boolean checkSpaceToAdd (File file) throws Exception {
 
         long totalSize = 0;
         for (File f : files)
@@ -109,5 +111,13 @@ public class Storage {
         }
         return false;
     }
+*/
 
+    public String[] getFormatsSupported() {
+        return formatsSupported;
+    }
+
+    public long getStorageSize() {
+        return storageSize;
+    }
 }
