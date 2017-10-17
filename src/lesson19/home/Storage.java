@@ -31,7 +31,7 @@ public class Storage {
     public void printStorage()
     {
         System.out.println("Storage (id:" + id + ") contains: ");
-        if(files == null) {
+        if(files == null || files.length == 0) {
             System.out.println(" Nothing - is empty!");
             return;
         }

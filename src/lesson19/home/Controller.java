@@ -1,8 +1,6 @@
 package lesson19.home;
 
 
-import java.util.Arrays;
-
 public class Controller {
 
     public File put(Storage storage, File file) throws Exception
@@ -74,6 +72,7 @@ public class Controller {
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
         checkStorageForTransfer(storageFrom, storageTo);
+
         for(File fileToTransfer : storageFrom.getFiles())
         {
             if (fileToTransfer == null || fileToTransfer.isEmpty())
@@ -83,9 +82,10 @@ public class Controller {
             {
                 if (put(storageTo, fileToTransfer) == null) {
                     transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
+                } else {
+                    delete(storageFrom, fileToTransfer);
+                    break;
                 }
-                delete(storageFrom, fileToTransfer);
-                break;
             }
         }
     }
@@ -180,7 +180,7 @@ public class Controller {
 
     private boolean contains (Storage storage, File file)
     {
-        if (storage.getFiles() == null)
+        if (storage.getFiles() == null || storage.getFiles().length == 0)
             return false;
 
         for (File f : storage.getFiles())
@@ -196,6 +196,8 @@ public class Controller {
     private int hasPlaceToAdd(Storage storage) {
 
         if(storage.getFiles() == null)
+            return 0;
+        if (storage.getFiles().length == 0)
             return 0;
 
         for(File f : storage.getFiles())

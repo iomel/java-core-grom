@@ -175,21 +175,34 @@ public class Demo {
         }
         // transferAll TEST2 smallStor to allStor
         try {
+            System.out.println("transferAll TEST2 smallStor2 to allStor");
+            smallStorage2.printStorage();
+            allStorage.printStorage();
             controller.transferAll(smallStorage2, allStorage);
+            allStorage.printStorage();
 
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
+
+
         // transferAll TEST3 emptyStorage to allStor
         try {
+            System.out.println("transferAll TEST3 emptyStor to allStor");
+
+            controller.delete(allStorage, file5);
+            controller.delete(emptyStorage, file3);
+            System.out.println(Arrays.toString(emptyStorage.getFiles()));
+            System.out.println(emptyStorage.getFiles().length);
+            emptyStorage.printStorage();
+            allStorage.printStorage();
             controller.transferAll(emptyStorage, allStorage);
 
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
-
 
         // transferFile TEST1 file6 to allStor
         try {
