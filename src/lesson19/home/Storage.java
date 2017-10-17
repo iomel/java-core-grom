@@ -15,6 +15,44 @@ public class Storage {
         this.storageSize = storageSize;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public File[] getFiles() {
+        return files;
+    }
+
+    public void setFiles(File[] files) {
+        this.files = files;
+    }
+
+    public boolean canAddCheck (File file) throws Exception
+    {
+        return (checkFormat(file) && checkSpaceToAdd(file) && !duplicatedFilesCheck(file)) ? true : false;
+    }
+
+    public boolean contains (File file)
+    {
+        if (files == null)
+            return false;
+
+        for (File f : files)
+        {
+            if (f == null || f.isEmpty())
+                continue;
+            if (f.getId() == file.getId())
+                return true;
+        }
+        return false;
+    }
+
+    public boolean hasPlaceToAdd() {
+        for(File f : files)
+            if (f == null)
+                return true;
+        return false;
+    }
 
     public void printStorage()
     {
@@ -25,49 +63,6 @@ public class Storage {
         }
         for (File f : files)
             System.out.println(f.toString());
-    }
-    public File put (File file) throws Exception {
-
-        fileIsAvailable(file);
-
-        if (!canAddCheck(file))
-            throw new Exception("Can't put file id:" + file.getId() + " to storage id:" + id);
-
-        if (hasPlaceToAdd()) {
-            for (File f : files)
-                if (f == null || f.isEmpty()) {
-                    f = file;
-                    return f;
-                }
-        } else {
-            File[] newFiles = new File[files.length + 1];
-            for (int i = 0; i < files.length; i++)
-                newFiles[i] = files[i];
-            newFiles[newFiles.length - 1] = file;
-            return file;
-        }
-        return null;
-    }
-
-    public void delete (File file) throws Exception
-    {
-        fileIsAvailable(file);
-        if (fileInStorageCheck(file))
-        {
-            for (File f : files) {
-                if (f == null || f.isEmpty())
-                    continue;
-                if (f.getId() == file.getId()) {
-                    f = null;
-                    return;
-                }
-            }
-        }
-    }
-
-    private boolean canAddCheck (File file) throws Exception
-    {
-        return (checkFormat(file) && checkSpaceToAdd(file) && !duplicatedFilesCheck(file)) ? true : false;
     }
 
     private boolean checkSpaceToAdd (File file) throws Exception {
@@ -107,7 +102,7 @@ public class Storage {
 
     private boolean duplicatedFilesCheck (File file) throws Exception {
 
-        if (fileInStorageCheck(file)) {
+        if (contains(file)) {
             String errorMessage = "There is such file in the storage already! storage:" + id + "    file:" + file.getId();
             System.out.println(errorMessage);
             throw new Exception(errorMessage);
@@ -115,46 +110,4 @@ public class Storage {
         return false;
     }
 
-    private boolean fileInStorageCheck (File file)
-    {
-        if (files == null)
-            return false;
-
-        for (File f : files)
-        {
-            if (f == null || f.isEmpty())
-                continue;
-            if (f.getId() == file.getId())
-                return true;
-        }
-        return false;
-    }
-
-    private boolean hasPlaceToAdd() {
-        for(File f : files)
-            if (f == null)
-                return true;
-        return false;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-
-    public File[] getFiles() {
-        return files;
-    }
-
-    public void setFiles(File[] files) {
-        this.files = files;
-    }
-
-    private boolean fileIsAvailable(File file) throws Exception
-    {
-        if(file == null || file.isEmpty())
-            throw new Exception("No such file or file is empty!");
-
-        return true;
-    }
 }
