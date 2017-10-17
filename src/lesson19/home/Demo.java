@@ -134,6 +134,7 @@ public class Demo {
 
         // delete TEST1 del null file
         try {
+            System.out.println("Delete TEST 1 ");
             controller.delete(smallStorage, null);
             smallStorage.printStorage();
 
@@ -143,6 +144,9 @@ public class Demo {
         }
         // delete TEST2 del file
         try {
+            System.out.println("Delete TEST 2 ");
+            smallStorage.printStorage();
+
             controller.delete(smallStorage, file1);
             smallStorage.printStorage();
 
@@ -152,6 +156,7 @@ public class Demo {
         }
         // delete TEST3 del large name file
         try {
+            System.out.println("Delete TEST 3 ");
             controller.delete(smallStorage, longFileName);
             smallStorage.printStorage();
 

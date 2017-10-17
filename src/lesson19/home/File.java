@@ -9,6 +9,7 @@ public class File {
     public File(long id, String name, String format, long size) {
         if (name.length() > 10) {
             System.out.println("Wrong file name length!File will not be created");
+            return;
         }
         this.id = id;
         this.name = name;
