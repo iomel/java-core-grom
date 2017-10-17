@@ -1,7 +1,5 @@
 package lesson19.home;
 
-import java.io.IOException;
-import java.util.Arrays;
 
 public class Demo {
     public static void main(String[] args) {
@@ -106,10 +104,6 @@ public class Demo {
         }
         // put TEST6.2 put file to empty storage
         try {
-            System.out.println("TEST 6.2 : ");
-            File[] testFileSet = emptyStorage.getFiles();
-            System.out.println(testFileSet.length);
-            System.out.println(emptyStorage.getFiles().length);
             System.out.println(controller.put(emptyStorage, file3));
 
         } catch (Exception e)

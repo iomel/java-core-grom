@@ -5,150 +5,56 @@ public class Controller {
 
     public File put(Storage storage, File file) throws Exception
     {
-        if (storage == null || file == null || file.isEmpty() || file.getName().isEmpty() || file.getFormat().isEmpty())
-            return null;
-
-        String errorMessage = "";
-        File[] files = storage.getFiles();
-
-        boolean hasPlace = false;
-
-        if (file.getSize() > storage.getStorageFreeSpace())
-        {
-            errorMessage = "Not enough space in storage:" + storage.getId() + " to put file:" + file.getId();
-            System.out.println(errorMessage);
-            throw new Exception(errorMessage);
-        }
-
-        if(file.getFormat() == null)
-            return null;
-        if (!storage.checkFormat(file))
-        {
-            errorMessage = "Wrong file format! storage:" + storage.getId() + "    file:" + file.getId();
-            System.out.println(errorMessage);
-            throw new Exception(errorMessage);
-        }
-
-        if (storage.hasFile(file))
-        {
-            errorMessage = "There is such file in the storage already! storage:" + storage.getId() + "    file:" + file.getId();
-            System.out.println(errorMessage);
-            throw new Exception(errorMessage);
-        }
-        if (files == null){
-            File[] newFile = {file};
-            storage.setFiles(newFile);
-            return file;
-        }
-
-        for (File f : files)
-            if(f == null)
-                hasPlace = !hasPlace;
-
-        if(hasPlace)
-        {
-            for (File f : files)
-                if(f == null)
-                {
-                    f = file;
-                    storage.setFiles(files);
-                    return file;
-                }
-        }
-        else {
-            File[] newFiles = new File[files.length + 1];
-            for (int i = 0; i < files.length; i++)
-                newFiles[i] = files[i];
-            newFiles[newFiles.length - 1] = file;
-            storage.setFiles(newFiles);
-            return file;
-        }
-
+        if (storage != null)
+            return storage.put(file);
         return null;
     }
 
     public void delete (Storage storage, File file) throws Exception
     {
-        if (storage == null || file == null || file.isEmpty())
-            return;
-
-        String errorMessage = "";
-        File[] files = storage.getFiles();
-
-        File[] newFiles = new File[files.length-1];
-
-        if (!storage.hasFile(file)) {
-            errorMessage = "There is no such file in the storage! storage:" + storage.getId() + "    file:" + file.getId();
-            System.out.println(errorMessage);
-            throw new Exception(errorMessage);
-        }
-
-        for (int i = 0, j = 0; i < files.length; i++) {
-            if (files[i].equals(file))
-                continue;
-            else
-                newFiles[j++] = files[i];
-        }
-        storage.setFiles(newFiles);
+        if (storage != null)
+            storage.delete(file);
     }
 
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
     {
-        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId())
-            return;
+        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId() || storageFrom.getFiles() == null)
+            throw new Exception("Can't transfer file from storage:" + storageFrom.getId() + " source [destination] storage is empty or it's same storage!");
 
-        String errorMessage = "";
-        File[] source = storageFrom.getFiles();
-
-        if (source == null) {
-            errorMessage = "Can't transfer file from storage:" + storageFrom.getId();
-            System.out.println(errorMessage);
-            throw new Exception(errorMessage);
-        }
-
-        for(File fFrom : source)
+        for(File fileToTransfer : storageFrom.getFiles())
         {
-            if (this.put(storageTo, fFrom) == null) {
-                errorMessage = "Can't transfer file! storage:" + storageTo.getId() + "    file:" + fFrom.getId();
-                System.out.println(errorMessage);
-                throw new Exception(errorMessage);
+            if (storageTo.put(fileToTransfer) == null) {
+                transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
             }
-            this.delete(storageFrom, fFrom);
+            storageFrom.delete(fileToTransfer);
         }
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
-        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId())
-            return;
+        if (storageFrom == null || storageTo == null || storageFrom.getId() == storageTo.getId() || storageFrom.getFiles() == null)
+            throw new Exception("Can't transfer file from storage:" + storageFrom.getId() + " source [destination] storage is empty or it's same storage!");
 
-        String errorMessage = "";
-        File[] source = storageFrom.getFiles();
-
-        if (source == null) {
-            errorMessage = "Can't transfer file from storage:" + storageFrom.getId();
-            System.out.println(errorMessage);
-            throw new Exception(errorMessage);
-        }
-
-        for(File fFrom : source)
+        for(File fileToTransfer : storageFrom.getFiles())
         {
-            if (fFrom == null)
-                return;
+            if (fileToTransfer == null || fileToTransfer.isEmpty())
+                continue;
 
-            if (fFrom.getId() == id)
+            if (fileToTransfer.getId() == id)
             {
-                if (this.put(storageTo, fFrom) == null) {
-                    errorMessage = "Can't transfer file! storage:" + storageTo.getId() + "    file:" + fFrom.getId();
-                    System.out.println(errorMessage);
-                    throw new Exception(errorMessage);
+                if (storageTo.put(fileToTransfer) == null) {
+                    transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
                 }
-                this.delete(storageFrom, fFrom);
+                storageFrom.delete(fileToTransfer);
             }
             break;
         }
     }
-
+    private void transferErrorMessage (long storageId, long fileId ) throws Exception {
+        String errorMessage = "Can't transfer file! storage:" + storageId + "    file:" + fileId;
+        System.out.println(errorMessage);
+        throw new Exception(errorMessage);
+    }
 }
 
 
