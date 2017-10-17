@@ -23,10 +23,17 @@ public class Storage {
         return files;
     }
 
+    public String[] getFormatsSupported() {
+        return formatsSupported;
+    }
+
+    public long getStorageSize() {
+        return storageSize;
+    }
+
     public void setFiles(File[] files) {
         this.files = files;
     }
-
 
     public void printStorage()
     {
@@ -39,12 +46,4 @@ public class Storage {
             System.out.println(f.toString());
     }
 
-
-    public String[] getFormatsSupported() {
-        return formatsSupported;
-    }
-
-    public long getStorageSize() {
-        return storageSize;
-    }
 }

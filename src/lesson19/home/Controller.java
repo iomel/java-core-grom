@@ -8,32 +8,31 @@ public class Controller {
         if (!canPut(storage, file))
             return null;
 
-        File[] files;
+        File[] files = storage.getFiles();
         hasPlaceToAdd(storage);
         switch (hasPlaceToAdd(storage)) {
             case 0:
                 files = new File[]{file};
                 storage.setFiles(files);
-                break;
+                return file;
             case 1:
-                files = storage.getFiles();
                 for (File f : files) {
                     if (f == null || f.isEmpty()) {
                         f = file;
                         storage.setFiles(files);
-                        break;
+                        return file;
                     }
                 }
                 break;
             case 2:
-                files = storage.getFiles();
                 File[] newFiles = new File[files.length + 1];
                 for (int i = 0; i < files.length; i++)
                     newFiles[i] = files[i];
                 newFiles[newFiles.length - 1] = file;
                 storage.setFiles(newFiles);
+                return file;
         }
-        return file;
+        return null;
 
     }
 
@@ -88,6 +87,7 @@ public class Controller {
 
         return null;
     }
+
     private void checkStorageForTransfer(Storage storageFrom, Storage storageTo) throws Exception
     {
         if (storageFrom == null || storageTo == null
@@ -196,9 +196,7 @@ public class Controller {
 
     private int hasPlaceToAdd(Storage storage) {
 
-        if(storage.getFiles() == null)
-            return 0;
-        if (storage.getFiles().length == 0)
+        if(storage.getFiles() == null || storage.getFiles().length == 0)
             return 0;
 
         for(File f : storage.getFiles())

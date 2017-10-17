@@ -36,24 +36,6 @@ public class File {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        File file = (File) o;
-
-        if (id != file.id) return false;
-        return name != null ? name.equals(file.name) : file.name == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
-    }
-
     public long getId() {
         return id;
     }

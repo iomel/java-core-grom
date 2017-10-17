@@ -193,10 +193,6 @@ public class Demo {
 
             controller.delete(allStorage, file5);
             controller.delete(emptyStorage, file3);
-            System.out.println(Arrays.toString(emptyStorage.getFiles()));
-            System.out.println(emptyStorage.getFiles().length);
-            emptyStorage.printStorage();
-            allStorage.printStorage();
             controller.transferAll(emptyStorage, allStorage);
 
         } catch (Exception e)
