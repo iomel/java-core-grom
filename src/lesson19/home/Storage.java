@@ -43,7 +43,8 @@ public class Storage {
             return;
         }
         for (File f : files)
-            System.out.println(f.toString());
+            if (f != null && !f.isEmpty())
+                System.out.println(f.toString());
     }
 
 }

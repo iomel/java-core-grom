@@ -17,11 +17,10 @@ public class Demo {
         File longFileName = new File(8273,"bookershtrasse van der gemakkileg", "txt", 12);
 
         // TEST file sets
-        File[] smallFiles = {file1, file2, file3, file4};
-        File[] smallFiles2 = {file5, file7, file3, file4};
-        File[] largeFiles = {file5, file6, file7};
+        File[] smallFiles = {file1, file2, null, file3, null, file4, null};
+        File[] smallFiles2 = {file5, null, file7, file3, null, file4};
+        File[] largeFiles = {file5, file6, null, null, null, file7};
         File[] oneFiles = {file7};
-//        File[] emptyStor = null;
 
         // TEST file formats
         String[] smallFormats = {"txt", "jpg", "doc"};
@@ -41,7 +40,7 @@ public class Demo {
 
         // put TEST1 - put large file
         try {
-            System.out.println("TEST 1 : ");
+            System.out.println("TEST 1 : large size ");
             System.out.println(controller.put(smallStorage, file6));
             smallStorage.printStorage();
 
@@ -51,7 +50,7 @@ public class Demo {
         }
         // put TEST2 put normal file
         try {
-            System.out.println("TEST 2 : ");
+            System.out.println("TEST 2 : good file BOOK");
             System.out.println(controller.put(smallStorage, new File(8273,"book", "txt", 12)));
             smallStorage.printStorage();
 
@@ -61,7 +60,7 @@ public class Demo {
         }
         // put TEST3 put file with long name
         try {
-            System.out.println("TEST 3 : ");
+            System.out.println("TEST 3 : longfilename");
             System.out.println(controller.put(smallStorage, longFileName));
 
         } catch (Exception e)
@@ -70,7 +69,7 @@ public class Demo {
         }
         // put TEST4 put null file
         try {
-            System.out.println("TEST 4 : ");
+            System.out.println("TEST 4 : null file");
             System.out.println(controller.put(smallStorage, null));
 
         } catch (Exception e)

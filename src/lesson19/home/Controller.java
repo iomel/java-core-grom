@@ -5,204 +5,98 @@ public class Controller {
 
     public File put(Storage storage, File file) throws Exception
     {
-        if (!canPut(storage, file))
-            return null;
+        nullAbsentCheck(storage, file);
+        isEnoughSpace(storage, file);
+        formatsAllowed(storage, file);
+
+        if(hasFile(storage, file)) {
+            System.out.println("There is such file in the storage: " + storage.getId() + "   file: " + file.getId());
+            throw new Exception("There is such file in the storage: " + storage.getId() + "   file: " + file.getId());
+        }
 
         File[] files = storage.getFiles();
-        hasPlaceToAdd(storage);
-        switch (hasPlaceToAdd(storage)) {
-            case 0:
-                files = new File[]{file};
-                storage.setFiles(files);
-                return file;
-            case 1:
-                for (File f : files) {
-                    if (f == null || f.isEmpty()) {
-                        f = file;
-                        storage.setFiles(files);
-                        return file;
-                    }
-                }
+        for (int i = 0; i < files.length; i++)
+        {
+            if (files[i] == null || files[i].isEmpty()){
+                files[i] = file;
                 break;
-            case 2:
-                File[] newFiles = new File[files.length + 1];
-                for (int i = 0; i < files.length; i++)
-                    newFiles[i] = files[i];
-                newFiles[newFiles.length - 1] = file;
-                storage.setFiles(newFiles);
-                return file;
+            }
         }
-        return null;
-
+        storage.setFiles(files);
+        return file;
     }
 
 
     public void delete (Storage storage, File file) throws Exception
     {
-        checkParametersForNull(storage, file);
-
-        if (contains(storage, file))
-        {
-            File[] files = storage.getFiles();
-            File[] newFiles = new File[files.length-1-emptyFilesCount(storage)];
-            for(int i = 0, j=0; i < files.length; i++)
-            {
-                if(files[i] != null && !files[i].isEmpty() && files[i].getId() != file.getId()){
-                    newFiles[j++] = files[i];
-                }
-            }
-            storage.setFiles(newFiles);
-        }
     }
 
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
     {
-        checkStorageForTransfer(storageFrom, storageTo);
-
-        for(File fileToTransfer : storageFrom.getFiles())
-        {
-            if (put(storageTo, fileToTransfer) == null) {
-                transferErrorMessage(storageTo.getId(), fileToTransfer.getId());
-            }
-            delete(storageFrom,fileToTransfer);
-        }
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
-        checkStorageForTransfer(storageFrom, storageTo);
-        File fileToTransfer = getFileById(storageFrom, id);
-        if (contains(storageFrom, fileToTransfer))
-        {
-            put(storageTo, fileToTransfer);
-            delete(storageFrom, fileToTransfer);
-        }
     }
 
-    private File getFileById (Storage storage, long id)
+    private boolean nullAbsentCheck (Storage storage, File file) throws Exception
+    {
+        if (storage == null || storage.getFiles() == null || storage.getFormatsSupported() == null
+                || file == null || file.isEmpty() || file.getFormat() == null) {
+            System.out.println("Put operation break - some data is NULL. Storage id:"
+                    + storage.getId() + "  file id: " + file.getId());
+            throw new Exception("Put operation break - some data is NULL. Storage id:"
+                    + storage.getId() + "  file id: " + file.getId());
+        }
+        return true;
+    }
+
+
+    private boolean formatsAllowed(Storage storage, File file) throws Exception
+    {
+        for (String format : storage.getFormatsSupported())
+        {
+            if(format.equals(file.getFormat()))
+                return true;
+        }
+
+        System.out.println("File format is not allowed in the storage: " + storage.getId() + "   file: " + file.getId());
+        throw new Exception("File format is not allowed in the storage: " + storage.getId() + "   file: " + file.getId());
+    }
+
+    private boolean isEnoughSpace(Storage storage, File file) throws Exception
+    {
+        long totalSize = 0;
+        for (File f : storage.getFiles())
+            if(f != null)
+                totalSize += f.getSize();
+
+        if (((storage.getStorageSize() - totalSize) < file.getSize()) && hasPlace(storage)){
+            System.out.println("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
+            throw new Exception("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
+        }
+        return true;
+    }
+
+    public boolean hasFile (Storage storage, File file)
     {
         for (File f : storage.getFiles())
-            if ( f!=null && !f.isEmpty() && f.getId() == id)
-                return f;
+            if (f != null && f.getId() == file.getId())
+                return true;
 
-        return null;
-    }
-
-    private void checkStorageForTransfer(Storage storageFrom, Storage storageTo) throws Exception
-    {
-        if (storageFrom == null || storageTo == null
-                || storageFrom.getId() == storageTo.getId()
-                || storageFrom.getFiles() == null || storageFrom.getFiles().length == 0)
-            throw new Exception("Can't transfer file from storage:" + storageFrom.getId()
-                    + " source [destination] storage is empty or it's same storage!");
-    }
-
-    private void transferErrorMessage (long storageId, long fileId ) throws Exception {
-        String errorMessage = "Can't transfer file! storage:" + storageId + "    file:" + fileId;
-        System.out.println(errorMessage);
-        throw new Exception(errorMessage);
-    }
-
-    private boolean canPut (Storage storage, File file) throws Exception
-    {
-        if (checkParametersForNull(storage, file))
-            return (checkSpaceToAdd(storage, file)
-                    && checkFormat(storage, file)
-                    && noDuplicatedFiles(storage, file)) ? true : false;
         return false;
     }
 
-    private int emptyFilesCount (Storage storage)
+    private boolean hasPlace (Storage storage) throws Exception
     {
         int count = 0;
         for (File f : storage.getFiles())
             if (f == null || f.isEmpty())
                 count++;
-        return count;
-    }
 
-    private boolean checkParametersForNull (Storage storage, File file) throws Exception
-    {
-        if(file == null || file.isEmpty())
-            throw new Exception("No such file or file is empty!");
-        if (storage == null)
-            throw new Exception("No such storage!");
-
-        return true;
-    }
-
-    private boolean checkSpaceToAdd (Storage storage, File file) throws Exception {
-        if (storage.getFiles() == null)
-            return storage.getStorageSize() > file.getSize() ? true : false;
-
-        long totalSize = 0;
-        for (File f : storage.getFiles())
-        {
-            if(f == null || f.isEmpty())
-                continue;
-            totalSize += f.getSize();
-        }
-
-        if ((storage.getStorageSize() - totalSize) >= file.getSize())
-        {
+        if (count > 0)
             return true;
-        } else {
-            String errorMessage = "Not enough space in storage:" + storage.getId() + " to put file:" + file.getId();
-            System.out.println(errorMessage);
-            throw new Exception(errorMessage);
-        }
-    }
-
-    private boolean checkFormat (Storage storage, File file) throws Exception
-    {
-        if(file.getFormat() == null || file.getFormat().isEmpty())
-            throw new Exception("File format is empty!");
-
-        for (String format : storage.getFormatsSupported())
-        {
-            if (format.equals(file.getFormat()))
-                return true;
-        }
-
-        String errorMessage = "Wrong file format! storage:" + storage.getId() + "    file:" + file.getId();
-        System.out.println(errorMessage);
-        throw new Exception(errorMessage);
-    }
-
-    private boolean noDuplicatedFiles (Storage storage, File file) throws Exception {
-
-        if (contains(storage, file)) {
-            String errorMessage = "There is such file in the storage already! storage:" + storage.getId() + "    file:" + file.getId();
-            System.out.println(errorMessage);
-            throw new Exception(errorMessage);
-        }
-        return true;
-    }
-
-    private boolean contains (Storage storage, File file)
-    {
-        if (storage.getFiles() == null || storage.getFiles().length == 0)
-            return false;
-
-        for (File f : storage.getFiles())
-        {
-            if (f == null || f.isEmpty())
-                continue;
-            if (f.getId() == file.getId())
-                return true;
-        }
         return false;
-    }
-
-    private int hasPlaceToAdd(Storage storage) {
-
-        if(storage.getFiles() == null || storage.getFiles().length == 0)
-            return 0;
-
-        for(File f : storage.getFiles())
-            if (f == null)
-                return 1;
-        return 2;
     }
 
 
