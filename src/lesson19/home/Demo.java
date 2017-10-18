@@ -41,7 +41,7 @@ public class Demo {
         // put TEST1 - put large file
         try {
             System.out.println("TEST 1 : large size ");
-            System.out.println(controller.put(smallStorage, file6));
+            System.out.println(controller.put(allStorage, file6));
             smallStorage.printStorage();
 
         } catch (Exception e)

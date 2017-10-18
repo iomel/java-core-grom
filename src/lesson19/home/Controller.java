@@ -82,12 +82,12 @@ public class Controller {
 
     private boolean isEnoughSpace(Storage storage, File file) throws Exception
     {
-        long totalSize = 0;
+        long totalSize = storage.getStorageSize();
         for (File f : storage.getFiles())
             if(f != null)
-                totalSize += f.getSize();
+                totalSize -= f.getSize();
 
-        if (((storage.getStorageSize() - totalSize) < file.getSize()) && hasPlace(storage)){
+        if ((totalSize < file.getSize()) || !hasPlace(storage)){
             System.out.println("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
             throw new Exception("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
         }
