@@ -69,6 +69,7 @@ public class Controller {
                 return true;
 
         errorMessage("File format is not allowed in the storage: ", storage.getId(), file.getId());
+        return false;
     }
 
     private boolean isEnoughSpace(Storage storage, File file) throws Exception
@@ -82,6 +83,7 @@ public class Controller {
             return true;
 
         errorMessage("Not enough free space in the storage: ", storage.getId(), file.getId());
+        return false;
     }
 
     public boolean hasFile (Storage storage, File file)
