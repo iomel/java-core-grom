@@ -9,19 +9,15 @@ public class Controller {
         isEnoughSpace(storage, file);
         formatsAllowed(storage, file);
 
-        if(hasFile(storage, file)) {
-            System.out.println("There is such file in the storage: " + storage.getId() + "   file: " + file.getId());
-            throw new Exception("There is such file in the storage: " + storage.getId() + "   file: " + file.getId());
-        }
+        if(hasFile(storage, file))
+            errorMessage("There is such file in the storage: ", storage.getId(), file.getId());
 
         File[] files = storage.getFiles();
         for (int i = 0; i < files.length; i++)
-        {
             if (files[i] == null || files[i].isEmpty()){
                 files[i] = file;
                 break;
             }
-        }
         storage.setFiles(files);
         return file;
     }
@@ -30,10 +26,9 @@ public class Controller {
     public void delete (Storage storage, File file) throws Exception
     {
         nullAbsentCheck(storage, file);
-        if(!hasFile(storage, file)) {
-            System.out.println("There is no such file in the storage: " + storage.getId() + "   file: " + file.getId());
-            throw new Exception("There is no such file in the storage: " + storage.getId() + "   file: " + file.getId());
-        }
+
+        if(!hasFile(storage, file))
+            errorMessage("There is no such file in the storage: ", storage.getId(), file.getId());
 
         File[] files = storage.getFiles();
         for (int i = 0; i < files.length; i++)
@@ -44,7 +39,6 @@ public class Controller {
             }
         }
         storage.setFiles(files);
-
     }
 
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
@@ -57,27 +51,24 @@ public class Controller {
 
     private boolean nullAbsentCheck (Storage storage, File file) throws Exception
     {
-        if (storage == null || storage.getFiles() == null || storage.getFormatsSupported() == null
-                || file == null || file.isEmpty() || file.getFormat() == null) {
-            System.out.println("Put operation break - some data is NULL. Storage id:"
-                    + storage.getId() + "  file id: " + file.getId());
-            throw new Exception("Put operation break - some data is NULL. Storage id:"
-                    + storage.getId() + "  file id: " + file.getId());
-        }
+        if (storage == null
+                || storage.getFiles() == null
+                || storage.getFormatsSupported() == null
+                || file == null
+                || file.isEmpty()
+                || file.getFormat() == null)
+            errorMessage("Put operation break - some data is NULL. Storage id:", storage.getId(), file.getId());
+
         return true;
     }
-
 
     private boolean formatsAllowed(Storage storage, File file) throws Exception
     {
         for (String format : storage.getFormatsSupported())
-        {
             if(format.equals(file.getFormat()))
                 return true;
-        }
 
-        System.out.println("File format is not allowed in the storage: " + storage.getId() + "   file: " + file.getId());
-        throw new Exception("File format is not allowed in the storage: " + storage.getId() + "   file: " + file.getId());
+        errorMessage("File format is not allowed in the storage: ", storage.getId(), file.getId());
     }
 
     private boolean isEnoughSpace(Storage storage, File file) throws Exception
@@ -87,16 +78,10 @@ public class Controller {
             if(f != null)
                 totalSize -= f.getSize();
 
-        if (totalSize < file.getSize()){
-            System.out.println("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
-            throw new Exception("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
-        }
-        if (!hasPlace(storage)){
-            System.out.println("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
-            throw new Exception("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
-        }
+        if (totalSize > file.getSize() && hasPlace(storage))
+            return true;
 
-        return true;
+        errorMessage("Not enough free space in the storage: ", storage.getId(), file.getId());
     }
 
     public boolean hasFile (Storage storage, File file)
@@ -115,11 +100,15 @@ public class Controller {
             if (f == null || f.isEmpty())
                 count++;
 
-        if (count > 0)
-            return true;
-        return false;
+        return count > 0 ? true : false;
     }
 
+    private void errorMessage (String text, long storageId, long fileId) throws Exception
+    {
+        System.out.println(text + storageId + "   file: " + fileId);
+        throw new Exception(text + storageId + "   file: " + fileId);
+
+    }
 
 }
 
