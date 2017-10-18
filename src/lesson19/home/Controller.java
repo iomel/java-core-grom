@@ -29,6 +29,22 @@ public class Controller {
 
     public void delete (Storage storage, File file) throws Exception
     {
+        nullAbsentCheck(storage, file);
+        if(!hasFile(storage, file)) {
+            System.out.println("There is no such file in the storage: " + storage.getId() + "   file: " + file.getId());
+            throw new Exception("There is no such file in the storage: " + storage.getId() + "   file: " + file.getId());
+        }
+
+        File[] files = storage.getFiles();
+        for (int i = 0; i < files.length; i++)
+        {
+            if ((files[i] == null || files[i].isEmpty()) && files[i].getId() == file.getId() ){
+                files[i] = null;
+                break;
+            }
+        }
+        storage.setFiles(files);
+
     }
 
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
