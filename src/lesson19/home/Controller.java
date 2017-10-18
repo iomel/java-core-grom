@@ -87,10 +87,15 @@ public class Controller {
             if(f != null)
                 totalSize -= f.getSize();
 
-        if ((totalSize < file.getSize()) || !hasPlace(storage)){
+        if (totalSize < file.getSize()){
             System.out.println("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
             throw new Exception("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
         }
+        if (!hasPlace(storage)){
+            System.out.println("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
+            throw new Exception("Not enough free space in the storage: " + storage.getId() + "   file: " + file.getId());
+        }
+
         return true;
     }
 
