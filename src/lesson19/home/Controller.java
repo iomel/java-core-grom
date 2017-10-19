@@ -35,6 +35,8 @@ public class Controller {
         File[] files = storage.getFiles();
         for (int i = 0; i < files.length; i++)
         {
+            if (files[i] == null)
+                continue;
             if ((files[i] != null || !files[i].isEmpty()) && files[i].getId() == file.getId() ){
                 files[i] = null;
                 break;
@@ -52,8 +54,10 @@ public class Controller {
         idDuplicate(storageFrom, storageTo);
 
         for (File fileToTransfer : storageFrom.getFiles()) {
-            put(storageTo, fileToTransfer);
-            delete(storageFrom, fileToTransfer);
+            if (fileToTransfer !=null && !fileToTransfer.isEmpty()) {
+                put(storageTo, fileToTransfer);
+                delete(storageFrom, fileToTransfer);
+            }
         }
     }
 

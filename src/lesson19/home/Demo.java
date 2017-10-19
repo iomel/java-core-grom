@@ -17,7 +17,7 @@ public class Demo {
         File longFileName = new File(8273,"bookershtrasse van der gemakkileg", "txt", 12);
 
         // TEST file sets
-        File[] smallFiles = {file1, file2, null, file3, null, file4, null, null};
+        File[] smallFiles = {file1, file2, null, file3, null, null, null};
         File[] smallFiles2 = {file5, null, file7, file3, null, file4};
         File[] largeFiles = {file5, file6, null, file4, null, null, file7, null};
         File[] oneFiles = {file7};
@@ -165,11 +165,14 @@ public class Demo {
         try {
             smallStorage.printStorage();
             allStorage.printStorage();
+            System.out.println("------ START TEST  -----");
             controller.transferAll(smallStorage, allStorage);
         } catch (Exception e)
         {
             System.out.println("  999   " + e.getMessage());
         }
+        System.out.println("------ END TEST  -----");
+
         smallStorage.printStorage();
         allStorage.printStorage();
 
