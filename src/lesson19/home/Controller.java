@@ -53,13 +53,8 @@ public class Controller {
 
                 for (File fileToTransfer : storageFrom.getFiles())
                 {
-                    try {
-                        put(storageTo, fileToTransfer);
-                        delete(storageFrom, fileToTransfer);
-                    } catch (Exception e)
-                    {
-                        System.out.println(e.getMessage());
-                    }
+                    put(storageTo, fileToTransfer);
+                    delete(storageFrom, fileToTransfer);
                 }
 
     }
