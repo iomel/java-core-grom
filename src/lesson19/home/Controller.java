@@ -51,15 +51,15 @@ public class Controller {
             throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
                     + "Destination storage:" + storageTo.getId());
 
-        for (File fileToTransfer : storageFrom.getFiles()) {
-            try {
-                put(storageTo, fileToTransfer);
-                delete(storageFrom, fileToTransfer);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+        if (usedPlaces(storageFrom) <=emptyPlaces(storageTo) && emptyPlaces(storageTo) != 0)
+            for (File fileToTransfer : storageFrom.getFiles()) {
+                try {
+                    put(storageTo, fileToTransfer);
+                    delete(storageFrom, fileToTransfer);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
-        }
-
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
@@ -69,8 +69,8 @@ public class Controller {
                 || storageFrom.getId() == storageTo.getId())
             throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
                     + "Destination storage:" + storageTo.getId() +  "   file: " + id);
-        File fileToTransfer = getFileById(storageFrom, id);
 
+        File fileToTransfer = getFileById(storageFrom, id);
         put(storageTo, fileToTransfer);
         delete(storageFrom, fileToTransfer);
     }
@@ -107,6 +107,24 @@ public class Controller {
             return true;
         throw new Exception("Not enough free space in the storage: " + storage.getId() + "    file: " + file.getId());
     }
+
+
+    private int usedPlaces (Storage storage){
+        int count = 0;
+        for (File f : storage.getFiles())
+            if (f != null && !f.isEmpty())
+                count++;
+        return count;
+    }
+
+    private int emptyPlaces (Storage storage){
+        int count = 0;
+        for (File f : storage.getFiles())
+            if (f == null || f.isEmpty())
+                count++;
+        return count;
+    }
+
 
     public boolean hasFile (Storage storage, File file)
     {
