@@ -51,14 +51,13 @@ public class Controller {
             throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
                     + "Destination storage:" + storageTo.getId());
 
-        if (usedPlaces(storageFrom) <=emptyPlaces(storageTo) && emptyPlaces(storageTo) != 0)
-            for (File fileToTransfer : storageFrom.getFiles()) {
-                try {
-                    put(storageTo, fileToTransfer);
-                    delete(storageFrom, fileToTransfer);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
+        if (usedPlaces(storageFrom) > emptyPlaces(storageTo) || emptyPlaces(storageTo) == 0)
+            throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
+                    + "Destination storage:" + storageTo.getId());
+
+        for (File fileToTransfer : storageFrom.getFiles()) {
+            put(storageTo, fileToTransfer);
+            delete(storageFrom, fileToTransfer);
             }
     }
 
