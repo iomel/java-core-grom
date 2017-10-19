@@ -112,29 +112,37 @@ public class Controller {
                 fromFilesSize += f.getSize();
         if (storageTo.getStorageSize() - toFilesSize < fromFilesSize)
             throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
-                    + "Destination storage:" + storageTo.getId());
+                    + " Destination storage:" + storageTo.getId());
     }
 
     public void hasPlacesStorage(Storage storageFrom, Storage storageTo) throws Exception {
-        if (usedPlaces(storageFrom) > emptyPlaces(storageTo) || emptyPlaces(storageTo) == 0)
-            throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
-                    + "Destination storage:" + storageTo.getId());
+        int usedPlaces = 0;
+        int emptyPlaces = 0;
+
+        for (File f : storageFrom.getFiles())
+            if (f == null || f.isEmpty())
+                usedPlaces++;
+
+        for (File f : storageTo.getFiles())
+            if (f == null || f.isEmpty())
+                usedPlaces++;
+
+        if (usedPlaces > emptyPlaces || emptyPlaces == 0)
+            throw new Exception("Transfer stopped - Not enough places. Source storage:" + storageFrom.getId()
+                    + " Destination storage:" + storageTo.getId());
     }
 
     private void idDuplicate (Storage storageFrom, Storage storageTo) throws Exception {
         for (File sourceFile : storageFrom.getFiles())
-            for (File destinationFile : storageTo.getFiles())
-                if (sourceFile.getId() == destinationFile.getId())
-                    throw new Exception("Duplicate files. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
+            if(hasFile(storageTo, sourceFile))
+                throw new Exception("Duplicate files. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
     }
 
-    private boolean formatsAllowed(Storage storage, File file) throws Exception
+    private void formatsAllowed(Storage storage, File file) throws Exception
     {
         for (String format : storage.getFormatsSupported())
-            if(format.equals(file.getFormat()))
-                return true;
-
-        throw new Exception("File format is not allowed in the storage: " + storage.getId() + "    file: " + file.getId());
+            if(!format.equals(file.getFormat()))
+                throw new Exception("File format is not allowed in the storage: " + storage.getId() + "    file: " + file.getId());
     }
 
     private boolean isEnoughSpace(Storage storage, File file) throws Exception
@@ -149,30 +157,11 @@ public class Controller {
         throw new Exception("Not enough free space in the storage: " + storage.getId() + "    file: " + file.getId());
     }
 
-
-    private int usedPlaces (Storage storage){
-        int count = 0;
-        for (File f : storage.getFiles())
-            if (f != null && !f.isEmpty())
-                count++;
-        return count;
-    }
-
-    private int emptyPlaces (Storage storage){
-        int count = 0;
-        for (File f : storage.getFiles())
-            if (f == null || f.isEmpty())
-                count++;
-        return count;
-    }
-
-
     public boolean hasFile (Storage storage, File file)
     {
         for (File f : storage.getFiles())
             if (f != null && f.getId() == file.getId())
                 return true;
-
         return false;
     }
 

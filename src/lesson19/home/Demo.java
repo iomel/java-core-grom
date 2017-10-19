@@ -17,9 +17,9 @@ public class Demo {
         File longFileName = new File(8273,"bookershtrasse van der gemakkileg", "txt", 12);
 
         // TEST file sets
-        File[] smallFiles = {file1, file2, null, file3, null, file4, null};
+        File[] smallFiles = {file1, file2, null, file3, null, file4, null, null};
         File[] smallFiles2 = {file5, null, file7, file3, null, file4};
-        File[] largeFiles = {file5, file6, null, null, null, file7};
+        File[] largeFiles = {file5, file6, null, file4, null, null, file7, null};
         File[] oneFiles = {file7};
 
         // TEST file formats
@@ -33,11 +33,10 @@ public class Demo {
         // TEST storages
         Storage smallStorage = new Storage(1298, smallFiles, smallFormats, "UA", 200);
         Storage smallStorage2 = new Storage(1498, smallFiles2, allFormats, "UA", 200);
-        Storage emptyStorage = new Storage(1798, null, allFormats, "UA", 200);
         Storage largeStorage = new Storage(1238, largeFiles,largeFormats, "UA", 700);
-        Storage allStorage = new Storage(9298, oneFiles,allFormats, "UA", 700);
+        Storage allStorage = new Storage(9298, largeFiles,allFormats, "UA", 7000);
 
-
+/*
         // put TEST1 - put large file
         try {
             System.out.println("TEST 1 : large size ");
@@ -161,9 +160,11 @@ public class Demo {
         {
             System.out.println(e.getMessage());
         }
-
+*/
         // transferAll TEST1 smallStor to allStor
         try {
+            smallStorage.printStorage();
+            allStorage.printStorage();
             controller.transferAll(smallStorage, allStorage);
             smallStorage.printStorage();
             allStorage.printStorage();
@@ -175,9 +176,8 @@ public class Demo {
         // transferAll TEST2 smallStor to allStor
         try {
             System.out.println("transferAll TEST2 smallStor2 to allStor");
-            smallStorage2.printStorage();
-            allStorage.printStorage();
             controller.transferAll(smallStorage2, allStorage);
+            smallStorage2.printStorage();
             allStorage.printStorage();
 
         } catch (Exception e)
@@ -189,10 +189,7 @@ public class Demo {
         // transferAll TEST3 emptyStorage to allStor
         try {
             System.out.println("transferAll TEST3 emptyStor to allStor");
-
-            controller.delete(allStorage, file5);
-            controller.delete(emptyStorage, file3);
-            controller.transferAll(emptyStorage, allStorage);
+            controller.transferAll(largeStorage, smallStorage);
 
         } catch (Exception e)
         {
