@@ -25,7 +25,6 @@ public class Controller {
         return null;
     }
 
-
     public void delete (Storage storage, File file) throws Exception
     {
         nullAbsentCheck(storage, file);
@@ -50,6 +49,14 @@ public class Controller {
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
+        if (storageFrom == null || storageFrom.getFiles() == null
+                || storageTo == null || storageTo.getFiles() == null
+                || storageFrom.getId() == storageTo.getId())
+            throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
+                    + "Destination storage:" + storageTo.getId() +  "   file: " + id);
+        File fileToTransfer = getFileById(storageFrom, id);
+        put(storageTo, fileToTransfer);
+        delete(storageFrom, fileToTransfer);
     }
 
     private boolean nullAbsentCheck (Storage storage, File file) throws Exception
@@ -107,6 +114,14 @@ public class Controller {
         throw new Exception("There is no empty place in the storage: " + storage.getId() + "    file: " + file.getId());
     }
 
+    private File getFileById (Storage storage, long id) throws Exception
+    {
+        for (File f : storage.getFiles())
+            if (f.getId() == id)
+                return f;
+
+        throw new Exception("There is file in the storage: " + storage.getId() + "    file: " + id);
+    }
 }
 
 
