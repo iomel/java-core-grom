@@ -166,13 +166,13 @@ public class Demo {
             smallStorage.printStorage();
             allStorage.printStorage();
             controller.transferAll(smallStorage, allStorage);
-            smallStorage.printStorage();
-            allStorage.printStorage();
-
         } catch (Exception e)
         {
-            System.out.println(e.getMessage());
+            System.out.println("  999   " + e.getMessage());
         }
+        smallStorage.printStorage();
+        allStorage.printStorage();
+
         // transferAll TEST2 smallStor to allStor
         try {
             System.out.println("transferAll TEST2 smallStor2 to allStor");

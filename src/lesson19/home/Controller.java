@@ -109,7 +109,7 @@ public class Controller {
 
         for (File f : storageTo.getFiles())
             if(f != null && !f.isEmpty())
-                fromFilesSize += f.getSize();
+                toFilesSize += f.getSize();
         if (storageTo.getStorageSize() - toFilesSize < fromFilesSize)
             throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
                     + " Destination storage:" + storageTo.getId());
@@ -125,7 +125,7 @@ public class Controller {
 
         for (File f : storageTo.getFiles())
             if (f == null || f.isEmpty())
-                usedPlaces++;
+                emptyPlaces++;
 
         if (usedPlaces > emptyPlaces || emptyPlaces == 0)
             throw new Exception("Transfer stopped - Not enough places. Source storage:" + storageFrom.getId()
@@ -133,9 +133,11 @@ public class Controller {
     }
 
     private void idDuplicate (Storage storageFrom, Storage storageTo) throws Exception {
-        for (File sourceFile : storageFrom.getFiles())
-            if(hasFile(storageTo, sourceFile))
-                throw new Exception("Duplicate files. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
+        for (File sourceFile : storageFrom.getFiles()) {
+            if (sourceFile != null && !sourceFile.isEmpty())
+                if (hasFile(storageTo, sourceFile))
+                    throw new Exception("Duplicate files. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
+        }
     }
 
     private boolean formatsAllowed(Storage storage, File file) throws Exception
