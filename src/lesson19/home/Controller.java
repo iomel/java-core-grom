@@ -52,8 +52,12 @@ public class Controller {
                     + "Destination storage:" + storageTo.getId());
 
         for (File fileToTransfer : storageFrom.getFiles()) {
-            put(storageTo, fileToTransfer);
-            delete(storageFrom, fileToTransfer);
+            try {
+                put(storageTo, fileToTransfer);
+                delete(storageFrom, fileToTransfer);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
     }
@@ -66,6 +70,7 @@ public class Controller {
             throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
                     + "Destination storage:" + storageTo.getId() +  "   file: " + id);
         File fileToTransfer = getFileById(storageFrom, id);
+
         put(storageTo, fileToTransfer);
         delete(storageFrom, fileToTransfer);
     }
