@@ -100,6 +100,7 @@ public class Controller {
         for (File f : storageTo.getFiles())
             if(f != null && !f.isEmpty())
                 toFilesSize += f.getSize();
+
         if (storageTo.getStorageSize() - toFilesSize < fromFilesSize)
             throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
                     + " Destination storage:" + storageTo.getId());
@@ -110,14 +111,14 @@ public class Controller {
         int emptyPlaces = 0;
 
         for (File f : storageFrom.getFiles())
-            if (f == null || f.isEmpty())
+            if (f != null && !f.isEmpty())
                 usedPlaces++;
 
         for (File f : storageTo.getFiles())
-            if (f == null || f.isEmpty())
+            if (f != null && !f.isEmpty())
                 emptyPlaces++;
 
-        if (usedPlaces > emptyPlaces || emptyPlaces == 0)
+        if (usedPlaces > emptyPlaces)
             throw new Exception("Transfer stopped - Not enough places. Source storage:" + storageFrom.getId()
                     + " Destination storage:" + storageTo.getId());
     }
