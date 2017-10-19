@@ -1,8 +1,6 @@
 package lesson19.home;
 
 
-import java.awt.*;
-
 public class Controller {
 
     public File put(Storage storage, File file) throws Exception
@@ -48,17 +46,12 @@ public class Controller {
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
     {
         nullCheckStorages(storageFrom, storageTo);
-
-        if (usedPlaces(storageFrom) > emptyPlaces(storageTo) || emptyPlaces(storageTo) == 0)
-            throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
-                    + "Destination storage:" + storageTo.getId());
-
+        hasPlacesStorage(storageFrom,storageTo);
+        hasSpaceForTransfer(storageFrom,storageTo);
         includeFormats(storageFrom, storageTo);
         idDuplicate(storageFrom, storageTo);
 
         for (File fileToTransfer : storageFrom.getFiles()) {
-            if (fileToTransfer == null || fileToTransfer.isEmpty())
-                continue;
             put(storageTo, fileToTransfer);
             delete(storageFrom, fileToTransfer);
         }
@@ -108,7 +101,24 @@ public class Controller {
     }
 
     private void hasSpaceForTransfer(Storage storageFrom, Storage storageTo) throws Exception {
+        long fromFilesSize = 0;
+        long toFilesSize = 0;
+        for (File f : storageFrom.getFiles())
+            if(f != null && !f.isEmpty())
+                fromFilesSize += f.getSize();
 
+        for (File f : storageTo.getFiles())
+            if(f != null && !f.isEmpty())
+                fromFilesSize += f.getSize();
+        if (storageTo.getStorageSize() - toFilesSize < fromFilesSize)
+            throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
+                    + "Destination storage:" + storageTo.getId());
+    }
+
+    public void hasPlacesStorage(Storage storageFrom, Storage storageTo) throws Exception {
+        if (usedPlaces(storageFrom) > emptyPlaces(storageTo) || emptyPlaces(storageTo) == 0)
+            throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
+                    + "Destination storage:" + storageTo.getId());
     }
 
     private void idDuplicate (Storage storageFrom, Storage storageTo) throws Exception {
