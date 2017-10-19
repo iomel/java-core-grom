@@ -56,6 +56,8 @@ public class Controller {
                     + "Destination storage:" + storageTo.getId());
 
         for (File fileToTransfer : storageFrom.getFiles()) {
+            if (fileToTransfer == null || fileToTransfer.isEmpty())
+                continue;
             put(storageTo, fileToTransfer);
             delete(storageFrom, fileToTransfer);
         }
