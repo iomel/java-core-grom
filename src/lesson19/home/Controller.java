@@ -14,14 +14,13 @@ public class Controller {
 
         File[] files = storage.getFiles();
         for (int i = 0; i < files.length; i++)
-            if (files[i] != null)
+            if (files[i] != null && !files[i].isEmpty())
                 continue;
             else {
                 files[i] = file;
                 storage.setFiles(files);
                 return file;
             }
-
         return null;
     }
 
