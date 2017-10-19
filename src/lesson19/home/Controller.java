@@ -58,7 +58,7 @@ public class Controller {
         for (File fileToTransfer : storageFrom.getFiles()) {
             put(storageTo, fileToTransfer);
             delete(storageFrom, fileToTransfer);
-            }
+        }
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
