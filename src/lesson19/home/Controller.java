@@ -51,11 +51,10 @@ public class Controller {
             throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
                     + "Destination storage:" + storageTo.getId());
 
-                for (File fileToTransfer : storageFrom.getFiles())
-                {
-                    put(storageTo, fileToTransfer);
-                    delete(storageFrom, fileToTransfer);
-                }
+        for (File fileToTransfer : storageFrom.getFiles()) {
+            put(storageTo, fileToTransfer);
+            delete(storageFrom, fileToTransfer);
+        }
 
     }
 
