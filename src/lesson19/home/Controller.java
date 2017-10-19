@@ -78,15 +78,9 @@ public class Controller {
 
 
     private void includeFormats (Storage storageFrom, Storage storageTo)throws Exception{
-        int count = 0;
-        for (String formatSource : storageFrom.getFormatsSupported() )
-            for (String formatDest : storageTo.getFormatsSupported())
-                if (formatSource.equals(formatDest)) {
-                    count++;
-                    break;
-                }
-        if (count != storageFrom.getFormatsSupported().length)
-            throw new Exception("Formats mismatch. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
+        for (File sourceFile : storageFrom.getFiles())
+            if (!formatsAllowed(storageTo, sourceFile))
+                throw new Exception("Formats mismatch. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
 
     }
 

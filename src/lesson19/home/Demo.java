@@ -31,7 +31,7 @@ public class Demo {
         Controller controller = new Controller();
 
         // TEST storages
-        Storage smallStorage = new Storage(1298, smallFiles, smallFormats, "UA", 200);
+        Storage smallStorage = new Storage(1298, smallFiles, smallFormats, "UA", 2000);
         Storage smallStorage2 = new Storage(1498, smallFiles2, allFormats, "UA", 200);
         Storage largeStorage = new Storage(1238, largeFiles,largeFormats, "UA", 700);
         Storage allStorage = new Storage(9298, largeFiles,allFormats, "UA", 7000);
