@@ -138,11 +138,12 @@ public class Controller {
                 throw new Exception("Duplicate files. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
     }
 
-    private void formatsAllowed(Storage storage, File file) throws Exception
+    private boolean formatsAllowed(Storage storage, File file) throws Exception
     {
         for (String format : storage.getFormatsSupported())
-            if(!format.equals(file.getFormat()))
-                throw new Exception("File format is not allowed in the storage: " + storage.getId() + "    file: " + file.getId());
+            if(format.equals(file.getFormat()))
+                return true;
+        throw new Exception("File format is not allowed in the storage: " + storage.getId() + "    file: " + file.getId());
     }
 
     private boolean isEnoughSpace(Storage storage, File file) throws Exception
