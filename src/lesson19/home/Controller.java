@@ -58,7 +58,13 @@ public class Controller {
         for (File fileToTransfer : storageFrom.getFiles()) {
             if (fileToTransfer == null || fileToTransfer.isEmpty())
                 continue;
-            put(storageTo, fileToTransfer);
+            try {
+                put(storageTo, fileToTransfer);
+            } catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+                continue;
+            }
             delete(storageFrom, fileToTransfer);
         }
     }
