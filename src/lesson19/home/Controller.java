@@ -8,8 +8,8 @@ public class Controller {
         nullAbsentCheck(storage, file);
         isEnoughSpace(storage, file);
         formatsAllowed(storage, file);
-        if (!hasPlace(storage))
-            throw new Exception("There is no empty place in the storage: " + storage.getId() + "    file: " + file.getId());
+        hasPlace(storage, file);
+
         if(hasFile(storage, file))
             throw new Exception("There is such file in the storage: " + storage.getId() + "    file: " + file.getId());
 
@@ -94,14 +94,17 @@ public class Controller {
         return false;
     }
 
-    private boolean hasPlace (Storage storage) throws Exception
+    private boolean hasPlace (Storage storage, File file) throws Exception
     {
         int count = 0;
         for (File f : storage.getFiles())
             if (f == null || f.isEmpty())
                 count++;
 
-        return count > 0 ? true : false;
+        if (count > 0)
+            return true;
+
+        throw new Exception("There is no empty place in the storage: " + storage.getId() + "    file: " + file.getId());
     }
 
 }
