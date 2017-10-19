@@ -79,7 +79,8 @@ public class Controller {
 
     private void includeFormats (Storage storageFrom, Storage storageTo)throws Exception{
         for (File sourceFile : storageFrom.getFiles())
-            formatsAllowed(storageTo, sourceFile);
+            if (sourceFile != null && !sourceFile.isEmpty())
+                formatsAllowed(storageTo, sourceFile);
     }
 
     private void hasSpaceForTransfer(Storage storageFrom, Storage storageTo) throws Exception {

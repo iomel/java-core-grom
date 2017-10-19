@@ -196,15 +196,6 @@ public class Demo {
             System.out.println(e.getMessage());
         }
 
-        // transferFile TEST1 file6 to allStor
-        try {
-            controller.transferFile(largeStorage, allStorage, 9134);
-            allStorage.printStorage();
-
-        } catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
 
     }
 }
