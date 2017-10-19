@@ -45,6 +45,23 @@ public class Controller {
 
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
     {
+        if (storageFrom == null || storageFrom.getFiles() == null
+                || storageTo == null || storageTo.getFiles() == null
+                || storageFrom.getId() == storageTo.getId())
+            throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
+                    + "Destination storage:" + storageTo.getId());
+
+                for (File fileToTransfer : storageFrom.getFiles())
+                {
+                    try {
+                        put(storageTo, fileToTransfer);
+                        delete(storageFrom, fileToTransfer);
+                    } catch (Exception e)
+                    {
+                        System.out.println(e.getMessage());
+                    }
+                }
+
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
