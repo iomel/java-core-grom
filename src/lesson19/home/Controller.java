@@ -79,9 +79,7 @@ public class Controller {
 
     private void includeFormats (Storage storageFrom, Storage storageTo)throws Exception{
         for (File sourceFile : storageFrom.getFiles())
-            if (!formatsAllowed(storageTo, sourceFile))
-                throw new Exception("Formats mismatch. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
-
+            formatsAllowed(storageTo, sourceFile);
     }
 
     private void hasSpaceForTransfer(Storage storageFrom, Storage storageTo) throws Exception {
