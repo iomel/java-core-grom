@@ -1,6 +1,8 @@
 package lesson19.home;
 
 
+import java.awt.*;
+
 public class Controller {
 
     public File put(Storage storage, File file) throws Exception
@@ -45,44 +47,43 @@ public class Controller {
 
     public void transferAll (Storage storageFrom, Storage storageTo) throws Exception
     {
-        if (storageFrom == null || storageFrom.getFiles() == null
-                || storageTo == null || storageTo.getFiles() == null
-                || storageFrom.getId() == storageTo.getId())
-            throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
-                    + "Destination storage:" + storageTo.getId());
+        nullCheckStorages(storageFrom, storageTo);
 
         if (usedPlaces(storageFrom) > emptyPlaces(storageTo) || emptyPlaces(storageTo) == 0)
             throw new Exception("Transfer stopped - Not enough space. Source storage:" + storageFrom.getId()
                     + "Destination storage:" + storageTo.getId());
 
+        includeFormats(storageFrom, storageTo);
+        idDuplicate(storageFrom, storageTo);
+
         for (File fileToTransfer : storageFrom.getFiles()) {
             if (fileToTransfer == null || fileToTransfer.isEmpty())
                 continue;
-            try {
-                put(storageTo, fileToTransfer);
-            } catch (Exception e)
-            {
-                System.out.println(e.getMessage());
-                continue;
-            }
+            put(storageTo, fileToTransfer);
             delete(storageFrom, fileToTransfer);
         }
     }
 
     public void transferFile (Storage storageFrom, Storage storageTo, long id) throws Exception
     {
-        if (storageFrom == null || storageFrom.getFiles() == null
-                || storageTo == null || storageTo.getFiles() == null
-                || storageFrom.getId() == storageTo.getId())
-            throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
-                    + "Destination storage:" + storageTo.getId() +  "   file: " + id);
+        nullCheckStorages(storageFrom, storageTo);
 
         File fileToTransfer = getFileById(storageFrom, id);
         put(storageTo, fileToTransfer);
         delete(storageFrom, fileToTransfer);
     }
 
-    private boolean nullAbsentCheck (Storage storage, File file) throws Exception
+    private void nullCheckStorages (Storage storageFrom, Storage storageTo) throws Exception {
+        if (storageFrom == null || storageFrom.getFiles() == null
+                || storageTo == null || storageTo.getFiles() == null
+                || storageFrom.getId() == storageTo.getId()
+                || storageFrom.getFormatsSupported() == null
+                || storageTo.getFormatsSupported() == null )
+            throw new Exception("Transfer stopped - some data is NULL. Source storage:" + storageFrom.getId()
+                    + "Destination storage:" + storageTo.getId());
+    }
+
+    private void nullAbsentCheck (Storage storage, File file) throws Exception
     {
         if (storage == null
                 || storage.getFiles() == null
@@ -91,7 +92,30 @@ public class Controller {
                 || file.isEmpty()
                 || file.getFormat() == null)
             throw new Exception("Put operation break - some data is NULL. Storage id:" + storage.getId() + "    file: " + file.getId());
-        return true;
+    }
+
+    private void includeFormats (Storage storageFrom, Storage storageTo)throws Exception{
+        int count = 0;
+        for (String formatSource : storageFrom.getFormatsSupported() )
+            for (String formatDest : storageTo.getFormatsSupported())
+                if (formatSource.equals(formatDest)) {
+                    count++;
+                    break;
+                }
+        if (count != storageFrom.getFormatsSupported().length)
+            throw new Exception("Formats mismatch. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
+
+    }
+
+    private void hasSpaceForTransfer(Storage storageFrom, Storage storageTo) throws Exception {
+
+    }
+
+    private void idDuplicate (Storage storageFrom, Storage storageTo) throws Exception {
+        for (File sourceFile : storageFrom.getFiles())
+            for (File destinationFile : storageTo.getFiles())
+                if (sourceFile.getId() == destinationFile.getId())
+                    throw new Exception("Duplicate files. Storage1 id:" + storageFrom.getId() + "    Storage2 id: " + storageTo.getId());
     }
 
     private boolean formatsAllowed(Storage storage, File file) throws Exception
