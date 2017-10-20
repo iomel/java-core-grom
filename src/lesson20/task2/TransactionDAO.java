@@ -99,7 +99,7 @@ public class TransactionDAO {
         if (!allowedCity)
             throw new LimitExceeded("Transaction from this city is not allowed " + transaction.getId() + ". Can't be saved" );
 
-        // check Space
+/*        // check Space
         int  emptyPlaces = 0;
         for (Transaction tr : transactions)
             if (tr == null)
