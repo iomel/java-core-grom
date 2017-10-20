@@ -72,6 +72,9 @@ public class TransactionDAO {
     }
 
     private void validate (Transaction transaction) throws Exception {
+        if (transaction == null)
+            throw new BadRequestException("Transaction is NULL. Can't be saved");
+
         if (transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
             throw new LimitExceeded("Transaction limit exceeded " + transaction.getId() + ". Can't be saved" );
 

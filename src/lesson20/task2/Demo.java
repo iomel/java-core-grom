@@ -19,7 +19,7 @@ public class Demo {
         // TEST 1
         System.out.println("TEST 1 add correct");
         try {
-            controller.save(tr1);
+            controller.save(null);
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
