@@ -35,7 +35,7 @@ public class Transaction {
         if (city != null ? !city.equals(that.city) : that.city != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (type != that.type) return false;
-        return dateCreated != null ? dateCreated.equals(that.dateCreated) : that.dateCreated == null;
+        return true;
     }
 
     @Override
@@ -45,8 +45,20 @@ public class Transaction {
         result = 31 * result + amount;
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (dateCreated != null ? dateCreated.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+
+        return "Transaction{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                ", dateCreated=" + dateCreated +
+                '}';
     }
 
     public String getCity() {

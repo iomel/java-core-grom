@@ -94,7 +94,7 @@ public class TransactionDAO {
             count++;
         }
 
-        if (sum + transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
+        if (sum > utils.getLimitTransactionPerDayAmount())
             throw new LimitExceeded("Transaction amount per day limit exceeded " + transaction.getId() + ". Can't be saved" );
 
         if (count > utils.getLimitTransactionPerDayCount())
@@ -106,7 +106,7 @@ public class TransactionDAO {
             if (city.equals(transaction.getCity()))
                 allowedCity = true;
         if (!allowedCity)
-            throw new LimitExceeded("Transaction from the city is not allowed " + transaction.getId() + ". Can't be saved" );
+            throw new LimitExceeded("Transaction from this city is not allowed " + transaction.getId() + ". Can't be saved" );
 
         // check Space
         int  emptyPlaces = 0;
@@ -157,5 +157,13 @@ public class TransactionDAO {
         return result;
     }
 
+    public void printTransactions () {
+        for (Transaction tr : transactions)
+            if (tr == null)
+                System.out.print(" - EMPTY - ");
+            else
+                System.out.print("\n" + tr.toString());
+        System.out.println();
+    }
 
 }

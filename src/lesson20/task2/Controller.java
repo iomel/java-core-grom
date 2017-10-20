@@ -25,6 +25,10 @@ public class Controller {
         return transactionDAO.transactionList(amount);
     }
 
+    public void printTransactions ()
+    {
+        transactionDAO.printTransactions();
+    }
 
 
 }
