@@ -25,15 +25,12 @@ public class TransactionDAO {
         throw new InternalServerException("Unexpected error!  Transaction: " + transaction.getId());
     }
 
-    public Transaction[] transactionList() throws InternalServerException
+    public Transaction[] transactionList()
     {
         int count = 0;
         for (Transaction tr : transactions)
             if (tr != null)
                 count++;
-
-        if (count == 0)
-            throw new InternalServerException("There are no any transactions for this user");
 
         Transaction[] result = new Transaction[count];
         int index = 0;
@@ -118,6 +115,12 @@ public class TransactionDAO {
                 emptyPlaces++;
         if (emptyPlaces == 0)
             throw new InternalServerException("Not enough space to save transaction " + transaction.getId() + ". Can't be saved" );
+
+        // check transactions duplicate
+        for (Transaction tr : transactions)
+            if (tr != null && tr.equals(transaction))
+                throw new InternalServerException("Duplicated transaction " + transaction.getId() + ". Can't be saved" );
+
 
     }
 
