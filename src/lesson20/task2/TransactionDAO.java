@@ -82,7 +82,7 @@ public class TransactionDAO {
             count++;
         }
 
-        if (sum >= utils.getLimitTransactionPerDayAmount())
+        if (sum > utils.getLimitTransactionPerDayAmount())
             throw new LimitExceeded("Transaction amount per day limit exceeded " + transaction.getId() + ". Can't be saved" );
 
         if (count >= utils.getLimitTransactionPerDayCount())
@@ -103,12 +103,12 @@ public class TransactionDAO {
                 emptyPlaces++;
         if (emptyPlaces == 0)
             throw new InternalServerException("Not enough space to save transaction " + transaction.getId() + ". Can't be saved" );
-
+/*
         // check transactions duplicate
         for (Transaction tr : transactions)
             if (tr != null && tr.equals(transaction))
                 throw new InternalServerException("Duplicated transaction " + transaction.getId() + ". Can't be saved" );
-
+*/
 
     }
 
