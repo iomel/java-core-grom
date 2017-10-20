@@ -20,7 +20,7 @@ public class TransactionDAO {
             if (transactions[i] == null){
                 transactions[i] = transaction;
                 return transactions[i];
-        }
+            }
 
         throw new InternalServerException("Unexpected error!  Transaction: " + transaction.getId());
     }
@@ -88,16 +88,16 @@ public class TransactionDAO {
             throw new LimitExceeded("Transaction limit exceeded " + transaction.getId() + ". Can't be saved" );
 
         int sum = 0;
-//        int count = 0;
+        int count = 0;
         for (Transaction tr : getTransactionsPerDay(transaction.getDateCreated())){
             sum += tr.getAmount();
-//            count++;
+            count++;
         }
 
-        if (sum + transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
+        if (sum > utils.getLimitSimpleTransactionAmount())
             throw new LimitExceeded("Transaction amount per day limit exceeded " + transaction.getId() + ". Can't be saved" );
 
-        if (getTransactionsPerDay(transaction.getDateCreated()).length > utils.getLimitTransactionPerDayCount())
+        if (count > utils.getLimitTransactionPerDayCount())
             throw new LimitExceeded("Transaction count per day limit exceeded " + transaction.getId() + ". Can't be saved" );
 
         // check City payment
