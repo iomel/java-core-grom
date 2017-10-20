@@ -25,12 +25,15 @@ public class TransactionDAO {
         throw new InternalServerException("Unexpected error!  Transaction: " + transaction.getId());
     }
 
-    public Transaction[] transactionList()
+    public Transaction[] transactionList() throws InternalServerException
     {
         int count = 0;
         for (Transaction tr : transactions)
             if (tr != null)
                 count++;
+
+        if (count == 0)
+            throw new InternalServerException("There are no any transactions for this user");
 
         Transaction[] result = new Transaction[count];
         int index = 0;
