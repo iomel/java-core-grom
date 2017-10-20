@@ -58,7 +58,7 @@ public class Transaction {
                 ", description='" + description + '\'' +
                 ", type=" + type +
                 ", dateCreated=" + dateCreated +
-                '}';
+                "}\n";
     }
 
     public String getCity() {

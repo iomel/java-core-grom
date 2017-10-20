@@ -1,5 +1,8 @@
 package lesson20.task2;
 
+import lesson20.task2.exception.BadRequestException;
+
+import java.util.Arrays;
 import java.util.Date;
 
 public class Demo {
@@ -59,9 +62,9 @@ public class Demo {
         // TEST 5
         System.out.println("\n\nTEST 5 amount not enough");
 
-        for (int i = 0; i < 12 ; i++)
+        for (int i = 0; i < 4 ; i++)
         try {
-            controller.save(new Transaction(1235 + i*3, "Kiev", 15 , "for coffe", TransactionType.INCOME, new Date()));
+            controller.save(new Transaction(1235 + i*3, "Kiev", 29 , "for coffe", TransactionType.INCOME, new Date()));
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
@@ -73,7 +76,7 @@ public class Demo {
 
         for (int i = 0; i < 12 ; i++)
             try {
-                controller.save(new Transaction(1225 + i*4, "Kiev", 1 , "for coffe", TransactionType.INCOME, new Date()));
+                controller.save(new Transaction(1225 + i*4, "Odessa", 1 , "for coffe", TransactionType.INCOME, new Date()));
             } catch (Exception e)
             {
                 System.out.println(e.getMessage());
@@ -84,12 +87,21 @@ public class Demo {
         System.out.println("\n\nTEST 7 count limit");
 
             try {
-                controller.save(new Transaction(9225 , "Kiev", 1 , "for coffe", TransactionType.INCOME, new Date()));
+                controller.save(new Transaction(9225 , "Odessa", 1 , "for coffe", TransactionType.INCOME, new Date()));
             } catch (Exception e)
             {
                 System.out.println(e.getMessage());
             }
         controller.printTransactions();
+
+        System.out.println("\n\nTEST 7 city filter");
+
+        try {
+            System.out.println(Arrays.toString(controller.transactionList("Lviv")));
+        } catch (BadRequestException e)
+        {
+            System.out.println(e.getMessage());
+        }
 
     }
 }

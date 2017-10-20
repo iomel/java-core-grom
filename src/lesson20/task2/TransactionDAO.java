@@ -44,19 +44,18 @@ public class TransactionDAO {
         if (city == null)
             throw new BadRequestException("Wrong [NULL] city in transactions filter!");
 
-        boolean allowedCity = false;
+/*        boolean allowedCity = false;
         for (String c : utils.getCities())
             if (c.equals(city))
                 allowedCity = true;
         if (!allowedCity)
             throw new BadRequestException("No such city in allowed list!");
-
+*/
         int count = 0;
         for (Transaction tr : transactions)
             if (tr != null && tr.getCity().equals(city))
                 count++;
 
-        // Don't care about case where count == 0!
         Transaction[] result = new Transaction[count];
         int index = 0;
         for (Transaction tr : transactions)
@@ -66,21 +65,17 @@ public class TransactionDAO {
     }
 
     public Transaction[] transactionList(int amount) {
-
         int count = 0;
         for (Transaction tr : transactions)
             if (tr != null && tr.getAmount() == amount)
                 count++;
 
-        // Don't care about case where count == 0!
         Transaction[] result = new Transaction[count];
         int index = 0;
         for (Transaction tr : transactions)
             if (tr != null && tr.getAmount() == amount)
                 result[index++] = tr;
-
         return result;
-
     }
 
     private void validate (Transaction transaction) throws Exception {
