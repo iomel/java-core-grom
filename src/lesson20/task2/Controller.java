@@ -1,5 +1,7 @@
 package lesson20.task2;
 
+import lesson20.task2.exception.BadRequestException;
+
 public class Controller {
     private TransactionDAO transactionDAO = new TransactionDAO();
 
@@ -13,7 +15,7 @@ public class Controller {
         return transactionDAO.transactionList();
     }
 
-    public Transaction[] transactionList(String city)
+    public Transaction[] transactionList(String city) throws BadRequestException
     {
         return transactionDAO.transactionList(city);
     }
