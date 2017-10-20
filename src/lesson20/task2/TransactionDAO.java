@@ -27,7 +27,17 @@ public class TransactionDAO {
 
     public Transaction[] transactionList()
     {
-        return transactions;
+        int count = 0;
+        for (Transaction tr : transactions)
+            if (tr != null)
+                count++;
+
+        Transaction[] result = new Transaction[count];
+        int index = 0;
+        for (Transaction tr : transactions)
+            if (tr != null)
+                result[index++] = tr;
+        return result;
     }
 
     public Transaction[] transactionList(String city) throws BadRequestException  {
