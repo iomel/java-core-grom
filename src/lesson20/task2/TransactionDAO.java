@@ -44,13 +44,6 @@ public class TransactionDAO {
         if (city == null)
             throw new BadRequestException("Wrong [NULL] city in transactions filter!");
 
-/*        boolean allowedCity = false;
-        for (String c : utils.getCities())
-            if (c.equals(city))
-                allowedCity = true;
-        if (!allowedCity)
-            throw new BadRequestException("No such city in allowed list!");
-*/
         int count = 0;
         for (Transaction tr : transactions)
             if (tr != null && tr.getCity().equals(city))
@@ -89,7 +82,7 @@ public class TransactionDAO {
             count++;
         }
 
-        if (sum > utils.getLimitTransactionPerDayAmount())
+        if (sum + transaction.getAmount() > utils.getLimitTransactionPerDayAmount())
             throw new LimitExceeded("Transaction amount per day limit exceeded " + transaction.getId() + ". Can't be saved" );
 
         if (count > utils.getLimitTransactionPerDayCount())
