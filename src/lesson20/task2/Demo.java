@@ -27,7 +27,7 @@ public class Demo {
         controller.printTransactions();
 
         // TEST 2
-        System.out.println("\n\nTEST 2 add duplicated");
+        System.out.println("\n\nTEST 2 add nurmal");
 
         try {
             controller.save(tr1);
@@ -60,19 +60,19 @@ public class Demo {
         controller.printTransactions();
 
         // TEST 5
-        System.out.println("\n\nTEST 5 amount not enough");
+/*        System.out.println("\n\nTEST 5 amount per day limit");
 
-        for (int i = 0; i < 4 ; i++)
+        for (int i = 0; i < 10 ; i++)
         try {
-            controller.save(new Transaction(1235 + i*3, "Kiev", 29 , "for coffe", TransactionType.INCOME, new Date()));
+            controller.save(new Transaction(1235 + i*3, "Kiev", 33 , "for coffe", TransactionType.INCOME, new Date()));
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
         controller.printTransactions();
-
+*/
         // TEST 6
-        System.out.println("\n\nTEST 6 places not enough");
+        System.out.println("\n\nTEST 6 count per day limit");
 
         for (int i = 0; i < 12 ; i++)
             try {
@@ -94,11 +94,20 @@ public class Demo {
             }
         controller.printTransactions();
 
-        System.out.println("\n\nTEST 7 city filter");
+        System.out.println("\n\nTEST 8 city filter");
 
         try {
             System.out.println(Arrays.toString(controller.transactionList("Lviv")));
-        } catch (BadRequestException e)
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("\n\nTEST 9 city filter");
+
+        try {
+            System.out.println(Arrays.toString(controller.transactionList("Kiev")));
+        } catch (Exception e)
         {
             System.out.println(e.getMessage());
         }

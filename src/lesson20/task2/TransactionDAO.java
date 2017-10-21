@@ -40,9 +40,9 @@ public class TransactionDAO {
         return result;
     }
 
-    public Transaction[] transactionList(String city) throws BadRequestException  {
+    public Transaction[] transactionList(String city) throws Exception  {
         if (city == null)
-            throw new BadRequestException("Wrong [NULL] city in transactions filter!");
+            throw new InternalServerException("Wrong [NULL] city in transactions filter!");
 
         int count = 0;
         for (Transaction tr : transactions)
@@ -72,6 +72,8 @@ public class TransactionDAO {
     }
 
     private void validate (Transaction transaction) throws Exception {
+        if (transaction == null)
+            throw new InternalServerException("Transaction is NULL. Can't be saved" );
 
         if (transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
             throw new LimitExceeded("Transaction limit exceeded " + transaction.getId() + ". Can't be saved" );
@@ -92,7 +94,7 @@ public class TransactionDAO {
             if (city.equals(transaction.getCity()))
                 allowedCity = true;
         if (!allowedCity)
-            throw new LimitExceeded("Transaction from this city is not allowed " + transaction.getId() + ". Can't be saved" );
+            throw new BadRequestException("Transaction from this city is not allowed " + transaction.getId() + ". Can't be saved" );
 
         // check Space
         int  emptyPlaces = 0;
@@ -101,13 +103,6 @@ public class TransactionDAO {
                 emptyPlaces++;
         if (emptyPlaces == 0)
             throw new InternalServerException("Not enough space to save transaction " + transaction.getId() + ". Can't be saved" );
-/*
-        // check transactions duplicate
-        for (Transaction tr : transactions)
-            if (tr != null && tr.equals(transaction))
-                throw new InternalServerException("Duplicated transaction " + transaction.getId() + ". Can't be saved" );
-*/
-
     }
 
     private Transaction[] getTransactionsPerDay(Date dateOfCurTransaction)
@@ -139,7 +134,6 @@ public class TransactionDAO {
                 if (trMonth == month && trDay == day)
                     result[index++] = transaction;
             }
-
         return result;
     }
 
