@@ -3,19 +3,8 @@ package lesson5;
 import java.util.Arrays;
 
 public class UnicCount {
-    public static void main(String[] args) {
 
-        int[] array = {11, 12, 10, 5, 4, 44, 44, 11, 10, 11};
-        System.out.println(Arrays.toString(array));
-        System.out.println(uniqueCount(array));
-        System.out.println(uniqueCount(null));
-
-        int[] array1 = new int[3];
-        System.out.println(uniqueCount(array1));
-
-    }
-
-    public static int uniqueCount(int[] array)
+    public int uniqueCount(int[] array)
     {
         if (array.length == 1)
             return 1;

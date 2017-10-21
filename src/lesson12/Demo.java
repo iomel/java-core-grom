@@ -1,6 +1,6 @@
 package lesson12;
 
-public class Main {
+public class Demo {
     public static void main(String[] args) {
         Bank euBank = new EUBank(1231, "Ukraine", Currency.EUR, 1400, 120, 121, 100099990);
         Bank usBank = new USBank(1239, "Ukraine", Currency.USD, 800, 220, 11, 910099990);
