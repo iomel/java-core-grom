@@ -72,23 +72,18 @@ public class TransactionDAO {
     }
 
     private void validate (Transaction transaction) throws Exception {
-        if (transaction == null)
-            throw new BadRequestException("Transaction is NULL. Can't be saved");
 
         if (transaction.getAmount() > utils.getLimitSimpleTransactionAmount())
             throw new LimitExceeded("Transaction limit exceeded " + transaction.getId() + ". Can't be saved" );
 
         int sum = 0;
-        int count = 0;
-        for (Transaction tr : getTransactionsPerDay(transaction.getDateCreated())){
+        for (Transaction tr : getTransactionsPerDay(transaction.getDateCreated()))
             sum += tr.getAmount();
-            count++;
-        }
 
-        if (sum > utils.getLimitTransactionPerDayAmount())
+        if (sum >= utils.getLimitTransactionPerDayAmount())
             throw new LimitExceeded("Transaction amount per day limit exceeded " + transaction.getId() + ". Can't be saved" );
 
-        if (count >= utils.getLimitTransactionPerDayCount())
+        if (getTransactionsPerDay(transaction.getDateCreated()).length >= utils.getLimitTransactionPerDayCount())
             throw new LimitExceeded("Transaction count per day limit exceeded " + transaction.getId() + ". Can't be saved" );
 
         // check City payment
