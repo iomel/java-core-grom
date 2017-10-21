@@ -1,8 +1,9 @@
 package lesson22.userrepo;
 
-import lesson22.task1.exception.BadRequestException;
-import lesson22.task1.exception.InternalServerException;
-import lesson22.task1.exception.UserNotFoundException;
+
+import lesson22.userrepo.exception.BadRequestException;
+import lesson22.userrepo.exception.InternalServerException;
+import lesson22.userrepo.exception.UserNotFoundException;
 
 public class UserRepository {
     private User[] users = new User[10];
