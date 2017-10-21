@@ -68,7 +68,7 @@ public class UserRepository {
         if ( name == null)
             throw new BadRequestException("Can't get user with null name");
 
-        for(User user : users) {
+        for(User user : users)
             if (user != null && user.getName() == name)
                 return user;
         return null;
