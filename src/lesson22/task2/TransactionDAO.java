@@ -9,9 +9,9 @@ import java.util.Date;
 
 public class TransactionDAO {
 
-    private Transaction[] transactions = new Transaction[10];
+    private static Transaction[] transactions = new Transaction[10];
 
-    public Transaction save (Transaction transaction) throws Exception
+    public static Transaction save (Transaction transaction) throws Exception
     {
         validate(transaction);
 
@@ -20,11 +20,10 @@ public class TransactionDAO {
                 transactions[i] = transaction;
                 return transactions[i];
             }
-
         throw new InternalServerException("Unexpected error!  Transaction: " + transaction.getId());
     }
 
-    public Transaction[] transactionList() {
+    public static Transaction[] transactionList() {
         int count = 0;
         for (Transaction tr : transactions)
             if (tr != null)
@@ -38,38 +37,38 @@ public class TransactionDAO {
         return result;
     }
 
-    public Transaction[] transactionList(String city) throws Exception  {
+    public static Transaction[] transactionList(String city) throws Exception  {
         if (city == null)
             throw new InternalServerException("Wrong [NULL] city in transactions filter!");
 
         int count = 0;
-        for (Transaction tr : transactions)
-            if (tr != null && tr.getCity().equals(city))
+        for (Transaction tr : transactionList())
+            if (tr.getCity().equals(city))
                 count++;
 
         Transaction[] result = new Transaction[count];
         int index = 0;
-        for (Transaction tr : transactions)
-            if (tr != null && tr.getCity().equals(city))
+        for (Transaction tr : transactionList())
+            if (tr.getCity().equals(city))
                 result[index++] = tr;
         return result;
     }
 
-    public Transaction[] transactionList(int amount) {
+    public static Transaction[] transactionList(int amount) {
         int count = 0;
-        for (Transaction tr : transactions)
-            if (tr != null && tr.getAmount() == amount)
+        for (Transaction tr : transactionList())
+            if (tr.getAmount() == amount)
                 count++;
 
         Transaction[] result = new Transaction[count];
         int index = 0;
-        for (Transaction tr : transactions)
-            if (tr != null && tr.getAmount() == amount)
+        for (Transaction tr : transactionList())
+            if (tr.getAmount() == amount)
                 result[index++] = tr;
         return result;
     }
 
-    private void validate (Transaction transaction) throws Exception {
+    private static void validate (Transaction transaction) throws Exception {
         if (transaction == null)
             throw new InternalServerException("Transaction is NULL. Can't be saved" );
 
@@ -103,7 +102,7 @@ public class TransactionDAO {
             throw new InternalServerException("Not enough space to save transaction " + transaction.getId() + ". Can't be saved" );
     }
 
-    private Transaction[] getTransactionsPerDay(Date dateOfCurTransaction)
+    private static Transaction[] getTransactionsPerDay(Date dateOfCurTransaction)
     {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateOfCurTransaction);
@@ -111,8 +110,7 @@ public class TransactionDAO {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         int count = 0;
-        for(Transaction transaction : transactions)
-            if (transaction != null) {
+        for(Transaction transaction : transactionList()) {
                 calendar.setTime(transaction.getDateCreated());
                 int trMonth = calendar.get(Calendar.MONTH);
                 int trDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -123,8 +121,7 @@ public class TransactionDAO {
 
         Transaction[] result = new Transaction[count];
         int index = 0;
-        for(Transaction transaction : transactions)
-            if (transaction != null) {
+        for(Transaction transaction : transactionList()) {
                 calendar.setTime(transaction.getDateCreated());
                 int trMonth = calendar.get(Calendar.MONTH);
                 int trDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -135,7 +132,7 @@ public class TransactionDAO {
         return result;
     }
 
-    public void printTransactions () {
+    public static void printTransactions () {
         for (Transaction tr : transactions)
             if (tr == null)
                 System.out.print(" - EMPTY - ");
