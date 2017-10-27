@@ -22,4 +22,13 @@ public class User {
     public String getSessionId() {
         return sessionId;
     }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 }

@@ -19,6 +19,7 @@ public class HashSetTest {
         Set<Order> set2 = new HashSet<>();
         set.retainAll(set2);
 
+
         set.clear();
         for (int i = 0; i < 5; i++)
             set.add(new Order(i*172L, 212,"USD", "Item " + i, "ID: " + i*12));

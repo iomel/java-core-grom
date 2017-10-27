@@ -1,6 +1,8 @@
 package lesson27.userrepo;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.function.UnaryOperator;
 
 public class UserRepository {
     private ArrayList<User> users;
@@ -109,14 +111,20 @@ public class UserRepository {
         if (findById(user.getId()) == null)
             return null;
 
-
-        for(int i = 0; i < users.size(); i++) {
-            if (users.get(i) != null && users.get(i).getId() == user.getId()) {
-                users.set(i, user);
-                return users.get(i);
+        UnaryOperator<User> uRep = new UnaryOperator<User>() {
+            @Override
+            public User apply(User testUser) {
+                if (testUser == null)
+                    return null;
+                else
+                    return (testUser.getId() == user.getId() ? user : testUser);
             }
-        }
-        return null;
+       };
+
+       users.replaceAll(uRep);
+
+       return user;
+
     }
 
     public void delete(long id)
