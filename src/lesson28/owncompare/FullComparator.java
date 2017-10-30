@@ -9,23 +9,22 @@ public class FullComparator implements Comparator<Capability>{
         if(o1 == o2 && o1 == null)
             return 0;
 
-        if (o1.getChannelName() != null && o2.getChannelName() != null && !o1.getChannelName().equals(o2.getChannelName()))
-            return o1.getChannelName().compareTo(o2.getChannelName());
-        else if ((o1.getChannelName() == null || o2.getChannelName() == null) && o1.getChannelName() != o2.getChannelName())
-            return o1.getChannelName() == null ? 1 : -1;
+        if (itemCheck(o1.getChannelName(), o2.getChannelName()) != 0)
+            return itemCheck(o1.getChannelName(), o2.getChannelName());
 
-        if (o1.getFingerprint() != null && o2.getFingerprint() != null && !o1.getFingerprint().equals(o2.getFingerprint()))
-            return o1.getFingerprint().compareTo(o2.getFingerprint());
-        else if ((o1.getFingerprint() == null || o2.getFingerprint() == null) && o1.getFingerprint() != o2.getFingerprint())
-            return o1.getFingerprint() == null ? 1 : -1;
+        if (itemCheck(o1.getFingerprint(), o2.getFingerprint()) != 0)
+            return itemCheck(o1.getFingerprint(), o2.getFingerprint());
 
-        if (o1.getDateCreated() != null && o2.getDateCreated() != null)
-            return o1.getDateCreated().compareTo(o2.getDateCreated());
-        else if ((o1.getDateCreated() == null || o2.getDateCreated() == null) && o1.getDateCreated() != o2.getDateCreated())
-            return o1.getDateCreated() == null ? 1 : -1;
-
-        return 0;
+        return itemCheck(o2.getDateCreated(), o1.getDateCreated());
     }
 
+    private <T extends Comparable> int itemCheck(T t1, T t2){
+        if (t1 == null)
+            return (t2 == null) ? 0 : -1;
+        if (t2 == null)
+            return 1;
+        return t1.compareTo(t2);
+
+    }
 
 }

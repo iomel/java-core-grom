@@ -20,6 +20,9 @@ public class Demo {
         Capability capability2 = new Capability(900, "test", "rrrr", false, new Date());
         Thread.sleep(1500);
 
+        Capability capability7 = new Capability(901, "test", "rrr", false, new Date());
+        Thread.sleep(1500);
+
         Capability capability3 = new Capability(1005, "test", "rrrr", true, new Date());
 
 
@@ -32,7 +35,7 @@ public class Demo {
         set.add(capability6);
 
 
-        System.out.println(set);
+//        System.out.println(set);
 
         ArrayList<Capability> capabilities = new ArrayList<>();
         capabilities.add(capability1);
@@ -41,12 +44,14 @@ public class Demo {
         capabilities.add(capability4);
         capabilities.add(capability5);
         capabilities.add(capability6);
+        capabilities.add(capability7);
 
-        capabilities.sort(new IsActiveComparator());
-        System.out.println(capabilities);
 
-        capabilities.sort(new DateComparator());
-        System.out.println(capabilities);
+//        capabilities.sort(new IsActiveComparator());
+//        System.out.println(capabilities);
+//
+//        capabilities.sort(new DateComparator());
+//        System.out.println(capabilities);
 
         capabilities.sort(new FullComparator());
         System.out.println(capabilities);
