@@ -1,6 +1,6 @@
 package Tasks;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class Solution {
     public boolean compareIntArrays(int[] first, int[] second) {
