@@ -1,8 +1,5 @@
-package lesson30.home.DAO;
+package lesson30.home;
 
-
-import lesson30.home.Department;
-import lesson30.home.enams.DepartmentType;
 
 import java.util.HashSet;
 import java.util.Set;

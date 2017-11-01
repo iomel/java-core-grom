@@ -1,7 +1,5 @@
 package lesson30.home;
 
-import lesson30.home.enams.Position;
-
 import java.util.Collection;
 import java.util.Date;
 

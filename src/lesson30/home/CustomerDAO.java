@@ -1,6 +1,4 @@
-package lesson30.home.DAO;
-
-import lesson30.home.Customer;
+package lesson30.home;
 
 import java.util.HashSet;
 import java.util.Set;

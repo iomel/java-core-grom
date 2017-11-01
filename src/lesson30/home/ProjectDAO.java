@@ -1,6 +1,4 @@
-package lesson30.home.DAO;
-
-import lesson30.home.Project;
+package lesson30.home;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,8 +17,7 @@ public class ProjectDAO {
     }
 
     public static Project getById (long id) {
-
-
+        //TODO
         return null;
     }
 

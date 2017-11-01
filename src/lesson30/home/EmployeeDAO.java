@@ -1,8 +1,4 @@
-package lesson30.home.DAO;
-
-import lesson30.home.Employee;
-import lesson30.home.enams.DepartmentType;
-import lesson30.home.enams.Position;
+package lesson30.home;
 
 import java.util.Date;
 import java.util.HashSet;

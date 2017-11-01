@@ -1,7 +1,5 @@
 package lesson30.home;
 
-import lesson30.home.enams.DepartmentType;
-
 import java.util.Set;
 
 public class Controller {

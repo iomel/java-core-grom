@@ -1,8 +1,5 @@
 package lesson30.home;
 
-import lesson30.home.enams.DepartmentType;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
