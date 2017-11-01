@@ -16,7 +16,8 @@ public class DepartmentDAO {
     }
 
     public static Department add (Department dep){
-        departments.add(dep);
+        if (dep !=null)
+            departments.add(dep);
         return dep;
     }
 

@@ -1,61 +1,88 @@
 package lesson30.home;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Controller {
 
     //- employeesByProject(Project project) - список сотрудников, работающих над заданным проектом
     public Set<Employee> employeesByProject(Project project){
-        //TODO
-        return null;
+        return EmployeeDAO.getByProject(project);
     }
 
-//- projectsByEMployee(Employee employee) список проектов, в которых участвует заданный сотрудник
+//- projectsByEmployee(Employee employee) список проектов, в которых участвует заданный сотрудник
     public Set<Project> projectsByEmployee(Employee employee) {
-        //TODO
-        return null;
+        return employee.getProjects();
     }
 
 //- employeesByDepartmentWithoutProject() - список сотрудников из заданного отдела, не участвующих ни в одном проекте
     public Set<Employee> employeesByDepartmentWithoutProject(DepartmentType departmentType){
-        //TODO
-        return null;
+        Set<Employee> result = new HashSet<>();
+        for (Employee e : EmployeeDAO.getByDepartment(departmentType))
+            if(e != null && e.getProjects().isEmpty())
+                result.add(e);
+        return result;
     }
 
 //- employeesWithoutProject() - список сотрудников, не участвующих ни в одном проекте
     public Set<Employee> employeesWithoutProject() {
-        //TODO
-        return null;
+        Set<Employee> result = new HashSet<>();
+        for (Employee e : EmployeeDAO.getEmployees())
+            if(e != null && e.getProjects().isEmpty())
+                result.add(e);
+        return result;
     }
 
 //- employeesByTeamLead(Employee lead) - список подчиненных для заданного руководителя (по всем проектам, которыми он руководит)
     public Set<Employee> employeesByTeamLead(Employee lead) {
-        //TODO
-        return null;
+        Set<Employee> result = new HashSet<>();
+        for (Employee e : EmployeeDAO.getByDepartment(lead.getDepartment().getType())) {
+            // If result has include TeamLead in the result - remove the following IF verification!
+            if (e.equals(lead))
+                continue;
+            for (Project leadProject : lead.getProjects())
+                if (e.getProjects().contains(leadProject)) {
+                    result.add(e);
+                    break;
+                }
+        }
+        return result;
     }
 
 //- teamLeadsByEmployee(Employee employee) - список руководителей для заданного сотрудника (по всем проектам, в которых он участвует)
     public Set<Employee> teamLeadsByEmployee(Employee employee) {
-        //TODO
-        return null;
+        Set<Employee> leads = new HashSet<>();
+        for (Employee e : this.employeesByProjectEmployee(employee))
+            if (e.getPosition() == Position.TEAM_LEAD)
+                leads.add(e);
+        return leads;
     }
 
 //- employeesByProjectEmployee(Employee employee) - список сотрудников, участвующих в тех же проектах, что и заданный сотрудник
     public Set<Employee> employeesByProjectEmployee(Employee employee) {
-        //TODO
-        return null;
+        Set<Employee> result = new HashSet<>();
+        for (Project project : employee.getProjects())
+            result.addAll(EmployeeDAO.getByProject(project));
+        result.remove(employee);  // If employee should be in the final list too - remove this string!
+        return result;
     }
 
 //- projectsByCustomer(Customer customer) - список проектов, выполняемых для заданного заказчика
     public Set<Project> projectsByCustomer(Customer customer) {
-        //TODO
-        return null;
+        Set<Project> result = new HashSet<>();
+        for (Project project : ProjectDAO.getProjects())
+            if (project != null && project.getCustomer().equals(customer))
+                result.add(project);
+        return result;
     }
 
 //- employeesByCustomerProjects(Customer customer) - список сотрудников, участвующих в проектах, выполняемых для заданного заказчика
     public Set<Employee> employeesByCustomerProjects(Customer customer) {
-        //TODO
-        return null;
+        Set<Employee> result = new HashSet<>();
+        Set<Project> customerProjects = this.projectsByCustomer(customer);
+        for (Project project : customerProjects)
+            result.addAll(EmployeeDAO.getByProject(project));
+        return result;
     }
 
 }

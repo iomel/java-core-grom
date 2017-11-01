@@ -33,4 +33,9 @@ public class Department {
                 return e;
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Department{" + type + '}';
+    }
 }

@@ -15,7 +15,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "\nCustomer{" +
                 "name='" + name + '\'' +
                 '}';
     }

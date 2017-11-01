@@ -5,12 +5,12 @@ import java.util.Set;
 
 public class CustomerDAO {
 
-    {init();}
     private static Set<Customer> customers = new HashSet<>();
 
-    public static Customer add (Customer c){
-        customers.add(c);
-        return c;
+    public static Customer add (Customer customer){
+        if (customer != null)
+            customers.add(customer);
+        return customer;
     }
 
     public static void remove (Customer c){
@@ -26,17 +26,5 @@ public class CustomerDAO {
 
     public static Set<Customer> getCustomers() {
         return customers;
-    }
-
-    private static void init(){
-        Customer cust1 = new Customer("IBM");
-        Customer cust4 = new Customer("Cisco");
-        Customer cust2 = new Customer("GOOGLE");
-        Customer cust3 = new Customer("Amazon");
-
-        customers.add(cust1);
-        customers.add(cust2);
-        customers.add(cust3);
-        customers.add(cust4);
     }
 }
