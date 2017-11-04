@@ -47,18 +47,7 @@ public class Controller {
 
 //- employeesByTeamLead(Employee lead) - список подчиненных для заданного руководителя (по всем проектам, которыми он руководит)
     public Set<Employee> employeesByTeamLead(Employee lead) {
-        Set<Employee> result = new HashSet<>();
-        for (Employee e : employeeDAO.getByDepartment(lead.getDepartment().getType())) {
-            // If result has include TeamLead in the result - remove the following IF verification!
-            if (e.equals(lead))
-                continue;
-            for (Project leadProject : lead.getProjects())
-                if (e.getProjects().contains(leadProject)) {
-                    result.add(e);
-                    break;
-                }
-        }
-        return result;
+        return  employeesByProjectEmployee(lead);
     }
 
 //- teamLeadsByEmployee(Employee employee) - список руководителей для заданного сотрудника (по всем проектам, в которых он участвует)

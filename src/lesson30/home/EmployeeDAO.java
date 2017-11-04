@@ -5,6 +5,17 @@ import java.util.Set;
 
 public class EmployeeDAO extends GeneralDAO<Employee>{
 
+    private static EmployeeDAO instance;
+
+    private EmployeeDAO() {
+    }
+
+    public static EmployeeDAO getInstance() {
+        if (instance == null)
+            instance = new EmployeeDAO();
+        return instance;
+    }
+
 
     public Set<Employee> getByDepartment(DepartmentType depType){
         Set<Employee> result = new HashSet<>();

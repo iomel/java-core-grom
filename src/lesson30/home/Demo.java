@@ -5,10 +5,10 @@ import java.util.Date;
 public class Demo {
     public static void main(String[] args) {
 
-        DepartmentDAO departmentDAO = new DepartmentDAO();
-        EmployeeDAO employeeDAO = new EmployeeDAO();
-        CustomerDAO customerDAO = new CustomerDAO();
-        ProjectDAO projectDAO = new ProjectDAO();
+        DepartmentDAO departmentDAO = DepartmentDAO.getInstance();
+        EmployeeDAO employeeDAO = EmployeeDAO.getInstance();
+        CustomerDAO customerDAO = CustomerDAO.getInstance();
+        ProjectDAO projectDAO = ProjectDAO.getInstance();
 
         Controller controller = new Controller(employeeDAO, departmentDAO, customerDAO, projectDAO);
 
@@ -49,7 +49,9 @@ public class Demo {
         emp1.addProject(proj1);
         emp1.addProject(proj2);
         emp2.addProject(proj1);
-        emp2.addProject(proj4);
+        emp2.addProject(proj2);
+        emp2.addProject(proj3);
+        emp3.addProject(proj2);
         emp3.addProject(proj4);
 
         //       1st method
@@ -65,10 +67,10 @@ public class Demo {
 //        System.out.println(controller.employeesWithoutProject());
 
 //      5th method
-//        System.out.println(controller.employeesByTeamLead(emp1));
+        System.out.println(controller.employeesByTeamLead(emp1));
 
 //      6th method
-        System.out.println(controller.teamLeadsByEmployee(emp2));
+//        System.out.println(controller.teamLeadsByEmployee(emp2));
 
 //      7th method
         System.out.println(controller.employeesByProjectEmployee(emp2));
