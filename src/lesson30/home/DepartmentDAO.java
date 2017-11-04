@@ -1,40 +1,18 @@
 package lesson30.home;
 
 
-import java.util.HashSet;
-import java.util.Set;
+public class DepartmentDAO extends GeneralDAO<Department> {
 
-public class DepartmentDAO {
-
-    {init();}
-
-    private static Set<Department> departments = new HashSet<>();
-
-
-    public static Set<Department> getDepartments() {
-        return departments;
+    public DepartmentDAO() {
+        for (DepartmentType d : DepartmentType.values())
+            getAll().add(new Department(d));
     }
 
-    public static Department add (Department dep){
-        if (dep !=null)
-            departments.add(dep);
-        return dep;
-    }
-
-    public static void remove (Department dep){
-        departments.remove(dep);
-    }
-
-
-    public static Department getDepartmentByType(DepartmentType type){
-        for (Department dep : departments)
+    public Department getDepartmentByType(DepartmentType type){
+        for (Department dep : getAll())
             if (dep.getType() == type)
                 return dep;
         return null;
     }
 
-    private static void init(){
-        for (DepartmentType d : DepartmentType.values())
-            departments.add(new Department(d));
-    }
 }

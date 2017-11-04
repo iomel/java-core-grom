@@ -4,43 +4,47 @@ import java.util.Date;
 
 public class Demo {
     public static void main(String[] args) {
-        Controller controller = new Controller();
+
+        DepartmentDAO departmentDAO = new DepartmentDAO();
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        CustomerDAO customerDAO = new CustomerDAO();
+        ProjectDAO projectDAO = new ProjectDAO();
+
+        Controller controller = new Controller(employeeDAO, departmentDAO, customerDAO, projectDAO);
 
         Employee emp1 = new Employee(1234, "Vasya", "Pupkin", new Date(), Position.TEAM_LEAD);
         Employee emp2 = new Employee(1235, "Vova", "Chopin", new Date(), Position.DEVELOPER);
         Employee emp3 = new Employee(1236, "Anrdey", "Komin", new Date(), Position.TEAM_LEAD);
-        EmployeeDAO.add(emp1);
-        EmployeeDAO.add(emp2);
-        EmployeeDAO.add(emp3);
+        employeeDAO.add(emp1);
+        employeeDAO.add(emp2);
+        employeeDAO.add(emp3);
 //        System.out.println(EmployeeDAO.getEmployees());
 
-        for (DepartmentType d : DepartmentType.values())
-            DepartmentDAO.getDepartments().add(new Department(d));
 
-        emp1.setDepartment(DepartmentDAO.getDepartmentByType(DepartmentType.DEVELOPMENT));
-        emp2.setDepartment(DepartmentDAO.getDepartmentByType(DepartmentType.DEVELOPMENT));
-        emp3.setDepartment(DepartmentDAO.getDepartmentByType(DepartmentType.DEVELOPMENT));
+        emp1.setDepartment(departmentDAO.getDepartmentByType(DepartmentType.DEVELOPMENT));
+        emp2.setDepartment(departmentDAO.getDepartmentByType(DepartmentType.DEVELOPMENT));
+        emp3.setDepartment(departmentDAO.getDepartmentByType(DepartmentType.DEVELOPMENT));
 
         Customer cust1 = new Customer("IBM");
         Customer cust2 = new Customer("GOOGLE");
         Customer cust3 = new Customer("Amazon");
         Customer cust4 = new Customer("Cisco");
-        CustomerDAO.add(cust1);
-        CustomerDAO.add(cust2);
-        CustomerDAO.add(cust3);
-        CustomerDAO.add(cust4);
+        customerDAO.add(cust1);
+        customerDAO.add(cust2);
+        customerDAO.add(cust3);
+        customerDAO.add(cust4);
 //        System.out.println(CustomerDAO.getCustomers());
 
         Project proj1 = new Project(1111,"New search engine", cust2);
         Project proj2 = new Project(1211,"protocol", cust4);
         Project proj3 = new Project(1131,"shop assist", cust3);
         Project proj4 = new Project(1411,"GUI", cust2);
-        ProjectDAO.add(proj1);
-        ProjectDAO.add(proj2);
-        ProjectDAO.add(proj3);
-        ProjectDAO.add(proj4);
-        ProjectDAO.add(null);
-        System.out.println(ProjectDAO.getProjects());
+        projectDAO.add(proj1);
+        projectDAO.add(proj2);
+        projectDAO.add(proj3);
+        projectDAO.add(proj4);
+        projectDAO.add(null);
+        System.out.println(projectDAO.getAll());
 
         emp1.addProject(proj1);
         emp1.addProject(proj2);

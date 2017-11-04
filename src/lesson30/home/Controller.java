@@ -5,9 +5,21 @@ import java.util.Set;
 
 public class Controller {
 
+    private EmployeeDAO employeeDAO;
+    private DepartmentDAO departmentDAO;
+    private CustomerDAO customerDAO;
+    private ProjectDAO projectDAO;
+
+    public Controller(EmployeeDAO employeeDAO, DepartmentDAO departmentDAO, CustomerDAO customerDAO, ProjectDAO projectDAO) {
+        this.employeeDAO = employeeDAO;
+        this.departmentDAO = departmentDAO;
+        this.customerDAO = customerDAO;
+        this.projectDAO = projectDAO;
+    }
+
     //- employeesByProject(Project project) - список сотрудников, работающих над заданным проектом
     public Set<Employee> employeesByProject(Project project){
-        return EmployeeDAO.getByProject(project);
+        return employeeDAO.getByProject(project);
     }
 
 //- projectsByEmployee(Employee employee) список проектов, в которых участвует заданный сотрудник
@@ -18,7 +30,7 @@ public class Controller {
 //- employeesByDepartmentWithoutProject() - список сотрудников из заданного отдела, не участвующих ни в одном проекте
     public Set<Employee> employeesByDepartmentWithoutProject(DepartmentType departmentType){
         Set<Employee> result = new HashSet<>();
-        for (Employee e : EmployeeDAO.getByDepartment(departmentType))
+        for (Employee e : employeeDAO.getByDepartment(departmentType))
             if(e != null && e.getProjects().isEmpty())
                 result.add(e);
         return result;
@@ -27,7 +39,7 @@ public class Controller {
 //- employeesWithoutProject() - список сотрудников, не участвующих ни в одном проекте
     public Set<Employee> employeesWithoutProject() {
         Set<Employee> result = new HashSet<>();
-        for (Employee e : EmployeeDAO.getEmployees())
+        for (Employee e : employeeDAO.getAll())
             if(e != null && e.getProjects().isEmpty())
                 result.add(e);
         return result;
@@ -36,7 +48,7 @@ public class Controller {
 //- employeesByTeamLead(Employee lead) - список подчиненных для заданного руководителя (по всем проектам, которыми он руководит)
     public Set<Employee> employeesByTeamLead(Employee lead) {
         Set<Employee> result = new HashSet<>();
-        for (Employee e : EmployeeDAO.getByDepartment(lead.getDepartment().getType())) {
+        for (Employee e : employeeDAO.getByDepartment(lead.getDepartment().getType())) {
             // If result has include TeamLead in the result - remove the following IF verification!
             if (e.equals(lead))
                 continue;
@@ -62,7 +74,7 @@ public class Controller {
     public Set<Employee> employeesByProjectEmployee(Employee employee) {
         Set<Employee> result = new HashSet<>();
         for (Project project : employee.getProjects())
-            result.addAll(EmployeeDAO.getByProject(project));
+            result.addAll(employeeDAO.getByProject(project));
         result.remove(employee);  // If employee should be in the final list too - remove this string!
         return result;
     }
@@ -70,7 +82,7 @@ public class Controller {
 //- projectsByCustomer(Customer customer) - список проектов, выполняемых для заданного заказчика
     public Set<Project> projectsByCustomer(Customer customer) {
         Set<Project> result = new HashSet<>();
-        for (Project project : ProjectDAO.getProjects())
+        for (Project project : projectDAO.getAll())
             if (project != null && project.getCustomer().equals(customer))
                 result.add(project);
         return result;
@@ -81,7 +93,7 @@ public class Controller {
         Set<Employee> result = new HashSet<>();
         Set<Project> customerProjects = this.projectsByCustomer(customer);
         for (Project project : customerProjects)
-            result.addAll(EmployeeDAO.getByProject(project));
+            result.addAll(employeeDAO.getByProject(project));
         return result;
     }
 

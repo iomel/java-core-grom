@@ -1,6 +1,5 @@
 package lesson30.home;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,10 +39,6 @@ public class Employee {
         return position;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
     public void setDepartment(Department department) {
         if (department != null)
             this.department = department;
@@ -52,10 +47,6 @@ public class Employee {
     public void addProject(Project project) {
         if (project != null)
             this.projects.add(project);
-    }
-
-    public void removeProject (Project project){
-        projects.remove(project);
     }
 
     public Department getDepartment() {
