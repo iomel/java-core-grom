@@ -1,4 +1,4 @@
-package Tasks;
+package Tasks.Arrays_test;
 
 public class ArrayDemo {
 

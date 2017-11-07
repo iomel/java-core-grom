@@ -46,6 +46,10 @@ public class Demo {
         projectDAO.add(null);
         System.out.println(projectDAO.getAll());
 
+        System.out.println("New Project DAO");
+        ProjectDAO newProjDao = ProjectDAO.getInstance();
+        System.out.println(newProjDao.getAll());
+
         emp1.addProject(proj1);
         emp1.addProject(proj2);
         emp2.addProject(proj1);
