@@ -1,6 +1,6 @@
 package Tasks.library.DAO;
 
-import Tasks.library.Visitor;
+import Tasks.library.model.Visitor;
 
 public class VisitorDAO extends GeneralDAO<Visitor> {
 

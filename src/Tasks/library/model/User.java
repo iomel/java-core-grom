@@ -1,4 +1,4 @@
-package Tasks.library;
+package Tasks.library.model;
 
 public abstract class User implements IdEntity{
     private long id;

@@ -1,6 +1,6 @@
 package Tasks.library.DAO;
 
-import Tasks.library.Librarian;
+import Tasks.library.model.Librarian;
 
 public class LibrarianDAO extends GeneralDAO<Librarian>{
 

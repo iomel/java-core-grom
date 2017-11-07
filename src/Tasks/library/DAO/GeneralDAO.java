@@ -1,6 +1,6 @@
 package Tasks.library.DAO;
 
-import Tasks.library.IdEntity;
+import Tasks.library.model.IdEntity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,8 +22,11 @@ public class GeneralDAO <T extends IdEntity>{
 
     public void view()
     {
+        System.out.println("\n ---- " + this.getClass().getSimpleName() + " -------------------------- ");
         for (T item : items)
             System.out.println(item.toString());
+        System.out.println("-------------------------------------------- \n");
+
     }
 
     public Set<T> getAll() {

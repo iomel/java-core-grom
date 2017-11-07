@@ -1,4 +1,4 @@
-package Tasks.library;
+package Tasks.library.model;
 
 import Tasks.library.DAO.LibrarianDAO;
 

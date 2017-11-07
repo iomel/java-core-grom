@@ -1,6 +1,6 @@
 package Tasks.library.DAO;
 
-import Tasks.library.Admin;
+import Tasks.library.model.Admin;
 
 public class AdminDAO extends GeneralDAO<Admin> {
 

@@ -1,6 +1,6 @@
 package Tasks.library.DAO;
 
-import Tasks.library.Book;
+import Tasks.library.model.Book;
 
 public class BookDAO extends GeneralDAO<Book> {
 
@@ -14,4 +14,5 @@ public class BookDAO extends GeneralDAO<Book> {
             instance = new BookDAO();
         return instance;
     }
+
 }
