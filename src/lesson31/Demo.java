@@ -6,7 +6,6 @@ public class Demo {
         Solution solution = new Solution();
         System.out.println(solution.countSymbols("sss dd fd www gg aa   .. .1 a").toString());
         System.out.println(solution.countSymbols("       ").toString());
-        System.out.println(solution.countSymbols(null).toString());
         System.out.println(solution.countSymbols("       sds dd aa               a    ").toString());
         System.out.println(solution.countSymbols("").toString());
 
