@@ -10,7 +10,7 @@ public class Demo {
         System.out.println(solution.countSymbols("       sds dd aa               a    ").toString());
         System.out.println(solution.countSymbols("").toString());
 
-        System.out.println(solution.words(" dss    ss dss  sd s    ss ss  f 12wss      ").toString());
+        System.out.println(solution.words(" dss    ss dss mama sd s    ss ss  f 12wss      ").toString());
         System.out.println(solution.words("        dss  1  ss dss  sd s    ss ss  f 12wss      ").toString());
         System.out.println(solution.words(null).toString());
         System.out.println(solution.words("").toString());
