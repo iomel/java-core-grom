@@ -18,10 +18,7 @@ public class Solution {
     public TreeMap<String, Integer> words(String text){
         TreeMap<String, Integer> wordMap = new TreeMap<>();
         if (text != null && !text.isEmpty()) {
-            while (text.contains("  "))
-                text = text.replaceAll("  ", " ").trim();
-
-            String[] words = text.split(" ");
+            String[] words = text.replaceAll(" +", " ").trim().split(" ");
             for (String word : words)
                 if(isWord(word))
                     wordMap.compute(word, (key, oldVal) -> oldVal == null ? 1 : oldVal + 1) ;
