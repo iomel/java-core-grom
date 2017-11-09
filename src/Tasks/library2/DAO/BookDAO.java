@@ -19,7 +19,7 @@ public class BookDAO {
     }
 
     public Book add(Book book){
-        if(book != null)
+        if(book != null && !hasDuplicate(book))
             books.add(book);
         return book;
     }
@@ -29,33 +29,35 @@ public class BookDAO {
             books.remove(book);
     }
 
-    public void viewAll(){
-        for(Book book : books)
-            System.out.println(book.toString());
+    public HashSet<Book> getBooks() {
+        return books;
     }
 
-    public void viewIssued(){
-        for(Book book : books)
-            if(book.getIssued() > 0)
-                System.out.println(book.toString());
-    }
-
-
-    public Book issueBook(String callNo, User visitor){
-        Book book = getBook(callNo);
+    public Book issueBook(Book book, User visitor){
         if (book != null && book.getQuantity()>0) {
             book.setQuantity(book.getQuantity()-1);
             book.setIssued(book.getIssued()+1);
             book.setReader(visitor.getId());
-            visitor.addBook(callNo, new Date());
+            visitor.addBook(book.getCallNo(), new Date());
         }
         return book;
     }
 
-    private Book getBook(String callNo){
-        for(Book book : books)
-            if (book.getCallNo().equals(callNo))
-                return book;
-        return null;
+    public Book returnBook(Book book, User visitor){
+        if (book != null) {
+            book.setQuantity(book.getQuantity()+1);
+            book.setIssued(book.getIssued()-1);
+            book.removeReader(visitor.getId());
+            visitor.removeBook(book.getCallNo());
+        }
+        return book;
     }
+
+    private boolean hasDuplicate(Book book){
+        for (Book b : books)
+            if(b.getCallNo().equals(book.getCallNo()))
+                return true;
+        return false;
+    }
+
 }

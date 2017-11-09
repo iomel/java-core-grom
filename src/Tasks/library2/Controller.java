@@ -6,238 +6,140 @@ import Tasks.library2.Utils.Role;
 import Tasks.library2.model.Book;
 import Tasks.library2.model.User;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Controller {
-    private UserDAO userDAO = UserDAO.getInstance();
-    private BookDAO bookDAO = BookDAO.getInstance();
+    private static UserDAO userDAO = UserDAO.getInstance();
+    private static BookDAO bookDAO = BookDAO.getInstance();
+    private int access; // | 0 - Admin | 1 - Librarian | 666 - Access denied | other - Visitor
 
-    public void start() throws Exception{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-            String name = "";
-            String password = "";
-            int count = 3;
-            User user = null;
 
-            System.out.println("Welcome to our library system");
-
-            while (count != 0) {
-                System.out.println("\nPlease enter user name: \n (write EXIT to leave the system)");
-                name = reader.readLine();
-                if (name.toUpperCase().equals("EXIT"))
-                    return;
-
-                System.out.println("Password: ");
-                password = reader.readLine();
-                user = userDAO.getAuthorisation(name, password);
-                if (user != null)
-                    break;
-                System.out.println("Authorization failed! You have " + (--count > 0 ? count : "no") + " attempts left!");
+    public void login (User user) {
+        for (User u : userDAO.getUsers())
+            if(u.getName().equals(user.getName()) && u.getPassword().equals(user.getPassword())){
+                access = user.getRole().ordinal();
+                return;
             }
+        access = 666;
+    }
 
-            if(user == null)
-                continue;
+    // ADMIN's methods
+    // ****************************************************
+    public User addLibrarian(User newLibrarian){
+        if(access == 0 && (newLibrarian != null && newLibrarian.getRole() == Role.Librarian))
+            return userDAO.add(newLibrarian);
+        return null;
+    }
 
-            switch (user.getRole()) {
-                case Admin:
-                    adminMenu(user);
-                    break;
-                case Librarian:
-                    librarianMenu(user);
-                    break;
-                case Visitor:
-                    userMenu(user);
-            }
+    public void viewLibrarian(){
+        if(access == 0){
+            for(User u : userDAO.getUsers())
+                if(u.getRole() == Role.Librarian)
+                    System.out.println(u.toString());
         }
     }
 
-    // FOR TEST data
-    public void addUser(User user){
+    public void deleteLibratian(User librarian){
+        if((access == 0) && (librarian != null && librarian.getRole() == Role.Librarian))
+            userDAO.delete(librarian);
+    }
+    // END ADMIN's methods
+    // ****************************************************
+
+    // Librarians's methods
+    // ****************************************************
+
+    public Book addBook(Book book) {
+        if(access == 1 && book != null)
+            return bookDAO.add(book);
+        return null;
+    }
+
+    public void viewAllBooks(){
+        if(access == 1){
+            System.out.println("\n ***  Library books :");
+            for(Book book : bookDAO.getBooks())
+                System.out.println(book.toString());
+        }
+    }
+
+    public void viewIssuedBooks(){
+        if(access == 1){
+            System.out.println("\n ***  Issued books :");
+            for(Book book : bookDAO.getBooks())
+                if(book.getIssued() > 0)
+                    System.out.println(book.toString());
+        }
+    }
+
+    // Librarians's AND Visitor's methods
+    // ****************************************************
+
+    public void issueBook(Book book, User visitor) {
+        if((access == 1 || access == 2) && visitor != null){
+            if(hasExpiredBook(visitor)){
+                System.out.println(visitor.getName() + " has expired books! Book couldn't be issued!");
+                return;
+            }
+
+            if (bookDAO.issueBook(book, visitor) == null)
+                System.out.println("Wrong information. Book was not issued!");
+        }
+    }
+
+    public void returnAllBooks(User visitor) {
+        if((access == 1 || access == 2) && visitor != null)
+            for (Map.Entry<String, Date> visitorsBook : visitor.getBooks().entrySet())
+                if (bookDAO.returnBook(getBookByCallNo(visitorsBook.getKey()), visitor) == null)
+                    System.out.println("Wrong information. Book couldn't be returned!");
+    }
+
+    public void returnBook(Book book, User visitor) {
+        if((access == 1 || access == 2) && visitor != null) {
+           if (bookDAO.returnBook(book, visitor) == null)
+                System.out.println("Wrong information. Book couldn't be returned!");
+        }
+    }
+
+    // Admin's AND Librarians's AND Visitor's method
+    // ****************************************************
+
+    public void logout (){
+        access = 666;
+    }
+
+    // Internal features methods *********
+    // Check weather USER has expired books TRUE - has, FALSE - hasn't
+    private boolean hasExpiredBook(User user){
+        HashMap<String, Date> books = user.getBooks();
+        Date today = new Date();
+        long diff;
+        for(Map.Entry<String, Date> book : books.entrySet()){
+            diff = today.getTime() - book.getValue().getTime();
+            if(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) >= 30)
+                return true;
+        }
+        return false;
+    }
+
+    private Book getBookByCallNo (String callNo){
+        for(Book book : bookDAO.getBooks())
+            if(book.getCallNo().equals(callNo))
+                return book;
+        return null;
+    }
+
+    // Methods FOR TEST data fill  *********************************
+    void addTestUser(User user){
         userDAO.add(user);
     }
 
-    // FOR TEST data
-    public void addBook(Book book){
+    void addTestBook(Book book){
         bookDAO.add(book);
     }
 
-    private void adminMenu(User user) throws Exception{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String menuItem;
-
-        System.out.println(user.getName() + ", please make your choice:");
-
-        while (true){
-            System.out.println("\n 1 - ADD librarian" +
-                                "\n 2 - DELETE librarian" +
-                                "\n 3 - VIEW librarians" +
-                                "\n 4 - EXIT" );
-            menuItem = reader.readLine();
-            switch (menuItem){
-                case "1":
-                    addLibrarian();
-                    break;
-                case "2":
-                    deleteUser();
-                    break;
-                case "3":
-                    viewUser(Role.Librarian);
-                    break;
-                case "4":
-                    System.out.println("Goodbye " + user.getName() + "\n");
-                    return;
-                default:
-                    System.out.println(user.getName() + ", please make CORRECT choice!");
-            }
-        }
-    }
-
-    private void librarianMenu(User user) throws Exception{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String menuItem;
-
-        System.out.println(user.getName() + ", please make your choice:");
-
-        while (true){
-            System.out.println("\n 1 - ADD book" +
-                    "\n 2 - ISSUE book" +
-                    "\n 3 - RETURN book" +
-                    "\n 4 - VIEW all books" +
-                    "\n 5 - VIEW issued books" +
-                    "\n 6 - EXIT" );
-            menuItem = reader.readLine();
-            switch (menuItem){
-                case "1":
-                    addBook();
-                    break;
-                case "2":
-                    issueBook();
-                    break;
-                case "3":
-                    break;
-                case "4":
-                    viewAllBooks();
-                    break;
-                case "5":
-                    viewIssuedBooks();
-                    break;
-                case "6":
-                    System.out.println("Goodbye " + user.getName() + "\n");
-                    return;
-                default:
-                    System.out.println(user.getName() + ", please make CORRECT choice!");
-            }
-        }
-    }
-
-    private void userMenu(User user) throws Exception{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String menuItem;
-
-        System.out.println(user.getName() + ", please make your choice:");
-
-        while (true){
-            System.out.println("\n 1 - GET book" +
-                    "\n 2 - RETURN book" +
-                    "\n 3 - RETURN ALL books" +
-                    "\n 4 - VIEW books" +
-                    "\n 5 - EXIT" );
-
-            menuItem = reader.readLine();
-            switch (menuItem){
-                case "1":
-
-                    break;
-                case "2":
-
-                    break;
-                case "3":
-                    break;
-                case "4":
-                    break;
-                case "5":
-                    System.out.println("Goodbye " + user.getName() + "\n");
-                    return;
-                default:
-                    System.out.println(user.getName() + ", please make CORRECT choice!");
-            }
-        }
-    }
-
-    private User addLibrarian() throws Exception{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        String name;
-        String password;
-        long id;
-
-        System.out.println("Add librarian: ");
-        System.out.println("ID: ");
-        id = Long.parseLong(reader.readLine());
-        System.out.println("Name: ");
-        name = reader.readLine();
-        System.out.println("Password: ");
-        password = reader.readLine();
-
-        return userDAO.add(new User(id, name, password, Role.Librarian));
-    }
-
-    private void viewUser(Role role){
-        userDAO.viewAll(role);
-    }
-
-    private void deleteUser() throws Exception{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String id;
-
-        System.out.println("Enter ID of the user to delete:");
-        id = reader.readLine();
-        userDAO.delete(Long.parseLong(id));
-    }
-
-    private Book addBook() throws Exception{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        long id;
-        String callNo;
-        String name;
-        int quantity;
-
-        System.out.println("Add librarian: ");
-        System.out.println("ID: ");
-        id = Long.parseLong(reader.readLine());
-        System.out.println("Catalog index: ");
-        callNo = reader.readLine();
-        System.out.println("Name: ");
-        name = reader.readLine();
-        System.out.println("Quantity: ");
-        quantity = Integer.parseInt(reader.readLine());
-
-        return bookDAO.add(new Book(id, callNo, name, quantity));
-
-    }
-
-    private void viewAllBooks(){
-        bookDAO.viewAll();
-    }
-
-    private void viewIssuedBooks(){
-        bookDAO.viewIssued();
-    }
-
-    private void issueBook() throws Exception {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-        long id;
-        String callNo;
-        System.out.println("Book catalog index:");
-        callNo = reader.readLine();
-        System.out.println("Visitor ID:");
-        id = Long.parseLong(reader.readLine());
-
-        if (bookDAO.issueBook(callNo, userDAO.getUserById(id)) == null)
-            System.out.println("Wrong information. Book was not issued!");
-    }
 }
+

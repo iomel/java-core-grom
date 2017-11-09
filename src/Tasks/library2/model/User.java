@@ -59,7 +59,6 @@ public class User {
                 "role=" + role +
                 ", id=" + id +
                 ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+                ", password='" + password + '\'' + '}';
     }
 }

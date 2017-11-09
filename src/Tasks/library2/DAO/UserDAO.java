@@ -18,42 +18,28 @@ public class UserDAO {
     }
 
     public User add(User user){
-        if (user != null)
+        if (user != null && !hasDuplicate(user))
             users.add(user);
         return user;
     }
-    public void delete(long id){
-        delete(getUserById(id));
-    }
 
     public void delete(User user){
-        if (user != null)
-            users.remove(user);
+        if (user != null) {
+            for (User u : users)
+                if (u.getId() == user.getId())
+                    users.remove(u);
+        }
     }
 
-    public void viewAll(){
-        for(User user : users)
-            System.out.println(user.toString());
+    public HashSet<User> getUsers() {
+        return users;
     }
 
-    public void viewAll(Role role){
-        for(User user : users)
-            if(user.getRole() == role)
-                System.out.println(user.toString());
-    }
-
-    public User getAuthorisation(String name, String password){
-        for (User user : users)
-            if(user.getName().equals(name) && user.getPassword().equals(password))
-                return user;
-        return null;
-    }
-
-    public User getUserById(long id){
-        for (User user : users)
-            if (user.getId() == id)
-                return user;
-        return null;
+    private boolean hasDuplicate(User user){
+        for (User u : users)
+            if(u.getId() == user.getId())
+                return true;
+        return false;
     }
 
 }

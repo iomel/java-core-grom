@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class Book {
-    private long id;
     private String callNo;
     private String name;
     private String author;
@@ -15,17 +14,12 @@ public class Book {
     private int issued;
     private HashSet<Long> readers = new HashSet<>();
 
-    public Book(long id, String callNo, String name, int quantity) {
-        this.id = id;
+    public Book(String callNo, String name, int quantity) {
         this.callNo = callNo;
         this.name = name;
         this.quantity = quantity;
         this.issued = 0;
         this.addedDate = new Date();
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getCallNo() {
@@ -38,10 +32,6 @@ public class Book {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public HashSet<Long> getReaders() {
-        return readers;
     }
 
     public void setQuantity(int quantity) {
@@ -61,17 +51,15 @@ public class Book {
     }
 
     public void removeReader(long id){
-        this.readers.remove(Long.valueOf(id));
+        this.readers.remove(id);
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
-                ", callNo='" + callNo + '\'' +
+                "  callNo='" + callNo + '\'' +
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +
-                ", issued=" + issued +
-                '}';
+                ", issued=" + issued + '}';
     }
 }
