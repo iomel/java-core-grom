@@ -3,7 +3,6 @@ package Tasks.library2.DAO;
 import Tasks.library2.Utils.Role;
 import Tasks.library2.model.User;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.HashSet;
 
 public class UserDAO {

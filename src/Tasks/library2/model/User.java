@@ -54,7 +54,8 @@ public class User {
     }
 
     public void addBook(Book book){
-        books.add(book);
+        if (book != null)
+            books.add(book);
     }
 
     public void removeBook(Book book) {

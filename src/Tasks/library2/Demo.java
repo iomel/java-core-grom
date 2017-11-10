@@ -34,8 +34,8 @@ public class Demo {
         controller.addTestBook(book5, 2);
 
         System.out.println("\nWrong user operation");
-        controller.addLibrarian(user3, user2);
-        controller.viewLibrarian(user3);
+        controller.addLibrarian(user2, user2);
+        controller.viewLibrarian(user2);
 
         System.out.println("\nCorrect user operation");
         controller.login(user1);
@@ -65,6 +65,7 @@ public class Demo {
         controller.viewIssuedBooks(user2);
 
         System.out.println("\nCorrect user operation, book returned");
+//        controller.logout(user2);
         controller.returnBook(user2, "3C@A", user3);
         controller.viewAllBooks(user2);
         controller.viewIssuedBooks(user2);

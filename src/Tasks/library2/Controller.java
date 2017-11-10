@@ -19,7 +19,8 @@ public class Controller {
     // ADMIN's methods
     // ****************************************************
     public User addLibrarian(User user, User newLibrarian){
-        if(hasAccess(user, Role.Admin) && (newLibrarian != null && newLibrarian.getRole() == Role.Librarian))  // Access check to invoke the method
+        // Access check to invoke the method and whether new user is really librarian and not empty
+        if(hasAccess(user, Role.Admin) && (newLibrarian != null && newLibrarian.getRole() == Role.Librarian))
             return userDAO.add(newLibrarian);
         return null;
     }
@@ -31,7 +32,7 @@ public class Controller {
     }
 
     public void deleteLibrarian(User user, User librarian){
-        if(hasAccess(user, Role.Admin) && (librarian != null && librarian.getRole() == Role.Librarian)) // Access check to invoke the method
+        if(hasAccess(user, Role.Admin) && (userDAO.hasUser(librarian) && librarian.getRole() == Role.Librarian)) // Access check to invoke the method
             userDAO.delete(librarian);
     }
 
@@ -42,7 +43,7 @@ public class Controller {
     // ****************************************************
 
     public void addBook(User user, Book book, int quantity) {
-        if(hasAccess(user, Role.Librarian) && book != null)  // Access check to invoke the method
+        if(hasAccess(user, Role.Librarian))  // Access check to invoke the method
             bookDAO.add(book, quantity);
     }
 
@@ -57,9 +58,8 @@ public class Controller {
     public void viewIssuedBooks(User user){
         if(hasAccess(user, Role.Librarian)){   // Access check to invoke the method
             System.out.println("\n ***  Issued books :");
-            for(Book book : bookDAO.getBooks())
-                if(book.isIssued())
-                    System.out.println(book.toString());
+            for(Book book : bookDAO.getIssuedBooks())
+                System.out.println(book.toString());
         }
     }
 
@@ -67,14 +67,8 @@ public class Controller {
     // ****************************************************
 
     public void issueBook(User user, String callNo, User visitor) {
-        if(!(hasAccess(user, Role.Librarian, Role.Visitor)) || !userDAO.hasUser(visitor) || hasExpiredBook(visitor))   // Access check to invoke the method
-            return;
-
-        Book book = bookDAO.issueBook(callNo, visitor);
-        if (book != null)
-            visitor.addBook(book);
-        else
-            System.out.println("Book is not available - could not be issued!");
+        if(hasAccess(user, Role.Librarian, Role.Visitor) && userDAO.hasUser(visitor) && !hasExpiredBook(visitor))    // Access check to invoke the method
+            visitor.addBook(bookDAO.issueBook(callNo, visitor));
     }
 
     public void returnAllBooks(User user, User visitor) {
@@ -89,11 +83,8 @@ public class Controller {
     public void returnBook(User user, String callNo, User visitor) {
         if(hasAccess(user, Role.Librarian, Role.Visitor) && userDAO.hasUser(visitor)){   // Access check to invoke the method
             Book bookToReturn = getBookByCallNo(callNo, visitor);
-
-            if(bookToReturn != null) {
-                bookDAO.returnBook(bookToReturn);
-                visitor.removeBook(bookToReturn);
-            }
+            bookDAO.returnBook(bookToReturn);
+            visitor.removeBook(bookToReturn);
         }
     }
 
@@ -109,8 +100,12 @@ public class Controller {
 
     // Access check
     private boolean hasAccess(User user, Role... roles){
+
+        if(!isLoggedIn(user))
+            return false;
+
         HashSet<Role> allowedRoles = new HashSet<>(Arrays.asList(roles));
-        if (user != null && isLoggedIn(user) && allowedRoles.contains(user.getRole()))
+        if (allowedRoles.contains(user.getRole()))
             return true;
         System.out.println("User is not allowed to use this feature!");
         return false;
@@ -139,22 +134,18 @@ public class Controller {
     }
 
     private Book getBookByCallNo(String callNo, User visitor){
-        Book book = null;
-        if (callNo != null && visitor != null)
-            for (Book b : visitor.getBooks())
-                if(b.getCallNo().equals(callNo))
-                    book = b;
-        return book;
+        for (Book b : visitor.getBooks())
+            if(b.getCallNo().equals(callNo))
+                return b;
+        return null;
     }
     // Check weather USER has expired books TRUE - has, FALSE - hasn't
     private boolean hasExpiredBook(User user){
         if (user != null && user.getBooks() != null) {
-            HashSet<Book> books = user.getBooks();
-            Date today = new Date();
-            long diff;
-            for (Book book : books) {
-                diff = today.getTime() - book.getIssuedDate().getTime();
-                if (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) >= 30)   // 30 days term check
+            long dateDiff;
+            for (Book book : user.getBooks()) {
+                dateDiff = new Date().getTime() - book.getIssuedDate().getTime();
+                if (TimeUnit.DAYS.convert(dateDiff, TimeUnit.MILLISECONDS) >= 30)   // 30 days term check
                     return true;
             }
         }

@@ -27,13 +27,23 @@ public class BookDAO {
         return books;
     }
 
+    public HashSet<Book> getIssuedBooks() {
+        HashSet<Book> issuedBooks = new HashSet<>();
+        for(Book book : books)
+            if(book.isIssued())
+                issuedBooks.add(book);
+        return issuedBooks;
+    }
+
     public Book issueBook(String callNo, User visitor){
         Book book = isAvailable(callNo);
         if (book != null) {
             book.setIssued(true);
             book.setReader(visitor);
+            return book;
         }
-        return book;
+        System.out.println("Book is not available - could not be issued!");
+        return null;
     }
 
     public void returnBook(Book book){
