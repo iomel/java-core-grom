@@ -18,20 +18,19 @@ public class Controller {
     // ADMIN's methods
     // ****************************************************
     public User addLibrarian(User user, User newLibrarian){
-        if(login(user) == Role.Admin && (newLibrarian != null && newLibrarian.getRole() == Role.Librarian))  // Access check to invoke the method
+        if(login(user) && user.getRole() == Role.Admin && (newLibrarian != null && newLibrarian.getRole() == Role.Librarian))  // Access check to invoke the method
             return userDAO.add(newLibrarian);
         return null;
     }
 
     public void viewLibrarian(User user){
-        if(login(user) == Role.Admin) // Access check to invoke the method
-            for(User u : userDAO.getUsers())
-                if(u.getRole() == Role.Librarian)
-                    System.out.println(u.toString());
+        if(login(user) && user.getRole() == Role.Admin) // Access check to invoke the method
+            for(User u : userDAO.getUsers(Role.Librarian))
+                System.out.println(u.toString());
     }
 
-    public void deleteLibratian(User user, User librarian){
-        if(login(user) == Role.Admin && (librarian != null && librarian.getRole() == Role.Librarian)) // Access check to invoke the method
+    public void deleteLibrarian(User user, User librarian){
+        if(login(user) && user.getRole() == Role.Admin && userDAO.hasUser(librarian) && librarian.getRole() == Role.Librarian) // Access check to invoke the method
             userDAO.delete(librarian);
     }
 
@@ -42,12 +41,12 @@ public class Controller {
     // ****************************************************
 
     public void addBook(User user, Book book, int quantity) {
-        if(login(user) == Role.Librarian && book != null)  // Access check to invoke the method
+        if(login(user) && user.getRole() == Role.Librarian && book != null)  // Access check to invoke the method
             bookDAO.add(book, quantity);
     }
 
     public void viewAllBooks(User user){
-        if(login(user) == Role.Librarian){   // Access check to invoke the method
+        if(login(user) && user.getRole() == Role.Librarian){   // Access check to invoke the method
             System.out.println("\n ***  Library books :");
             for(Book book : bookDAO.getBooks())
                 System.out.println(book.toString());
@@ -55,7 +54,7 @@ public class Controller {
     }
 
     public void viewIssuedBooks(User user){
-        if(login(user) == Role.Librarian){   // Access check to invoke the method
+        if(login(user) && user.getRole() == Role.Librarian){   // Access check to invoke the method
             System.out.println("\n ***  Issued books :");
             for(Book book : bookDAO.getBooks())
                 if(book.isIssued())
@@ -67,7 +66,7 @@ public class Controller {
     // ****************************************************
 
     public void issueBook(User user, String callNo, User visitor) {
-        if(!(login(user) == Role.Librarian || login(user) == Role.Visitor ) || visitor == null || hasExpiredBook(visitor))   // Access check to invoke the method
+        if(!(login(user) && (user.getRole() == Role.Librarian || user.getRole() == Role.Visitor)) || !userDAO.hasUser(visitor) || hasExpiredBook(visitor))   // Access check to invoke the method
             return;
 
         Book book = bookDAO.issueBook(callNo, visitor);
@@ -78,7 +77,7 @@ public class Controller {
     }
 
     public void returnAllBooks(User user, User visitor) {
-        if((login(user) == Role.Librarian || login(user) == Role.Visitor) && visitor != null) {   // Access check to invoke the method
+        if((login(user) && (user.getRole() == Role.Librarian || user.getRole() == Role.Visitor)) && userDAO.hasUser(visitor)) {   // Access check to invoke the method
             for (Book book : visitor.getBooks()) {
                 bookDAO.returnBook(book);
                 visitor.removeBook(book);
@@ -87,7 +86,7 @@ public class Controller {
     }
 
     public void returnBook(User user, String callNo, User visitor) {
-        if((login(user) == Role.Librarian || login(user) == Role.Visitor) && visitor != null && callNo != null){   // Access check to invoke the method
+        if((login(user) && (user.getRole() == Role.Librarian || user.getRole() == Role.Visitor)) && userDAO.hasUser(visitor) && callNo != null){   // Access check to invoke the method
             Book bookToReturn = getBookByCallNo(callNo, visitor);
 
             if(bookToReturn != null) {
@@ -101,20 +100,15 @@ public class Controller {
     // ****************************************************
 
     public void logout (User user){
-        if (login(user) != Role.NOONE)
+        if (login(user))
             System.exit(0);
     }
 
     // Internal features methods *********
 
     // Access check
-    private Role login (User user) {
-        if(user != null) {
-            for (User u : userDAO.getUsers())
-                if (u.getName().equals(user.getName()) && u.getPassword().equals(user.getPassword()))
-                    return user.getRole();
-        }
-        return Role.NOONE;
+    private boolean login (User user) {
+        return userDAO.hasUser(user);
     }
     private Book getBookByCallNo(String callNo, User visitor){
         Book book = null;

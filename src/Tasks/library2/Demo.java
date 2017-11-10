@@ -43,7 +43,7 @@ public class Demo {
         controller.viewLibrarian(user1);
 
         System.out.println("************************");
-        controller.deleteLibratian(user1, user5);
+        controller.deleteLibrarian(user1, user5);
         controller.viewLibrarian(user1);
 
         System.out.println("\nWrong user operation");
