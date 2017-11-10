@@ -2,8 +2,7 @@ package Tasks.library2.model;
 
 import Tasks.library2.Utils.Role;
 
-import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 
 public class User {
     private long id;
@@ -14,7 +13,7 @@ public class User {
     private String city;
     private String contact;
     private Role role;
-    private HashMap<String, Date> books;
+    private HashSet<Book> books;
 
     public User(long id, String name, String password, Role role) {
         this.id = id;
@@ -22,7 +21,7 @@ public class User {
         this.password = password;
         this.role = role;
         if (role == Role.Visitor)
-            books = new HashMap<>();
+            books = new HashSet<>();
     }
 
     public long getId() {
@@ -41,16 +40,16 @@ public class User {
         return role;
     }
 
-    public HashMap<String, Date> getBooks() {
+    public HashSet<Book> getBooks() {
         return books;
     }
 
-    public void addBook(String callNo, Date getBookDate){
-        books.put(callNo, getBookDate);
+    public void addBook(Book book){
+        books.add(book);
     }
 
-    public void removeBook(String callNo) {
-        books.remove(callNo);
+    public void removeBook(Book book) {
+        books.remove(book);
     }
 
     @Override

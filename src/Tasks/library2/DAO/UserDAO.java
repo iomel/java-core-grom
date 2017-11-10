@@ -1,6 +1,5 @@
 package Tasks.library2.DAO;
 
-import Tasks.library2.Utils.Role;
 import Tasks.library2.model.User;
 
 import java.util.HashSet;
@@ -25,9 +24,7 @@ public class UserDAO {
 
     public void delete(User user){
         if (user != null) {
-            for (User u : users)
-                if (u.getId() == user.getId())
-                    users.remove(u);
+            users.remove(user);
         }
     }
 

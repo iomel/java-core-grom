@@ -7,70 +7,58 @@ import Tasks.library2.model.Book;
 import Tasks.library2.model.User;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 public class Controller {
     private static UserDAO userDAO = UserDAO.getInstance();
     private static BookDAO bookDAO = BookDAO.getInstance();
-    private int access; // | 0 - Admin | 1 - Librarian | 666 - Access denied | other - Visitor
 
-
-    public void login (User user) {
-        for (User u : userDAO.getUsers())
-            if(u.getName().equals(user.getName()) && u.getPassword().equals(user.getPassword())){
-                access = user.getRole().ordinal();
-                return;
-            }
-        access = 666;
-    }
 
     // ADMIN's methods
     // ****************************************************
-    public User addLibrarian(User newLibrarian){
-        if(access == 0 && (newLibrarian != null && newLibrarian.getRole() == Role.Librarian))
+    public User addLibrarian(User user, User newLibrarian){
+        if(login(user) == Role.Admin && (newLibrarian != null && newLibrarian.getRole() == Role.Librarian))  // Access check to invoke the method
             return userDAO.add(newLibrarian);
         return null;
     }
 
-    public void viewLibrarian(){
-        if(access == 0){
+    public void viewLibrarian(User user){
+        if(login(user) == Role.Admin) // Access check to invoke the method
             for(User u : userDAO.getUsers())
                 if(u.getRole() == Role.Librarian)
                     System.out.println(u.toString());
-        }
     }
 
-    public void deleteLibratian(User librarian){
-        if((access == 0) && (librarian != null && librarian.getRole() == Role.Librarian))
+    public void deleteLibratian(User user, User librarian){
+        if(login(user) == Role.Admin && (librarian != null && librarian.getRole() == Role.Librarian)) // Access check to invoke the method
             userDAO.delete(librarian);
     }
+
     // END ADMIN's methods
     // ****************************************************
 
     // Librarians's methods
     // ****************************************************
 
-    public Book addBook(Book book) {
-        if(access == 1 && book != null)
-            return bookDAO.add(book);
-        return null;
+    public void addBook(User user, Book book, int quantity) {
+        if(login(user) == Role.Librarian && book != null)  // Access check to invoke the method
+            bookDAO.add(book, quantity);
     }
 
-    public void viewAllBooks(){
-        if(access == 1){
+    public void viewAllBooks(User user){
+        if(login(user) == Role.Librarian){   // Access check to invoke the method
             System.out.println("\n ***  Library books :");
             for(Book book : bookDAO.getBooks())
                 System.out.println(book.toString());
         }
     }
 
-    public void viewIssuedBooks(){
-        if(access == 1){
+    public void viewIssuedBooks(User user){
+        if(login(user) == Role.Librarian){   // Access check to invoke the method
             System.out.println("\n ***  Issued books :");
             for(Book book : bookDAO.getBooks())
-                if(book.getIssued() > 0)
+                if(book.isIssued())
                     System.out.println(book.toString());
         }
     }
@@ -78,67 +66,87 @@ public class Controller {
     // Librarians's AND Visitor's methods
     // ****************************************************
 
-    public void issueBook(Book book, User visitor) {
-        if((access == 1 || access == 2) && visitor != null){
-            if(hasExpiredBook(visitor)){
-                System.out.println(visitor.getName() + " has expired books! Book couldn't be issued!");
-                return;
-            }
+    public void issueBook(User user, String callNo, User visitor) {
+        if(!(login(user) == Role.Librarian || login(user) == Role.Visitor ) || visitor == null || hasExpiredBook(visitor))   // Access check to invoke the method
+            return;
 
-            if (bookDAO.issueBook(book, visitor) == null)
-                System.out.println("Wrong information. Book was not issued!");
+        Book book = bookDAO.issueBook(callNo, visitor);
+        if (book != null)
+            visitor.addBook(book);
+        else
+            System.out.println("Book could not be issued!");
+    }
+
+    public void returnAllBooks(User user, User visitor) {
+        if((login(user) == Role.Librarian || login(user) == Role.Visitor) && visitor != null) {   // Access check to invoke the method
+            for (Book book : visitor.getBooks()) {
+                bookDAO.returnBook(book);
+                visitor.removeBook(book);
+            }
         }
     }
 
-    public void returnAllBooks(User visitor) {
-        if((access == 1 || access == 2) && visitor != null)
-            for (Map.Entry<String, Date> visitorsBook : visitor.getBooks().entrySet())
-                if (bookDAO.returnBook(getBookByCallNo(visitorsBook.getKey()), visitor) == null)
-                    System.out.println("Wrong information. Book couldn't be returned!");
-    }
+    public void returnBook(User user, String callNo, User visitor) {
+        if((login(user) == Role.Librarian || login(user) == Role.Visitor) && visitor != null && callNo != null){   // Access check to invoke the method
+            Book bookToReturn = getBookByCallNo(callNo, visitor);
 
-    public void returnBook(Book book, User visitor) {
-        if((access == 1 || access == 2) && visitor != null) {
-           if (bookDAO.returnBook(book, visitor) == null)
-                System.out.println("Wrong information. Book couldn't be returned!");
+            if(bookToReturn != null) {
+                bookDAO.returnBook(bookToReturn);
+                visitor.removeBook(bookToReturn);
+            }
         }
     }
 
     // Admin's AND Librarians's AND Visitor's method
     // ****************************************************
 
-    public void logout (){
-        access = 666;
+    public void logout (User user){
+        if (login(user) != Role.NOONE)
+            System.exit(0);
     }
 
     // Internal features methods *********
+
+    // Access check
+    private Role login (User user) {
+        if(user != null) {
+            for (User u : userDAO.getUsers())
+                if (u.getName().equals(user.getName()) && u.getPassword().equals(user.getPassword()))
+                    return user.getRole();
+        }
+        return Role.NOONE;
+    }
+    private Book getBookByCallNo(String callNo, User visitor){
+        Book book = null;
+        if (callNo != null && visitor != null)
+            for (Book b : visitor.getBooks())
+                if(b.getCallNo().equals(callNo))
+                    book = b;
+        return book;
+    }
     // Check weather USER has expired books TRUE - has, FALSE - hasn't
     private boolean hasExpiredBook(User user){
-        HashMap<String, Date> books = user.getBooks();
-        Date today = new Date();
-        long diff;
-        for(Map.Entry<String, Date> book : books.entrySet()){
-            diff = today.getTime() - book.getValue().getTime();
-            if(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) >= 30)
-                return true;
+        if (user != null && user.getBooks() != null) {
+            HashSet<Book> books = user.getBooks();
+            Date today = new Date();
+            long diff;
+            for (Book book : books) {
+                diff = today.getTime() - book.getIssuedDate().getTime();
+                if (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) >= 30)   // 30 days term check
+                    return true;
+            }
         }
         return false;
     }
 
-    private Book getBookByCallNo (String callNo){
-        for(Book book : bookDAO.getBooks())
-            if(book.getCallNo().equals(callNo))
-                return book;
-        return null;
-    }
 
     // Methods FOR TEST data fill  *********************************
     void addTestUser(User user){
         userDAO.add(user);
     }
 
-    void addTestBook(Book book){
-        bookDAO.add(book);
+    void addTestBook(Book book, int quantity){
+        bookDAO.add(book, quantity);
     }
 
 }

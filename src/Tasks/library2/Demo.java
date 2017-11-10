@@ -22,58 +22,50 @@ public class Demo {
         controller.addTestUser(user4);
 
 
-        Book book1 = new Book("C@4", "JAVA for Dummies",5);
-        Book book2 = new Book("B@14", "Bukvar",15);
-        Book book3 = new Book("3C@A", "C++",1);
-        Book book4 = new Book("A@14", "Cooking",2);
-        Book book5 = new Book("J$A3", "Math part 3", 5);
-        controller.addTestBook(book1);
-        controller.addTestBook(book2);
-        controller.addTestBook(book3);
-        controller.addTestBook(book4);
-        controller.addTestBook(book5);
+        Book book1 = new Book("C@4", "JAVA for Dummies");
+        Book book2 = new Book("B@14", "Bukvar");
+        Book book3 = new Book("3C@A", "C++");
+        Book book4 = new Book("A@14", "Cooking");
+        Book book5 = new Book("J$A3", "Math part 3");
+        controller.addTestBook(book1, 2);
+        controller.addTestBook(book2, 3);
+        controller.addTestBook(book3, 1);
+        controller.addTestBook(book4, 1);
+        controller.addTestBook(book5, 2);
 
         System.out.println("\nWrong user operation");
-        controller.login(user3);
-        controller.addLibrarian(user2);
-        controller.viewLibrarian();
+        controller.addLibrarian(user3, user2);
+        controller.viewLibrarian(user3);
 
         System.out.println("\nCorrect user operation");
-        controller.login(user1);
-        controller.addLibrarian(user2);
-        controller.viewLibrarian();
+        controller.addLibrarian(user1, user2);
+        controller.addLibrarian(user1, user5);
+        controller.viewLibrarian(user1);
 
-        System.out.println("**************");
-        controller.logout();
-        System.out.println("\nuser operation after logout");
-        controller.viewLibrarian();
-
-        System.out.println("\nWrong user access");
-        controller.login(user5);
-        controller.viewAllBooks();
-
+        System.out.println("************************");
+        controller.deleteLibratian(user1, user5);
+        controller.viewLibrarian(user1);
 
         System.out.println("\nWrong user operation");
-        controller.viewAllBooks();
+        controller.viewAllBooks(user1);
 
         System.out.println("\nCorrect user operation");
-        controller.login(user2);
-        controller.viewAllBooks();
+        controller.viewAllBooks(user2);
 
         System.out.println("\nCorrect user operation, book is available to get");
-        controller.issueBook(book3, user3);
-        controller.viewAllBooks();
-        controller.viewIssuedBooks();
+        controller.issueBook(user2, "3C@A", user3);
+        controller.viewAllBooks(user2);
+        controller.viewIssuedBooks(user2);
 
         System.out.println("\nCorrect user operation, book is NOT available to get");
-        controller.issueBook(book3, user4);
-        controller.viewAllBooks();
-        controller.viewIssuedBooks();
+        controller.issueBook(user2, "3C@A", user4);
+        controller.viewAllBooks(user2);
+        controller.viewIssuedBooks(user2);
 
         System.out.println("\nCorrect user operation, book returned");
-        controller.returnBook(book3, user3);
-        controller.viewAllBooks();
-        controller.viewIssuedBooks();
+        controller.returnBook(user2, "3C@A", user3);
+        controller.viewAllBooks(user2);
+        controller.viewIssuedBooks(user2);
 
     }
 }

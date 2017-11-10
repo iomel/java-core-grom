@@ -2,23 +2,25 @@ package Tasks.library2.model;
 
 
 import java.util.Date;
-import java.util.HashSet;
+import java.util.Random;
 
 public class Book {
+    private long id;
     private String callNo;
     private String name;
     private String author;
     private String publisher;
     private Date addedDate;
-    private int quantity;
-    private int issued;
-    private HashSet<Long> readers = new HashSet<>();
+    private Date issuedDate;
+    private boolean issued = false;
+    private User reader;
 
-    public Book(String callNo, String name, int quantity) {
+    public Book(String callNo, String name) {
+        Random rand = new Random();
+        long newId = rand.nextLong();
+        this.id = newId>0 ? newId : newId*(-1);
         this.callNo = callNo;
         this.name = name;
-        this.quantity = quantity;
-        this.issued = 0;
         this.addedDate = new Date();
     }
 
@@ -30,36 +32,36 @@ public class Book {
         return name;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public long getId() {
+        return id;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public Date getIssuedDate() {
+        return issuedDate;
     }
 
-    public int getIssued() {
+    public boolean isIssued() {
         return issued;
     }
 
-    public void setIssued(int issued) {
+    public void setIssued(boolean issued) {
         this.issued = issued;
+        this.issuedDate = issued ? new Date() : null;
     }
 
-    public void setReader(long id) {
-        this.readers.add(id);
+    public void setReader(User reader) {
+        this.reader = reader;
     }
 
-    public void removeReader(long id){
-        this.readers.remove(id);
-    }
+    public void dropReader(){this.reader = null;}
 
     @Override
     public String toString() {
         return "Book{" +
-                "  callNo='" + callNo + '\'' +
+                "id=" + id +
+                ", callNo='" + callNo + '\'' +
                 ", name='" + name + '\'' +
-                ", quantity=" + quantity +
-                ", issued=" + issued + '}';
+                ", issued=" + issued +
+                '}';
     }
 }
