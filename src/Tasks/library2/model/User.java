@@ -12,6 +12,7 @@ public class User {
     private String address;
     private String city;
     private String contact;
+    private boolean active = false;
     private Role role;
     private HashSet<Book> books;
 
@@ -22,6 +23,10 @@ public class User {
         this.role = role;
         if (role == Role.Visitor)
             books = new HashSet<>();
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public long getId() {
@@ -38,6 +43,10 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public HashSet<Book> getBooks() {

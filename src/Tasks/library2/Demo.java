@@ -38,6 +38,7 @@ public class Demo {
         controller.viewLibrarian(user3);
 
         System.out.println("\nCorrect user operation");
+        controller.login(user1);
         controller.addLibrarian(user1, user2);
         controller.addLibrarian(user1, user5);
         controller.viewLibrarian(user1);
@@ -50,6 +51,7 @@ public class Demo {
         controller.viewAllBooks(user1);
 
         System.out.println("\nCorrect user operation");
+        controller.login(user2);
         controller.viewAllBooks(user2);
 
         System.out.println("\nCorrect user operation, book is available to get");
