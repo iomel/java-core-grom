@@ -12,7 +12,7 @@ public class User {
     private String address;
     private String city;
     private String contact;
-    private boolean active = false;
+    private String sessionID;
     private Role role;
     private HashSet<Book> books;
 
@@ -25,10 +25,6 @@ public class User {
             books = new HashSet<>();
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
     public long getId() {
         return id;
     }
@@ -37,16 +33,20 @@ public class User {
         return name;
     }
 
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public Role getRole() {
         return role;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public HashSet<Book> getBooks() {

@@ -29,14 +29,18 @@ public class UserDAO {
         }
     }
 
+
     public boolean hasUser(User user) {
-        if(user != null) {
-            for (User u : users)
-                if (u.getName().equals(user.getName()) && u.getPassword().equals(user.getPassword()))
-                    return true;
-        }
+        if(user != null && users.contains(user))
+            return true;
+
+        if (user == null)
+            System.out.println("Error - NULL user parameter!");
+        else
+            System.out.println("Error - wrong [Username : Password] or user is not available!");
         return false;
     }
+
     public HashSet<User> getUsers() {
         return users;
     }
