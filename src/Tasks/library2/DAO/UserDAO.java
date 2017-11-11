@@ -52,6 +52,12 @@ public class UserDAO {
                 usersWithRole.add(user);
         return usersWithRole;
     }
+    public User getUser(String sessionID){
+        for (User user : users)
+            if(user.getSessionID().equals(sessionID))
+                return user;
+        return null;
+    }
 
     private boolean hasDuplicate(User user){
         for (User u : users)

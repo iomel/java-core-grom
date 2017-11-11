@@ -36,6 +36,10 @@ public class Book {
         return id;
     }
 
+    public User getReader() {
+        return reader;
+    }
+
     public Date getIssuedDate() {
         return issuedDate;
     }

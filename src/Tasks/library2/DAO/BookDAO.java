@@ -27,6 +27,13 @@ public class BookDAO {
         return books;
     }
 
+    public HashSet<Book> getBooks(User user){
+        HashSet<Book> readerBooks = new HashSet<>();
+        for(Book book : books)
+            if (book.getReader()!= null && book.getReader().getId() == user.getId())
+                readerBooks.add(book);
+        return readerBooks;
+    }
     public HashSet<Book> getIssuedBooks() {
         HashSet<Book> issuedBooks = new HashSet<>();
         for(Book book : books)
@@ -53,12 +60,6 @@ public class BookDAO {
         }
     }
 
-    private boolean hasDuplicate(Book book){
-        for (Book b : books)
-            if(b.getCallNo().equals(book.getCallNo()))
-                return true;
-        return false;
-    }
 
     private int getQuantity(String callNo){
         int quantity = 0;
