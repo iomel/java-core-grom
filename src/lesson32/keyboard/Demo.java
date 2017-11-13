@@ -1,7 +1,5 @@
 package lesson32.keyboard;
 
-import lesson11.biginterfaceexample.Readable;
-
 import java.io.IOException;
 
 public class Demo {
