@@ -42,7 +42,7 @@ public class Controller {
 
     public void addBook(Session session, Book book, int quantity) {
         if(hasAccess(session))  // Access check to invoke the method
-            bookDAO.add(book, quantity);
+            bookDAO.addBook(book, quantity);
     }
 
     public void viewAllBooks(Session session){
@@ -139,7 +139,7 @@ public class Controller {
     }
 
     void addTestBook(Book book, int quantity){
-        bookDAO.add(book, quantity);
+        bookDAO.addBook(book, quantity);
     }
 
 }

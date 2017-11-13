@@ -4,6 +4,7 @@ import Tasks.library2.model.Book;
 import Tasks.library2.model.User;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class BookDAO {
     private static BookDAO instance;
@@ -17,11 +18,53 @@ public class BookDAO {
         return instance;
     }
 
-    public void add(Book book, int quantity){
-        if(book != null)
-            for (int i = 0; i < quantity; i++)
-                books.add(new Book(book.getCallNo(), book.getName()));
+    public void addBook(Book book, int quantity){
+        HashSet<Book> newBooks = new HashSet<>();
+        HashSet<Book> tempBooks = new HashSet<>(books);
+        if(book != null) {
+            for (int i = 0; i < quantity; i++) {
+                try {
+                    newBooks.add(new Book(book.getCallNo(), book.getName()));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            if (newBooks.size() == quantity) {
+                try {
+                    books.addAll(newBooks);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    books = tempBooks;
+                }
+            }
+        }
     }
+
+    public void addBook(Book book){
+        HashSet<Book> tempBooks = new HashSet<>(books);
+        if(book != null) {
+            try {
+                if(!books.add(book))
+                    throw new Exception("Can't add this book" + book.getCallNo() + book.getId());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                books = tempBooks;
+            }
+        }
+    }
+
+    public void addBook(Set<Book> newBooks) {
+        HashSet<Book> tempBooks = new HashSet<>(books);
+        if (newBooks != null) {
+            try {
+                books.addAll(newBooks);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                books = tempBooks;
+            }
+        }
+    }
+
 
     public HashSet<Book> getBooks() {
         return books;
