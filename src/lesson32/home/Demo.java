@@ -9,7 +9,6 @@ public class Demo {
         Solution solution = new Solution();
         System.out.println("Summ is: " + solution.readNumbers());
 
-        System.out.println("Summ is: " + solution.readNumbers());
 
     }
 

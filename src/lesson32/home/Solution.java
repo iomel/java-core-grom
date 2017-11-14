@@ -8,56 +8,46 @@ public class Solution {
 
     public int readNumbers () throws IOException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String[] numbers;
+        String[] numbers = null;
+        int sum = 0;
 
         int count = 3;
         while (count != 0) {
             System.out.println("Please input string with 10 numbers:");
-            numbers = whiteSpaceTrim(reader.readLine());
-            if(isTenNumbers(numbers))
-                return getSumm(numbers);
+            numbers = validate(reader.readLine());
+            if(numbers != null)
+                break;
 
             System.out.println("Your numbers are wrong. " +
                     (--count > 0 ? "You have " + count + " attempts to try again" : "Number of attempts exceeded"));
         }
-        return 0;
-    }
 
-    private boolean isTenNumbers(String[] numbers){
-        if (numbers.length == 10){
+        if (numbers != null)
             for (String number : numbers)
-                if(!(isNumber(number) && Integer.parseInt(number)<=100))
-                    return false;
-            return true;
-        }
-        return false;
+                sum += Integer.parseInt(number);
+
+        return sum;
     }
 
-    private boolean isNumber (String word) {
-        if (word != null && !word.isEmpty() && word.length()<=3) {
-            for (char ch : word.toCharArray())
-                if (!Character.isDigit(ch))
-                    return false;
-            return true;
-        }
-        return false;
-    }
+    private String[] validate (String input) {
+        if (input == null || input.isEmpty())
+            return null;
 
-    private String[] whiteSpaceTrim(String input){
-        String[] numbers = null;
-        if (!input.isEmpty() && input != null){
-            while (input.contains("  "))
-                input = input.replaceAll("  ", " ").trim();
-            numbers = input.split(" ");
+        while (input.contains("  "))
+           input = input.replaceAll("  ", " ").trim();
+
+        String[] numbers = input.split(" ").length == 10 ? input.split(" ") : null;
+
+        if (numbers != null) {
+            for (String number : numbers) {
+                for (char ch : number.toCharArray())
+                    if (!Character.isDigit(ch))
+                        return null;
+                if (Integer.parseInt(number) > 100)
+                    return null;
+            }
         }
         return numbers;
-    }
-
-    private int getSumm (String[] words) {
-        int sum = 0;
-        for (String num : words)
-            sum += Integer.parseInt(num);
-        return sum;
     }
 
 }
