@@ -11,23 +11,23 @@ public class Solution {
         int sum = 0;
 
         int count = 3;
-        while (count != 0 && sum == 0) {
+        while (count != 0) {
             System.out.println("Please input string with 10 numbers:");
             String[] numbers = validate(reader.readLine());
             if(numbers != null) {
                 for (String number : numbers)
                     sum += Integer.parseInt(number);
-            } else {
-                System.out.println("Your numbers are wrong. " +
-                        (--count > 0 ? "You have " + count + " attempts to try again" : "Number of attempts exceeded"));
+                return sum;
             }
+            System.out.println("Your numbers are wrong. " +
+                (--count > 0 ? "You have " + count + " attempts to try again" : "Number of attempts exceeded"));
         }
         return sum;
     }
 
     private String[] validate (String input) {
         boolean mismatch = false;
-        String[] numbers = input.replaceAll(" {2,}", " ").trim().split(" ");
+        String[] numbers = input.split(" ");
 
         if (numbers.length == 10) {
             for (String number : numbers)
