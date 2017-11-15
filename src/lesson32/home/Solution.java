@@ -26,19 +26,13 @@ public class Solution {
     }
 
     private String[] validate (String input) {
-        boolean mismatch = false;
         String[] numbers = input.split(" ");
 
-        if (numbers.length == 10) {
+        if (numbers.length == 10)
             for (String number : numbers)
-                if (!(isRightNumber(number) && Integer.parseInt(number) <= 100)) {
-                    mismatch = true;
-                    break;
-                }
-        } else
-            mismatch = true;
-
-        return mismatch ? null : numbers;
+                if (!(isRightNumber(number) && Integer.parseInt(number) <= 100))
+                    return null;
+        return numbers.length != 10 ? null : numbers;
     }
 
     private boolean isRightNumber (String number){
