@@ -1,12 +1,28 @@
-package lesson33;
+package lesson33.home2;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 
-public class ReadWriteFile {
+public class Solution {
+    public void readFileByConsolePath(){
+        InputStreamReader console = new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(console);
+        String path = "";
+        System.out.println("Please, enter file path to read:");
 
-    public void readFile(String path){
+        try {
+            path = reader.readLine();
+        } catch (IOException e) {
+            System.out.println("Can't read from console!");
+        } finally {
+            IOUtils.closeQuietly(reader);
+            IOUtils.closeQuietly(console);
+        }
+        readFile(path);
+    }
+
+    private void readFile(String path){
         FileReader streamReader;
         try {
             streamReader = new FileReader(path);
@@ -26,21 +42,6 @@ public class ReadWriteFile {
         } finally {
             IOUtils.closeQuietly(reader);
             IOUtils.closeQuietly(streamReader);
-        }
-    }
-
-    public void writeFile(String path, String content){
-        FileWriter streamWriter = null;
-        BufferedWriter writer = null;
-        try {
-            streamWriter = new FileWriter(path, true);
-            writer = new BufferedWriter(streamWriter);
-            writer.append(content);
-        } catch(IOException e){
-            System.err.println("Can't write to file with path " + path);
-        } finally {
-            IOUtils.closeQuietly(writer);
-            IOUtils.closeQuietly(streamWriter);
         }
     }
 
