@@ -4,7 +4,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 
-public class Solution {
+public class Solution1 {
     public void readFileByConsolePath(){
         InputStreamReader console = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(console);
