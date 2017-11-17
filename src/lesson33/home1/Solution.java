@@ -12,13 +12,19 @@ public class Solution {
         BufferedReader reader = new BufferedReader(console);
         String textToWrite = "";
         String input;
+        boolean start = true;
 
         if (new File(path).exists()) {
             System.out.println("Enter file content to write in the file:");
 
             try {
-                while (!(input = reader.readLine()).equals("wr"))
-                    textToWrite = textToWrite.concat("\n").concat(input);
+                while (!(input = reader.readLine()).equals("wr")) {
+                    if (start) {
+                        textToWrite = textToWrite.concat(input);
+                        start = false;
+                    } else
+                        textToWrite = textToWrite.concat("\n").concat(input);
+                }
             } catch (IOException e) {
                 System.out.println("Can't read from console!");
             } finally {
