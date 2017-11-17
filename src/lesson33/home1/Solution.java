@@ -18,7 +18,7 @@ public class Solution {
 
             try {
                 while (!(input = reader.readLine()).equals("wr"))
-                    textToWrite = textToWrite.concat(input);
+                    textToWrite = textToWrite.concat("\n").concat(input);
             } catch (IOException e) {
                 System.out.println("Can't read from console!");
             } finally {
