@@ -7,17 +7,32 @@ public class Solution {
 
         validate(fileFromPath, fileToPath);
 
+        writeFile(fileToPath, readFile(fileFromPath));
+
+    }
+
+    private StringBuffer readFile(String path) throws Exception{
         StringBuffer content = new StringBuffer();
-        try (BufferedReader br = new BufferedReader(new FileReader(fileFromPath));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(fileToPath,true))){
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null)
                 content = content.append("\n").append(line);
-            bw.append(new StringBuffer(content.substring(1)));
+            content = new StringBuffer(content.substring(1));
         } catch (FileNotFoundException e){
-            System.err.println("File not found!");
+            throw new FileNotFoundException("File not found! " + path);
         } catch (IOException e){
-            System.err.println(e.getMessage());
+            throw new IOException("Can't read file " + path);
+        }
+        return content;
+    }
+
+    private void writeFile(String path, StringBuffer content) throws Exception{
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path,true))){
+            bw.append(content);
+        } catch (FileNotFoundException e){
+            throw new FileNotFoundException("File not found! " + path);
+        } catch (IOException e){
+            throw new IOException("Can't read file " + path);
         }
     }
 
