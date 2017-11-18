@@ -18,8 +18,6 @@ public class Solution {
             while ((line = br.readLine()) != null)
                 content = content.append("\n").append(line);
             content = new StringBuffer(content.substring(1));
-        } catch (FileNotFoundException e){
-            throw new FileNotFoundException("File not found! " + path);
         } catch (IOException e){
             throw new IOException("Can't read file " + path);
         }

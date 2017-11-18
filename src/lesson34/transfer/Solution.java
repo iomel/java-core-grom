@@ -3,33 +3,45 @@ package lesson34.transfer;
 import java.io.*;
 
 public class Solution {
-    public void transferFileContent(String fileFromPath, String fileToPath) throws Exception{
+
+    public void transferFileContent(String fileFromPath, String fileToPath) throws Exception {
+
         validate(fileFromPath, fileToPath);
 
-        String content = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(fileFromPath));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(fileToPath,true))){
+        writeFile(fileToPath, readFile(fileFromPath));
 
-            while (br.ready())
-                content = content.concat("\n").concat(br.readLine());
-            content = (new File(fileToPath).length() == 0) ? content.substring(1) : content;
-            bw.append(content);
-            bw.flush();
-        } catch (FileNotFoundException e){
-            System.err.println("File not found!");
-        } catch (IOException e){
-            System.err.println(e.getMessage());
-        }
-
-        try (  BufferedWriter fileToClear = new BufferedWriter(new FileWriter(fileFromPath))){
+        try (BufferedWriter fileToClear = new BufferedWriter(new FileWriter(fileFromPath))) {
             fileToClear.write("");
-        } catch (FileNotFoundException e){
-            System.err.println(e.getMessage());
+        } catch (IOException e) {
+            throw new IOException("Can't clear file " + fileFromPath);
         }
 
     }
 
-    private void validate(String fileFromPath, String fileToPath) throws Exception{
+    private StringBuffer readFile(String path) throws Exception {
+        StringBuffer content = new StringBuffer();
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null)
+                content = content.append("\n").append(line);
+            content = new StringBuffer(content.substring(1));
+        } catch (IOException e) {
+            throw new IOException("Can't read file " + path);
+        }
+        return content;
+    }
+
+    private void writeFile(String path, StringBuffer content) throws Exception {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
+            bw.append(content);
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("File not found! " + path);
+        } catch (IOException e) {
+            throw new IOException("Can't read file " + path);
+        }
+    }
+
+    private void validate(String fileFromPath, String fileToPath) throws Exception {
         File fileFrom = new File(fileFromPath);
         File fileTo = new File(fileToPath);
         if (!fileFrom.exists())
@@ -41,5 +53,4 @@ public class Solution {
         if (!fileTo.canWrite())
             throw new Exception("Can't write to file" + fileTo);
     }
-
 }
