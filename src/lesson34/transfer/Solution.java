@@ -34,8 +34,6 @@ public class Solution {
     private void writeFile(String path, StringBuffer content) throws Exception {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
             bw.append(content);
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("File not found! " + path);
         } catch (IOException e) {
             throw new IOException("Can't read file " + path);
         }
