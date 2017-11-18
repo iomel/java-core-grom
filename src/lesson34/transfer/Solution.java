@@ -35,7 +35,7 @@ public class Solution {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
             bw.append(content);
         } catch (IOException e) {
-            throw new IOException("Can't read file " + path);
+            throw new IOException("Can't write file " + path);
         }
     }
 
