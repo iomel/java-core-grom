@@ -4,22 +4,23 @@ import java.io.*;
 
 public class Solution {
     public  void copyFileContent(String fileFromPath, String fileToPath) throws Exception{
+
         validate(fileFromPath, fileToPath);
 
-        String content = "";
+        StringBuffer content = new StringBuffer();
         try (BufferedReader br = new BufferedReader(new FileReader(fileFromPath));
              BufferedWriter bw = new BufferedWriter(new FileWriter(fileToPath,true))){
 
             while (br.ready())
-                content = content.concat("\n").concat(br.readLine());
-            content = content.substring(1);
-            bw.append(content);
+                content = content.append("\n").append(br.readLine());
+            bw.append(new StringBuffer(content.substring(1)));
             bw.flush();
         } catch (FileNotFoundException e){
             System.err.println("File not found!");
         } catch (IOException e){
             System.err.println(e.getMessage());
         }
+
 
     }
 
