@@ -10,18 +10,15 @@ public class Solution {
         StringBuffer content = new StringBuffer();
         try (BufferedReader br = new BufferedReader(new FileReader(fileFromPath));
              BufferedWriter bw = new BufferedWriter(new FileWriter(fileToPath,true))){
-
-            while (br.ready())
-                content = content.append("\n").append(br.readLine());
+            String line;
+            while ((line = br.readLine()) != null)
+                content = content.append("\n").append(line);
             bw.append(new StringBuffer(content.substring(1)));
-            bw.flush();
         } catch (FileNotFoundException e){
             System.err.println("File not found!");
         } catch (IOException e){
             System.err.println(e.getMessage());
         }
-
-
     }
 
     private void validate(String fileFromPath, String fileToPath) throws Exception{
