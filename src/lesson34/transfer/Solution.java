@@ -7,19 +7,17 @@ public class Solution {
     public void transferFileContent(String fileFromPath, String fileToPath) throws Exception {
         validate(fileFromPath, fileToPath);
 
-        // Create backup files before transfer
-        makeTMP(fileFromPath);
-        makeTMP(fileToPath);
-
-        // save content before transfer
-        StringBuffer content = readFile(fileFromPath);
+        // Create backup of files before transfer
+        // and save content before transfer
+        StringBuffer sourceContent = readFile(fileFromPath);
+        StringBuffer destinationContent = readFile(fileToPath);
 
         // Try to copy content to destination
         try {
-            writeFile(fileToPath, content, true);
+            writeFile(fileToPath, sourceContent, true);
         } catch (IOException e){
             // In case of error restore destination file from backup file
-            restore(fileToPath);
+            writeFile(fileToPath, destinationContent, false);
             throw new IOException(e.getMessage());
         }
 
@@ -28,8 +26,8 @@ public class Solution {
             writeFile(fileFromPath, new StringBuffer(""), false);
         } catch (IOException e){
             // In case of error restore all files from backup files
-            restore(fileToPath);
-            restore(fileFromPath);
+            writeFile(fileToPath, destinationContent, false);
+            writeFile(fileFromPath, sourceContent, false);
             throw new IOException(e.getMessage());
         }
     }
@@ -68,18 +66,5 @@ public class Solution {
             throw new Exception("Can't transfer from file " + fileFromPath);
         if (!fileTo.canWrite() || !fileTo.canWrite())
             throw new Exception("Can't transfer to to file " + fileToPath);
-    }
-
-    private void makeTMP (String path) throws Exception{
-        File tmpFile = new File(path + ".tmp");
-        tmpFile.deleteOnExit();
-        writeFile(tmpFile.getPath(), readFile(path), false);
-    }
-
-    private void restore(String path){
-        File fileToRestore = new File(path);
-        File tmpFile = new File(path + ".tmp");
-        fileToRestore.delete();
-        tmpFile.renameTo(fileToRestore);
     }
 }
