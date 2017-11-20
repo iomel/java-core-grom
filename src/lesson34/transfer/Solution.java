@@ -13,21 +13,16 @@ public class Solution {
         StringBuffer destinationContent = readFile(fileToPath);
 
         // Try to copy content to destination
+        boolean successfulWrite = false;
         try {
             writeFile(fileToPath, sourceContent, true);
-        } catch (IOException e){
-            // In case of error restore destination file from backup file
-            writeFile(fileToPath, destinationContent, false);
-            throw new IOException(e.getMessage());
-        }
-
-        // Try to clear source file to finish transfer
-        try {
+            successfulWrite = true;
             writeFile(fileFromPath, new StringBuffer(""), false);
         } catch (IOException e){
             // In case of error restore all files from backup files
             writeFile(fileToPath, destinationContent, false);
-            writeFile(fileFromPath, sourceContent, false);
+            if (successfulWrite)
+                writeFile(fileFromPath, sourceContent, false);
             throw new IOException(e.getMessage());
         }
     }

@@ -9,9 +9,24 @@ public class Solution {
     public void transferSentences(String fileFromPath, String fileToPath, String word) throws Exception {
         validate(fileFromPath, fileToPath);
 
-        HashMap<String, ArrayList<String>> dividedSentences = divideText(readFile(fileFromPath), word);
-        writeFile(fileToPath, prepareContentForLoad(dividedSentences.get("hasWord")));
-        writeFile(fileFromPath, prepareContentForLoad(dividedSentences.get("noWord")));
+        // Create backup of files before transfer and save content before transfer
+        String sourceContent = readFile(fileFromPath);
+        String destinationContent = readFile(fileToPath);
+
+        // divide content for two parts : WITH WORD  - key "hasWord" | WITHOUT WORD key "noWord"
+        HashMap<String, ArrayList<String>> dividedSentences = divideText(sourceContent, word);
+
+        try {
+            writeFile(fileToPath, prepareContentForLoad(dividedSentences.get("hasWord")), true);
+            writeFile(fileFromPath, prepareContentForLoad(dividedSentences.get("noWord")), false);
+        } catch (IOException e){
+            // In case of error restore all files
+            writeFile(fileToPath, destinationContent, false);
+            if (e.getMessage().contains(fileFromPath))
+                writeFile(fileFromPath, sourceContent, false);
+            throw new IOException(e.getMessage());
+        }
+
 
     }
 
@@ -20,13 +35,11 @@ public class Solution {
         ArrayList<String> hasNoWord = new ArrayList<>();
         HashMap<String, ArrayList<String>> result = new HashMap<>();
 
-        for (String sentence : content.split("\\.")) {
-            System.out.println(sentence);
+        for (String sentence : content.split("\\."))
             if (sentence.length() > 10 && sentence.contains(word))
                 hasWord.add(sentence);
             else
                 hasNoWord.add(sentence);
-        }
 
         result.put("hasWord", hasWord);
         result.put("noWord", hasNoWord);
@@ -37,7 +50,6 @@ public class Solution {
         String result = "";
         for (String phrase : sentences)
             result = result.concat(phrase).concat(".");
-
         return result;
     }
 
@@ -47,7 +59,8 @@ public class Solution {
             String line;
             while ((line = br.readLine()) != null)
                 content = content.concat("\n").concat(line);
-            content = content.substring(1);
+            if(content.length() > 1)
+                content = content.substring(1);
         } catch (IOException e) {
             throw new IOException("Can't read file " + path);
         }
@@ -73,18 +86,5 @@ public class Solution {
             throw new Exception("Can't transfer from file " + fileFrom.getPath());
         if (!fileTo.canWrite() || !fileTo.canWrite())
             throw new Exception("Can't transfer to file " + fileTo.getPath());
-    }
-
-    private void makeTMP (String path) throws Exception{
-        File tmpFile = new File(path + ".tmp");
-        tmpFile.deleteOnExit();
-        writeFile(tmpFile.getPath(), readFile(path), false);
-    }
-
-    private void restore(String path){
-        File fileToRestore = new File(path);
-        File tmpFile = new File(path + ".tmp");
-        fileToRestore.delete();
-        tmpFile.renameTo(fileToRestore);
     }
 }
