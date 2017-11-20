@@ -1,8 +1,6 @@
 package lesson34.sentences;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Solution {
 
@@ -13,45 +11,33 @@ public class Solution {
         String sourceContent = readFile(fileFromPath);
         String destinationContent = readFile(fileToPath);
 
-        // divide content for two parts : WITH WORD  - key "hasWord" | WITHOUT WORD key "noWord"
-        HashMap<String, ArrayList<String>> dividedSentences = divideText(sourceContent, word);
+        // divide content for two parts : WITH WORD  - 0 index element | WITHOUT WORD  - 1 index element
+        String[] phrases = divideText(sourceContent, word);  // 0 - has word  |  1 - no word sentences
 
-        try {
-            writeFile(fileToPath, prepareContentForLoad(dividedSentences.get("hasWord")), true);
-            writeFile(fileFromPath, prepareContentForLoad(dividedSentences.get("noWord")), false);
-        } catch (IOException e){
+         try {
+            if (phrases[0].length() > 0) {
+                writeFile(fileToPath, phrases[0], true);
+                writeFile(fileFromPath, phrases[1], false);
+            }
+         } catch (IOException e){
             // In case of error restore all files
             writeFile(fileToPath, destinationContent, false);
             if (e.getMessage().contains(fileFromPath))
                 writeFile(fileFromPath, sourceContent, false);
             throw new IOException(e.getMessage());
         }
-
-
     }
 
-    private HashMap<String, ArrayList<String>> divideText(String content, String word) {
-        ArrayList<String> hasWord = new ArrayList<>();
-        ArrayList<String> hasNoWord = new ArrayList<>();
-        HashMap<String, ArrayList<String>> result = new HashMap<>();
-
+    private String[] divideText(String content, String word) {
+        String[] result = new String[] {"",""};
         for (String sentence : content.split("\\."))
             if (sentence.length() > 10 && sentence.contains(word))
-                hasWord.add(sentence);
+                result[0] = result[0].concat(sentence).concat(".");
             else
-                hasNoWord.add(sentence);
-
-        result.put("hasWord", hasWord);
-        result.put("noWord", hasNoWord);
+                result[1] = result[1].concat(sentence).concat(".");
         return result;
     }
 
-    private String prepareContentForLoad(ArrayList<String> sentences) {
-        String result = "";
-        for (String phrase : sentences)
-            result = result.concat(phrase).concat(".");
-        return result;
-    }
 
     private String readFile(String path) throws Exception {
         String content = new String();
