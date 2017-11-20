@@ -54,13 +54,11 @@ public class Solution {
         return content;
     }
 
-    private void writeFile(String path, String content) throws Exception {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
+    private void writeFile(String path, String content, boolean param) throws Exception {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, param))) {
             bw.append(content);
-        } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("File not found! " + path);
         } catch (IOException e) {
-            throw new IOException("Can't read file " + path);
+            throw new IOException("Can't write to file " + path);
         }
     }
 
@@ -68,12 +66,25 @@ public class Solution {
         File fileFrom = new File(fileFromPath);
         File fileTo = new File(fileToPath);
         if (!fileFrom.exists())
-            throw new FileNotFoundException("File " + fileFrom + "does not exist");
+            throw new FileNotFoundException("File " + fileFrom.getPath() + " does not exist");
         if (!fileTo.exists())
-            throw new FileNotFoundException("File " + fileTo + "does not exist");
+            throw new FileNotFoundException("File " + fileTo.getPath() + " does not exist");
         if (!fileFrom.canRead() || !fileFrom.canWrite())
-            throw new Exception("Can't read\\clear file" + fileFrom);
-        if (!fileTo.canWrite())
-            throw new Exception("Can't write to file" + fileTo);
+            throw new Exception("Can't transfer from file " + fileFrom.getPath());
+        if (!fileTo.canWrite() || !fileTo.canWrite())
+            throw new Exception("Can't transfer to file " + fileTo.getPath());
+    }
+
+    private void makeTMP (String path) throws Exception{
+        File tmpFile = new File(path + ".tmp");
+        tmpFile.deleteOnExit();
+        writeFile(tmpFile.getPath(), readFile(path), false);
+    }
+
+    private void restore(String path){
+        File fileToRestore = new File(path);
+        File tmpFile = new File(path + ".tmp");
+        fileToRestore.delete();
+        tmpFile.renameTo(fileToRestore);
     }
 }
