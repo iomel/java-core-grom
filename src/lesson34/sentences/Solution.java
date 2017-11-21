@@ -11,16 +11,22 @@ public class Solution {
         String sourceContent = readFile(fileFromPath);
         String destinationContent = readFile(fileToPath);
 
-        // divide content for two parts : WITH WORD  - 0 index element | WITHOUT WORD  - 1 index element
-        String[] phrases = divideText(sourceContent, word);  // 0 - has word  |  1 - no word sentences
+        // divide content for two parts : WITH WORD | WITHOUT WORD
+        String hasWord = "";
+        String noWord = "";
+        for (String sentence : sourceContent.split("\\."))
+            if (sentence.length() > 10 && sentence.contains(word))
+                hasWord = hasWord.concat(sentence).concat(".");
+            else
+                noWord = noWord.concat(sentence).concat(".");
 
          try {
-            if (phrases[0].length() > 0) {
-                writeFile(fileToPath, phrases[0], true);
-                writeFile(fileFromPath, phrases[1], false);
+            if (!hasWord.isEmpty()) {
+                writeFile(fileToPath, hasWord, true);
+                writeFile(fileFromPath, noWord, false);
             }
          } catch (IOException e){
-            // In case of error restore all files
+            // In case of error in destination write - restore fileTo , otherwise restore all files
             writeFile(fileToPath, destinationContent, false);
             if (e.getMessage().contains(fileFromPath))
                 writeFile(fileFromPath, sourceContent, false);
@@ -28,19 +34,9 @@ public class Solution {
         }
     }
 
-    private String[] divideText(String content, String word) {
-        String[] result = new String[] {"",""};
-        for (String sentence : content.split("\\."))
-            if (sentence.length() > 10 && sentence.contains(word))
-                result[0] = result[0].concat(sentence).concat(".");
-            else
-                result[1] = result[1].concat(sentence).concat(".");
-        return result;
-    }
-
 
     private String readFile(String path) throws Exception {
-        String content = new String();
+        String content = "";
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null)
@@ -65,12 +61,12 @@ public class Solution {
         File fileFrom = new File(fileFromPath);
         File fileTo = new File(fileToPath);
         if (!fileFrom.exists())
-            throw new FileNotFoundException("File " + fileFrom.getPath() + " does not exist");
+            throw new FileNotFoundException("File " + fileFromPath + " does not exist");
         if (!fileTo.exists())
-            throw new FileNotFoundException("File " + fileTo.getPath() + " does not exist");
+            throw new FileNotFoundException("File " + fileToPath + " does not exist");
         if (!fileFrom.canRead() || !fileFrom.canWrite())
-            throw new Exception("Can't transfer from file " + fileFrom.getPath());
+            throw new IOException("Can't transfer from file " + fileFromPath);
         if (!fileTo.canWrite() || !fileTo.canWrite())
-            throw new Exception("Can't transfer to file " + fileTo.getPath());
+            throw new IOException("Can't transfer to file " + fileToPath);
     }
 }
