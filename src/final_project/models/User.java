@@ -1,9 +1,11 @@
 package final_project.models;
 
-import final_project.utils.Entity;
+import final_project.utils.BaseEntity;
 import final_project.utils.UserType;
 
-public class User implements Entity, Comparable<User>{
+import java.util.Random;
+
+public class User implements BaseEntity, Comparable<User>{
 
     private long id;
     private String userName;
@@ -11,8 +13,9 @@ public class User implements Entity, Comparable<User>{
     private String country;
     private UserType userType;
 
-    public User(long id, String userName, String password, String country, UserType userType) {
-        this.id = id;
+    public User(String userName, String password, String country, UserType userType) {
+        long newId = new Random().nextInt();
+        this.id = newId > 0 ? newId : newId * (-1);
         this.userName = userName;
         this.password = password;
         this.country = country;
@@ -61,21 +64,11 @@ public class User implements Entity, Comparable<User>{
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", country='" + country + '\'' +
-                ", userType=" + userType +
-                '}';
+        return id +"," + userName +"," + password + "," + country + "," + userType + "\n";
     }
 
     public int compareTo(User other){
        return Long.compare(this.getId(),other.getId());
-    }
-
-    public String toDBEntity() {
-        return id +"," + userName +"," + password + "," + country + "," + userType + "\n";
     }
 
 }

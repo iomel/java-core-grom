@@ -12,23 +12,14 @@ public class UserDAO extends GeneralDAO<User> {
     private static final String PATH_DB = "E://Test//UserDB.txt";
 
     public User addUser(User user) throws Exception {
-        validateUser(user);
+        validate(user);
 
         add(PATH_DB, user);
         return user;
     }
 
     public void deleteUser(long id) throws Exception{
-        TreeSet<User> users = getAll();
-        String contentToWrite = "";
-
-        hasEntity(id);
-
-        for(User user : users)
-            if(user.getId() != id)
-               contentToWrite = contentToWrite.concat(user.toDBEntity());
-
-        FilesIO.writeFile(PATH_DB,contentToWrite, false);
+        delete(PATH_DB, id);
     }
 
     public TreeSet<User> getAll() throws Exception {
@@ -38,7 +29,6 @@ public class UserDAO extends GeneralDAO<User> {
         for(String user : loadedUsers)
             if(!user.isEmpty())
                 users.add(stringToUser(user));
-
         return users;
     }
 
@@ -50,18 +40,19 @@ public class UserDAO extends GeneralDAO<User> {
         String password = userParams[2];
         String country = userParams[3];
         UserType userType = UserType.valueOf(userParams[4]);
-
-        return new User(id, userName, password, country, userType);
+        User user = new User(userName, password, country, userType);
+        user.setId(id);
+        return user;
     }
 
-    private void validateUser(User user) throws Exception{
-        if(user == null)
+    private void validate(User item) throws Exception{
+        if(item == null)
             throw new IOException("validateUser error - user is NULL!");
 
-        hasDuplicate(user.getId());
+        hasDuplicate(item.getId());
 
-        if(user.getUserName() == null || user.getPassword() == null || user.getCountry() == null || user.getUserType() == null)
-            throw new IOException("validateUser error - user has NULL parameter! User ID:" + user.getId());
+        if(item.getUserName() == null || item.getPassword() == null || item.getCountry() == null || item.getUserType() == null)
+            throw new IOException("validate error - item has NULL parameter! " + item.getClass().getSimpleName() + " ID:" + item.getId());
     }
 
 }
