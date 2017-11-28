@@ -3,7 +3,6 @@ package final_project.DAO;
 import final_project.models.Hotel;
 import final_project.utils.FilesIO;
 
-import java.io.IOException;
 import java.util.TreeSet;
 
 public class HotelDAO extends GeneralDAO<Hotel>{
@@ -27,29 +26,8 @@ public class HotelDAO extends GeneralDAO<Hotel>{
 
         for(String hotel : loadedHotels)
             if(!hotel.isEmpty())
-                hotels.add(stringToHotel(hotel));
+                hotels.add(Hotel.stringToObject(hotel));
         return hotels;
     }
 
-    private Hotel stringToHotel(String hotelString){
-        String[] params = hotelString.split(",");
-
-        long id = Long.parseLong(params[0]);
-        String country = params[1];
-        String city = params[2];
-        String street = params[3];
-        Hotel hotel = new Hotel(country, city, street);
-        hotel.setId(id);
-        return hotel;
-    }
-
-    private void validate(Hotel item) throws Exception{
-        if(item == null)
-            throw new IOException("validate error - hotel is NULL!");
-
-        hasDuplicate(item.getId());
-
-        if(item.getCountry() == null || item.getCity() == null || item.getStreet() == null)
-            throw new IOException("validate error - item has NULL parameter! " + item.getClass().getSimpleName() + " ID:" + item.getId());
-    }
 }

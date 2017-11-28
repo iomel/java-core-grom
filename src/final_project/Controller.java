@@ -1,9 +1,11 @@
 package final_project;
 
 import final_project.DAO.HotelDAO;
+import final_project.DAO.OrderDAO;
 import final_project.DAO.RoomDAO;
 import final_project.DAO.UserDAO;
 import final_project.models.Hotel;
+import final_project.models.Order;
 import final_project.models.Room;
 import final_project.models.User;
 
@@ -11,6 +13,7 @@ public class Controller {
     private UserDAO userDAO = new UserDAO();
     private RoomDAO roomDAO = new RoomDAO();
     private HotelDAO hotelDAO = new HotelDAO();
+    private OrderDAO orderDAO = new OrderDAO();
 
     public void getUsers() throws Exception{
         System.out.println("_______________________________________________________________");
@@ -31,6 +34,9 @@ public class Controller {
         for (Room room : roomDAO.getAll())
             System.out.print(room.toString());
     }
+    public void addRoom(Room room) throws Exception {
+        roomDAO.addRoom(room);
+    }
 
     public void getHotels() throws Exception {
         System.out.println("_______________________________________________________________");
@@ -44,5 +50,19 @@ public class Controller {
 
     public void deleteHotel(long id) throws Exception {
         hotelDAO.deleteHotel(id);
+    }
+
+    public void getOrders() throws Exception {
+        System.out.println("_______________________________________________________________");
+        for (Order order : orderDAO.getAll())
+            System.out.print(order.toString());
+    }
+
+    public void addOrder(Order order) throws Exception {
+        orderDAO.addOrder(order);
+    }
+
+    public void deleteOrder(long id) throws Exception {
+        orderDAO.deleteOrder(id);
     }
 }

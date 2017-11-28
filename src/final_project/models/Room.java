@@ -43,7 +43,7 @@ public class Room implements BaseEntity, Comparable<Room> {
     @Override
     public String toString() {
         return id + "," + numberOfGuests + "," + price + "," + breakfastIncluded + "," + petsAllowed +
-                "," + dateAvailableFrom +"," + hotel.toString().replaceAll(",", ":");
+                "," + dateAvailableFrom.getTime() +"," + hotel.toString().replaceAll(",", ";");
     }
 
     public int getNumberOfGuests() {
@@ -69,4 +69,21 @@ public class Room implements BaseEntity, Comparable<Room> {
     public Hotel getHotel() {
         return hotel;
     }
+
+    public static Room stringToObject(String roomString){
+        String[] params = roomString.split(",");
+
+        long id = Long.parseLong(params[0]);
+        int numberOfGuests = Integer.parseInt(params[1]);
+        double price = Double.parseDouble(params[2]);
+        boolean breakfastIncluded = Boolean.parseBoolean(params[3]);
+        boolean petsAllowed = Boolean.parseBoolean(params[4]);
+        Date dateAvailableFrom = new Date(Long.parseLong(params[5]));
+        Hotel hotel = Hotel.stringToObject(params[6].replaceAll(";", ","));
+        Room room = new Room(numberOfGuests, price, breakfastIncluded, petsAllowed, dateAvailableFrom, hotel);
+        room.setId(id);
+        return room;
+    }
+
+
 }

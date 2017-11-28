@@ -71,4 +71,17 @@ public class User implements BaseEntity, Comparable<User>{
        return Long.compare(this.getId(),other.getId());
     }
 
+    public static User stringToObject(String userString){
+        String[] userParams = userString.split(",");
+
+        long id = Long.parseLong(userParams[0]);
+        String userName = userParams[1];
+        String password = userParams[2];
+        String country = userParams[3];
+        UserType userType = UserType.valueOf(userParams[4]);
+        User user = new User(userName, password, country, userType);
+        user.setId(id);
+        return user;
+    }
+
 }

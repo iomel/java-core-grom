@@ -18,21 +18,21 @@ public abstract class GeneralDAO<T extends BaseEntity> {
 
     abstract TreeSet<T> getAll() throws Exception;
 
-    protected void delete(String path, long id) throws Exception{
+    protected void delete(String path, long id) throws Exception {
         hasEntity(id);
 
         String content = FilesIO.readFile(path).concat("\n").replaceAll("\n\n", "\n");
         String itemToDelete = "";
-        for(T t : getAll())
-            if(t.getId() == id) {
+        for (T t : getAll())
+            if (t.getId() == id) {
                 itemToDelete = t.toString();
                 break;
             }
         content = content.replace(itemToDelete, "");
-        FilesIO.writeFile(path,content, false);
+        FilesIO.writeFile(path, content, false);
     }
 
-    protected void hasEntity(long id) throws Exception{
+    protected void hasEntity(long id) throws Exception {
         try {
             hasDuplicate(id);
         } catch (Exception e) {
@@ -41,10 +41,21 @@ public abstract class GeneralDAO<T extends BaseEntity> {
         throw new IOException("hasEntity method error - no such entity! BaseEntity ID:" + id);
     }
 
-    protected void hasDuplicate(long id) throws Exception{
+    protected void hasDuplicate(long id) throws Exception {
         for (T t : getAll())
-            if(t.getId() == id)
+            if (t.getId() == id)
                 throw new IOException("hasDuplicate error - duplicated entity! " + t.getClass().getSimpleName() + "_ID: " + id);
     }
 
+    protected void validate(T t) throws Exception {
+        if (t == null)
+            throw new IOException("validate error - user is NULL!");
+
+        hasDuplicate(t.getId());
+
+        String className = t.getClass().getSimpleName();
+        if (t.toString().contains("null") || t.toString().contains(",,"))
+            throw new IOException("validate error - " + className + " has empty parameter! " + className + " ID: " + t.getId());
+
+    }
 }

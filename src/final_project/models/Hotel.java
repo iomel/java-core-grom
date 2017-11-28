@@ -49,4 +49,17 @@ public class Hotel implements BaseEntity, Comparable<Hotel> {
     public String getStreet() {
         return street;
     }
+
+    public static Hotel stringToObject(String hotelString){
+        String[] params = hotelString.split(",");
+
+        long id = Long.parseLong(params[0]);
+        String country = params[1];
+        String city = params[2];
+        String street = params[3];
+        Hotel hotel = new Hotel(country, city, street);
+        hotel.setId(id);
+        return hotel;
+    }
+
 }

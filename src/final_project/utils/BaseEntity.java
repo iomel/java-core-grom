@@ -1,5 +1,5 @@
 package final_project.utils;
 
-public interface BaseEntity {
+public interface BaseEntity<T> {
     long getId();
 }
