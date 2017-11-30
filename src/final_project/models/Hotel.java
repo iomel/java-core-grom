@@ -7,13 +7,15 @@ import java.util.Random;
 public class Hotel implements BaseEntity, Comparable<Hotel> {
 
     private long id;
+    private String hotelName;
     private String country;
     private String city;
     private String street;
 
-    public Hotel(String country, String city, String street) {
+    public Hotel(String hotelName, String country, String city, String street) {
         long newId = new Random().nextInt();
         this.id = newId > 0 ? newId : newId * (-1);
+        this.hotelName = hotelName;
         this.country = country;
         this.city = city;
         this.street = street;
@@ -35,11 +37,15 @@ public class Hotel implements BaseEntity, Comparable<Hotel> {
 
     @Override
     public String toString() {
-        return id +"," + country +"," + city + "," + street + "\n";
+        return id +"," + hotelName + "," + country +"," + city + "," + street + "\n";
     }
 
     public String getCountry() {
         return country;
+    }
+
+    public String getHotelName() {
+        return hotelName;
     }
 
     public String getCity() {
@@ -54,10 +60,11 @@ public class Hotel implements BaseEntity, Comparable<Hotel> {
         String[] params = hotelString.split(",");
 
         long id = Long.parseLong(params[0]);
-        String country = params[1];
-        String city = params[2];
-        String street = params[3];
-        Hotel hotel = new Hotel(country, city, street);
+        String hotelName = params[1];
+        String country = params[2];
+        String city = params[3];
+        String street = params[4];
+        Hotel hotel = new Hotel(hotelName, country, city, street);
         hotel.setId(id);
         return hotel;
     }

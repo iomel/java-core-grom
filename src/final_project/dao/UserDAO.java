@@ -1,4 +1,4 @@
-package final_project.DAO;
+package final_project.dao;
 
 import final_project.models.User;
 import final_project.utils.FilesIO;

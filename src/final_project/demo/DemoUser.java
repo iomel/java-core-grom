@@ -1,4 +1,4 @@
-package final_project;
+package final_project.demo;
 
 import final_project.models.User;
 import final_project.utils.UserType;

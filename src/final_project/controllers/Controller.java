@@ -1,9 +1,9 @@
-package final_project;
+package final_project.controllers;
 
-import final_project.DAO.HotelDAO;
-import final_project.DAO.OrderDAO;
-import final_project.DAO.RoomDAO;
-import final_project.DAO.UserDAO;
+import final_project.dao.HotelDAO;
+import final_project.dao.OrderDAO;
+import final_project.dao.RoomDAO;
+import final_project.dao.UserDAO;
 import final_project.models.Hotel;
 import final_project.models.Order;
 import final_project.models.Room;

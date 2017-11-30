@@ -1,6 +1,6 @@
-package final_project;
+package final_project.demo;
 
-import final_project.models.Hotel;
+import final_project.controllers.Controller;
 
 public class DemoHotel {
     public static void main(String[] args) throws Exception{

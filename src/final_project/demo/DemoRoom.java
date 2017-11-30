@@ -1,5 +1,6 @@
-package final_project;
+package final_project.demo;
 
+import final_project.controllers.Controller;
 import final_project.models.Hotel;
 import final_project.models.Room;
 
