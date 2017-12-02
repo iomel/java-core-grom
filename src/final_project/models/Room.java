@@ -2,6 +2,7 @@ package final_project.models;
 
 import final_project.utils.BaseEntity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -14,6 +15,8 @@ public class Room implements BaseEntity, Comparable<Room> {
     private boolean petsAllowed;
     private Date dateAvailableFrom;
     private Hotel hotel;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d-MMM-yyyy");
 
     public Room(int numberOfGuests, double price, boolean breakfastIncluded, boolean petsAllowed, Date dateAvailableFrom, Hotel hotel) {
         long newId = new Random().nextInt();
@@ -43,27 +46,11 @@ public class Room implements BaseEntity, Comparable<Room> {
     @Override
     public String toString() {
         return id + "," + numberOfGuests + "," + price + "," + breakfastIncluded + "," + petsAllowed +
-                "," + dateAvailableFrom.getTime() +"," + hotel.toString().replaceAll(",", ";");
-    }
-
-    public int getNumberOfGuests() {
-        return numberOfGuests;
+                "," + simpleDateFormat.format(dateAvailableFrom) +"," + hotel.toString().replaceAll(",", ";");
     }
 
     public double getPrice() {
         return price;
-    }
-
-    public boolean isBreakfastIncluded() {
-        return breakfastIncluded;
-    }
-
-    public boolean isPetsAllowed() {
-        return petsAllowed;
-    }
-
-    public Date getDateAvailableFrom() {
-        return dateAvailableFrom;
     }
 
     public Hotel getHotel() {
@@ -84,6 +71,4 @@ public class Room implements BaseEntity, Comparable<Room> {
         room.setId(id);
         return room;
     }
-
-
 }

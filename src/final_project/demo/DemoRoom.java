@@ -9,7 +9,7 @@ import java.util.Date;
 public class DemoRoom {
     public static void main(String[] args) throws Exception{
         Controller controller = new Controller();
-        Hotel hotel1 = new Hotel("BG", "Varna", "Maevska");
+        Hotel hotel1 = new Hotel("IBIS","BG", "Varna", "Maevska");
         Room room1 = new Room(3, 134,false,false, new Date(), hotel1);
         controller.getRooms();
 

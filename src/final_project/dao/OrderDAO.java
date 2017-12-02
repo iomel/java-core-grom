@@ -10,10 +10,7 @@ public class OrderDAO extends GeneralDAO<Order> {
     private static final String PATH_DB = "E://Test//OrderDB.txt";
 
     public Order addOrder(Order order) throws Exception {
-        validate(order);
-
-        add(PATH_DB, order);
-        return order;
+        return add(PATH_DB, order);
     }
 
     public void deleteOrder(long id) throws Exception{

@@ -10,13 +10,10 @@ public class RoomDAO extends GeneralDAO<Room> {
     private static final String PATH_DB = "E://Test//RoomDB.txt";
 
     public Room addRoom(Room room) throws Exception {
-        validate(room);
-
-        add(PATH_DB, room);
-        return room;
+        return add(PATH_DB, room);
     }
 
-    public void deleteRoom(long id) throws Exception{
+    public void deleteRoom(long id) throws Exception {
         delete(PATH_DB, id);
     }
 

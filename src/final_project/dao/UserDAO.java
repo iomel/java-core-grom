@@ -10,10 +10,8 @@ public class UserDAO extends GeneralDAO<User> {
     private static final String PATH_DB = "E://Test//UserDB.txt";
 
     public User addUser(User user) throws Exception {
-        validate(user);
 
-        add(PATH_DB, user);
-        return user;
+        return add(PATH_DB, user);
     }
 
     public void deleteUser(long id) throws Exception{

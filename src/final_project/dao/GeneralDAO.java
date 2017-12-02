@@ -8,12 +8,14 @@ import java.util.TreeSet;
 
 public abstract class GeneralDAO<T extends BaseEntity> {
 
-    protected void add(String path, T t) throws IOException {
+    protected T add(String path, T t) throws Exception {
+        hasDuplicate(t.getId());
         try {
             FilesIO.writeFile(path, t.toString(), true);
         } catch (Exception e) {
             throw new IOException("Can't add " + t.getClass().getSimpleName() + " " + t.getId() + " " + e);
         }
+        return t;
     }
 
     abstract TreeSet<T> getAll() throws Exception;
@@ -47,15 +49,4 @@ public abstract class GeneralDAO<T extends BaseEntity> {
                 throw new IOException("hasDuplicate error - duplicated entity! " + t.getClass().getSimpleName() + "_ID: " + id);
     }
 
-    protected void validate(T t) throws Exception {
-        if (t == null)
-            throw new IOException("validate error - user is NULL!");
-
-        hasDuplicate(t.getId());
-
-        String className = t.getClass().getSimpleName();
-        if (t.toString().contains("null") || t.toString().contains(",,"))
-            throw new IOException("validate error - " + className + " has empty parameter! " + className + " ID: " + t.getId());
-
-    }
 }

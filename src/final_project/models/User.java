@@ -10,15 +10,17 @@ public class User implements BaseEntity, Comparable<User>{
     private long id;
     private String userName;
     private String password;
-    private String country;
+    private String country; // May be ENAM will be more useful here?
+    private int age;
     private UserType userType;
 
-    public User(String userName, String password, String country, UserType userType) {
+    public User(String userName, String password, String country, int age, UserType userType) {
         long newId = new Random().nextInt();
         this.id = newId > 0 ? newId : newId * (-1);
         this.userName = userName;
         this.password = password;
         this.country = country;
+        this.age = age;
         this.userType = userType;
     }
 
@@ -26,45 +28,34 @@ public class User implements BaseEntity, Comparable<User>{
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getPassword() {
+        return password;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public UserType getUserType() {
+        return userType;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public int getAge() {
+        return age;
     }
 
     public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public UserType getUserType() {
-        return userType;
-    }
-
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
 
     @Override
     public String toString() {
-        return id +"," + userName +"," + password + "," + country + "," + userType + "\n";
+        return id +"," + userName +"," + password + "," + country + "," + age + "," + userType + "\n";
     }
 
     public int compareTo(User other){
@@ -78,8 +69,9 @@ public class User implements BaseEntity, Comparable<User>{
         String userName = userParams[1];
         String password = userParams[2];
         String country = userParams[3];
-        UserType userType = UserType.valueOf(userParams[4]);
-        User user = new User(userName, password, country, userType);
+        int age = Integer.parseInt(userParams[4]);
+        UserType userType = UserType.valueOf(userParams[5]);
+        User user = new User(userName, password, country, age, userType);
         user.setId(id);
         return user;
     }

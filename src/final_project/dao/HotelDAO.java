@@ -10,10 +10,7 @@ public class HotelDAO extends GeneralDAO<Hotel>{
     private static final String PATH_DB = "E://Test//HotelDB.txt";
 
     public Hotel addHotel(Hotel hotel) throws Exception {
-        validate(hotel);
-
-        add(PATH_DB, hotel);
-        return hotel;
+        return add(PATH_DB, hotel);
     }
 
     public void deleteHotel(long id) throws Exception{

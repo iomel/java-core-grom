@@ -2,6 +2,7 @@ package final_project.models;
 
 import final_project.utils.BaseEntity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -13,6 +14,8 @@ public class Order implements BaseEntity, Comparable<Order> {
     private Date dateFrom;
     private Date dateTo;
     private double moneyPaid;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d-MMM-yyyy");
 
     public Order(User user, Room room, Date dateFrom, Date dateTo, double moneyPaid) {
         long newId = new Random().nextInt();
@@ -43,7 +46,7 @@ public class Order implements BaseEntity, Comparable<Order> {
         return id +
                 "," + user.toString().replaceAll(",", ":").replace("\n","") +
                 "," + room.toString().replaceAll(",", ":").replace("\n","") +
-                "," + dateFrom.getTime() + "," + dateTo.getTime() +
+                "," + simpleDateFormat.format(dateFrom) + "," + simpleDateFormat.format(dateTo) +
                 "," + moneyPaid + "\n";
     }
 
@@ -67,14 +70,14 @@ public class Order implements BaseEntity, Comparable<Order> {
         return moneyPaid;
     }
 
-    public static Order stringToObject(String orderString){
+    public static Order stringToObject(String orderString) throws Exception {
         String[] params = orderString.split(",");
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d-MMM-yyyy");
         long id = Long.parseLong(params[0]);
         User user = User.stringToObject(params[1].replaceAll(":", ","));
         Room room = Room.stringToObject(params[2].replaceAll(":", ","));
-        Date dateFrom = new Date(Long.parseLong(params[3]));
-        Date dateTo = new Date(Long.parseLong(params[4]));
+        Date dateFrom = dateFormat.parse(params[3]);
+        Date dateTo = dateFormat.parse(params[4]);
         double moneyPaid = Double.parseDouble(params[5]);
         Order order = new Order(user, room, dateFrom, dateTo, moneyPaid);
         order.setId(id);
