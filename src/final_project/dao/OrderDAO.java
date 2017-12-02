@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 public class OrderDAO extends GeneralDAO<Order> {
 
-    private static final String PATH_DB = "E://Test//OrderDB.txt";
+    private static final String PATH_DB = "D://Test//OrderDB.txt";
 
     public Order addOrder(Order order) throws Exception {
         return add(PATH_DB, order);

@@ -17,8 +17,7 @@ public class RoomController {
         roomService.deleteRoom(room);
     }
 
-    public ArrayList<Room> findRooms( Filter filter) {
-        //TODO
-        return null;
+    public ArrayList<Room> findRooms( Filter filter) throws Exception {
+        return roomService.findRooms(filter);
     }
 }

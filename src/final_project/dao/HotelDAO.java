@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 public class HotelDAO extends GeneralDAO<Hotel>{
 
-    private static final String PATH_DB = "E://Test//HotelDB.txt";
+    private static final String PATH_DB = "D://Test//HotelDB.txt";
 
     public Hotel addHotel(Hotel hotel) throws Exception {
         return add(PATH_DB, hotel);

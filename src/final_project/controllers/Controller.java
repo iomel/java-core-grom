@@ -8,6 +8,7 @@ import final_project.models.Hotel;
 import final_project.models.Order;
 import final_project.models.Room;
 import final_project.models.User;
+import final_project.utils.Filter;
 
 public class Controller {
     private UserDAO userDAO = new UserDAO();
@@ -34,6 +35,14 @@ public class Controller {
         for (Room room : roomDAO.getAll())
             System.out.print(room.toString());
     }
+
+    public void getRooms(Filter filter) throws Exception {
+        System.out.println("_______________________________________________________________");
+        for (Room room : roomDAO.getAll())
+            if(filter.match(room))
+                System.out.print(room.toString());
+    }
+
     public void addRoom(Room room) throws Exception {
         roomDAO.addRoom(room);
     }

@@ -2,8 +2,10 @@ package final_project.services;
 
 import final_project.dao.RoomDAO;
 import final_project.models.Room;
+import final_project.utils.Filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class RoomService {
     private RoomDAO roomDAO = new RoomDAO();
@@ -16,6 +18,14 @@ public class RoomService {
     public void deleteRoom(Room room) throws Exception {
         if(room != null)
             roomDAO.deleteRoom(room.getId());
+    }
+
+    public ArrayList<Room> findRooms(Filter filter) throws Exception{
+        ArrayList<Room> filteredRooms = new ArrayList<>();
+        for (Room room : roomDAO.getAll())
+            if(filter.match(room))
+                filteredRooms.add(room);
+        return filteredRooms;
     }
 
     private void validate(Room room)throws Exception {

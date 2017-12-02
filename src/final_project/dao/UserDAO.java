@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 public class UserDAO extends GeneralDAO<User> {
 
-    private static final String PATH_DB = "E://Test//UserDB.txt";
+    private static final String PATH_DB = "D://Test//UserDB.txt";
 
     public User addUser(User user) throws Exception {
 
