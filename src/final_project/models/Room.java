@@ -2,6 +2,7 @@ package final_project.models;
 
 import final_project.utils.BaseEntity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -73,7 +74,7 @@ public class Room implements BaseEntity, Comparable<Room> {
         return hotel;
     }
 
-    public static Room stringToObject(String roomString) throws Exception {
+    public static Room stringToObject(String roomString) throws ParseException {
         String[] params = roomString.split(",");
         SimpleDateFormat dateFormat = new SimpleDateFormat("d-MMM-yyyy");
 

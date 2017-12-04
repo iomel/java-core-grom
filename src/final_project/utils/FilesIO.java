@@ -4,7 +4,7 @@ import java.io.*;
 
 public class FilesIO {
 
-    public static String readFile(String path) throws Exception {
+    public static String readFile(String path) throws IOException {
         validate(path);
 
         String content = "";
@@ -20,7 +20,7 @@ public class FilesIO {
         return content;
     }
 
-    public static void writeFile(String path, String content, boolean param) throws Exception {
+    public static void writeFile(String path, String content, boolean param) throws IOException {
         validate(path);
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, param))) {
@@ -30,7 +30,7 @@ public class FilesIO {
         }
     }
 
-    private static void validate(String filePath) throws Exception {
+    private static void validate(String filePath) throws IOException {
         File file = new File(filePath);
         if (!file.exists())
             throw new FileNotFoundException("FilesIO.validate : File " + filePath + " does not exist");

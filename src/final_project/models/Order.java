@@ -2,6 +2,7 @@ package final_project.models;
 
 import final_project.utils.BaseEntity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -70,9 +71,10 @@ public class Order implements BaseEntity, Comparable<Order> {
         return moneyPaid;
     }
 
-    public static Order stringToObject(String orderString) throws Exception {
+    public static Order stringToObject(String orderString) throws ParseException {
         String[] params = orderString.split(",");
         SimpleDateFormat dateFormat = new SimpleDateFormat("d-MMM-yyyy");
+
         long id = Long.parseLong(params[0]);
         User user = User.stringToObject(params[1].replaceAll(":", ","));
         Room room = Room.stringToObject(params[2].replaceAll(":", ","));

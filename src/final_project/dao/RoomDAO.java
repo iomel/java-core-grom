@@ -2,7 +2,6 @@ package final_project.dao;
 
 import final_project.models.Room;
 import final_project.utils.FilesIO;
-
 import java.util.TreeSet;
 
 public class RoomDAO extends GeneralDAO<Room> {
@@ -25,6 +24,13 @@ public class RoomDAO extends GeneralDAO<Room> {
             if(!room.isEmpty())
                 rooms.add(Room.stringToObject(room));
         return rooms;
+    }
+
+    public Room getRoomByID(long id) throws Exception{
+        for(Room room : getAll())
+            if(room.getId() == id)
+                return room;
+        return null;
     }
 
 }

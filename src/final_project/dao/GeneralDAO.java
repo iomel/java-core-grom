@@ -2,6 +2,7 @@ package final_project.dao;
 
 import final_project.utils.BaseEntity;
 import final_project.utils.FilesIO;
+import final_project.utils.exceptions.BadRequestException;
 
 import java.io.IOException;
 import java.util.TreeSet;
@@ -34,19 +35,19 @@ public abstract class GeneralDAO<T extends BaseEntity> {
         FilesIO.writeFile(path, content, false);
     }
 
-    protected void hasEntity(long id) throws Exception {
+    protected void hasEntity(long id) throws BadRequestException {
         try {
             hasDuplicate(id);
         } catch (Exception e) {
             return;
         }
-        throw new IOException("hasEntity method error - no such entity! BaseEntity ID:" + id);
+        throw new BadRequestException("hasEntity method error - no such entity! BaseEntity ID:" + id);
     }
 
     protected void hasDuplicate(long id) throws Exception {
         for (T t : getAll())
             if (t.getId() == id)
-                throw new IOException("hasDuplicate error - duplicated entity! " + t.getClass().getSimpleName() + "_ID: " + id);
+                throw new BadRequestException("hasDuplicate error - duplicated entity! " + t.getClass().getSimpleName() + "_ID: " + id);
     }
 
 }

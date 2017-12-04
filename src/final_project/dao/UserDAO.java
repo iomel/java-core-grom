@@ -28,4 +28,11 @@ public class UserDAO extends GeneralDAO<User> {
         return users;
     }
 
+    public User getUserByID(long id) throws Exception {
+        for(User user : getAll())
+            if(user.getId() == id)
+                return user;
+        return null;
+    }
+
 }

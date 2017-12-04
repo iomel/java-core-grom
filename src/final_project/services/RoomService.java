@@ -3,8 +3,8 @@ package final_project.services;
 import final_project.dao.RoomDAO;
 import final_project.models.Room;
 import final_project.utils.Filter;
+import lesson22.userrepo.exception.BadRequestException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class RoomService {
@@ -30,10 +30,10 @@ public class RoomService {
 
     private void validate(Room room)throws Exception {
         if (room == null)
-            throw new IOException("RoomService.validate error - room is NULL!");
+            throw new BadRequestException("RoomService.validate error - room is NULL!");
 
         if (room.toString().contains("null") || room.toString().contains(",,"))
-            throw new IOException("RoomService.validate error - room has empty parameter! Room ID: " + room.getId());
+            throw new BadRequestException("RoomService.validate error - room has empty parameter! Room ID: " + room.getId());
     }
 
 }

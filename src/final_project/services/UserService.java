@@ -3,8 +3,9 @@ package final_project.services;
 import final_project.dao.UserDAO;
 import final_project.models.User;
 import final_project.utils.Countries;
+import final_project.utils.Session;
+import lesson22.userrepo.exception.BadRequestException;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class UserService {
@@ -16,14 +17,13 @@ public class UserService {
         return userDAO.addUser(user);
     }
 
-    public long login(String name, String password) throws Exception {
+    public void login(String name, String password) throws Exception {
         if (name == null || password == null)
-            throw new IOException("UserService.isRegistered error - name or password is NULL!");
+            throw new BadRequestException("UserService.isRegistered error - name or password is NULL!");
 
         for (User userInDB : userDAO.getAll())
             if (name.equals(userInDB.getUserName()) && password.equals(userInDB.getPassword()))
-                return userInDB.getId();
-        return -1;
+                Session.startSession(userInDB.getId());
     }
 
     private void validate(User user)throws Exception{
@@ -31,22 +31,22 @@ public class UserService {
         countryCheck(user.getCountry());
 
         if(user.getAge() < 18)
-            throw new IOException("UserService.validate error - user is under 18Y. Access denied!");
+            throw new BadRequestException("UserService.validate error - user is under 18Y. Access denied!");
     }
 
-    private void nullCheck(User user) throws IOException{
+    private void nullCheck(User user) throws BadRequestException{
         if (user == null)
-            throw new IOException("UserService.nullCheck error - user is NULL!");
+            throw new BadRequestException("UserService.nullCheck error - user is NULL!");
 
         if (user.toString().contains("null") || user.toString().contains(",,"))
-            throw new IOException("UserService.nullCheck error - user has empty parameter! User ID: " + user.getId());
+            throw new BadRequestException("UserService.nullCheck error - user has empty parameter! User ID: " + user.getId());
     }
 
-    private void countryCheck(String country) throws IOException{
+    private void countryCheck(String country) throws BadRequestException{
         if(!Arrays.toString(Countries.values()).contains(country))
-            throw new IOException("UserService.countryCheck error - used country is out of allowed countries scope! ::" + country);
+            throw new BadRequestException("UserService.countryCheck error - used country is out of allowed countries scope! ::" + country);
 
         if (Countries.valueOf(country) == Countries.Russia || Countries.valueOf(country) == Countries.Iran)
-            throw new IOException("UserService.countryCheck error - service is not allowed for the country " + country);
+            throw new BadRequestException("UserService.countryCheck error - service is not allowed for the country " + country);
     }
 }
