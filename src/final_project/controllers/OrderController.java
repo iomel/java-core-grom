@@ -4,8 +4,6 @@ import final_project.services.OrderService;
 import final_project.utils.Session;
 import final_project.utils.exceptions.BadRequestException;
 
-import java.io.IOException;
-
 public class OrderController {
     private OrderService orderService = new OrderService();
 
