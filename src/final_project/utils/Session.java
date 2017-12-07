@@ -1,6 +1,7 @@
 package final_project.utils;
 
 public class Session {
+    //why do you use session inside session? should be refactored
     private static Session instance;
     private long id;
 

@@ -16,6 +16,7 @@ public class Controller {
     private HotelDAO hotelDAO = new HotelDAO();
     private OrderDAO orderDAO = new OrderDAO();
 
+    //one controller for one entity
     public void getUsers() throws Exception{
         System.out.println("_______________________________________________________________");
         for (User user : userDAO.getAll())

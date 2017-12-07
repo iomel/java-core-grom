@@ -16,6 +16,7 @@ public class HotelService {
         if (name == null)
             throw new BadRequestException("findHotelByName error - hotel name is NULL!");
 
+        //this should be in DAO
         for (Hotel hotel : hotelDAO.getAll())
             if(hotel.getHotelName().equals(name))
                 hotels.add(hotel);
@@ -35,6 +36,7 @@ public class HotelService {
     }
     public Hotel addHotel(Hotel hotel) throws Exception {
         validate(hotel);
+        //do you generate unique id ?
         return hotelDAO.addHotel(hotel);
     }
 
