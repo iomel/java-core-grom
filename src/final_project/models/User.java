@@ -15,7 +15,7 @@ public class User implements BaseEntity, Comparable<User>{
     private UserType userType;
 
     public User(String userName, String password, String country, int age, UserType userType) {
-        long newId = new Random().nextInt();
+        long newId = new Random().nextLong();
         this.id = newId > 0 ? newId : newId * (-1);
         this.userName = userName;
         this.password = password;
@@ -76,4 +76,32 @@ public class User implements BaseEntity, Comparable<User>{
         return user;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        if (o == null) return false;
+
+        User user = (User) o;
+
+        if (getId() != user.getId()) return false;
+        if (getAge() != user.getAge()) return false;
+        if (getUserName() != null ? !getUserName().equals(user.getUserName()) : user.getUserName() != null)
+            return false;
+        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
+            return false;
+        if (getCountry() != null ? !getCountry().equals(user.getCountry()) : user.getCountry() != null) return false;
+        return getUserType() == user.getUserType();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (getId() ^ (getId() >>> 32));
+        result = 31 * result + (getUserName() != null ? getUserName().hashCode() : 0);
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
+        result = 31 * result + getAge();
+        result = 31 * result + (getUserType() != null ? getUserType().hashCode() : 0);
+        return result;
+    }
 }

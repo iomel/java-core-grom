@@ -19,7 +19,7 @@ public class Order implements BaseEntity, Comparable<Order> {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d-MMM-yyyy");
 
     public Order(User user, Room room, Date dateFrom, Date dateTo, double moneyPaid) {
-        long newId = new Random().nextInt();
+        long newId = new Random().nextLong();
         this.id = newId > 0 ? newId : newId * (-1);
         this.user = user;
         this.room = room;

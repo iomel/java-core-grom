@@ -13,7 +13,7 @@ public class Hotel implements BaseEntity, Comparable<Hotel> {
     private String street;
 
     public Hotel(String hotelName, String country, String city, String street) {
-        long newId = new Random().nextInt();
+        long newId = new Random().nextLong();
         this.id = newId > 0 ? newId : newId * (-1);
         this.hotelName = hotelName;
         this.country = country;

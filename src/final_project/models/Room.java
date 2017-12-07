@@ -20,7 +20,7 @@ public class Room implements BaseEntity, Comparable<Room> {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d-MMM-yyyy");
 
     public Room(int numberOfGuests, double price, boolean breakfastIncluded, boolean petsAllowed, Date dateAvailableFrom, Hotel hotel) {
-        long newId = new Random().nextInt();
+        long newId = new Random().nextLong();
         this.id = newId > 0 ? newId : newId * (-1);
         this.numberOfGuests = numberOfGuests;
         this.price = price;

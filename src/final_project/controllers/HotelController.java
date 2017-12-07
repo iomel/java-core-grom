@@ -8,7 +8,7 @@ import final_project.utils.UserType;
 import final_project.utils.exceptions.BadRequestException;
 import java.util.ArrayList;
 
-public class HotelController {
+public class    HotelController {
     private HotelService hotelService = new HotelService();
 
     public ArrayList<Hotel> findHotelByName(String name) throws Exception {
@@ -19,14 +19,14 @@ public class HotelController {
         return hotelService.findHotelByCity(city);
     }
     public Hotel addHotel(User user, Hotel hotel) throws Exception {
-        if(!(user != null && user.getId() == Session.getInstance().getId() && user.getUserType() == UserType.ADMIN))
+        if(!(user != null && user.equals(Session.getUser()) && user.getUserType() == UserType.ADMIN))
             throw new BadRequestException("User have no right to add hotel!");
 
         return hotelService.addHotel(hotel);
     }
 
     public void deleteHotel(User user, Hotel hotel) throws Exception {
-        if(!(user != null && user.getId() == Session.getInstance().getId() && user.getUserType() == UserType.ADMIN))
+        if(!(user != null && user.equals(Session.getUser()) && user.getUserType() == UserType.ADMIN))
             throw new BadRequestException("User have no right to delete hotel!");
 
         hotelService.deleteHotel(hotel);

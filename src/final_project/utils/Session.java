@@ -1,29 +1,20 @@
 package final_project.utils;
 
+import final_project.models.User;
+
 public class Session {
-    //why do you use session inside session? should be refactored
-    private static Session instance;
-    private long id;
-
-    private Session() {
-    }
-
-    public static Session getInstance() {
-        if (instance == null)
-            instance = new Session();
-        return instance;
-    }
+        //why do you use session inside session? should be refactored
+    private static User loggedUser;
 
     public static void resetSession(){
-        instance.id = -1;
+        loggedUser = null ;
     }
-    public long getId() {
-        return id;
+    public static User getUser() {
+        return loggedUser;
     }
 
-    public static void startSession (long id) {
-        if (instance != null)
-            instance.id = id;
+    public static void startSession (User user) {
+        loggedUser = user;
     }
 
 

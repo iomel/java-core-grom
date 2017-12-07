@@ -13,14 +13,14 @@ public class RoomController {
     private RoomService roomService = new RoomService();
 
     public Room addRoom(User user, Room room) throws Exception {
-        if(!(user != null && user.getId() == Session.getInstance().getId() && user.getUserType() == UserType.ADMIN))
+        if(!(user != null && user.equals(Session.getUser()) && user.getUserType() == UserType.ADMIN))
             throw new Exception("User have no right to add room!");
 
         return roomService.addRoom(room);
     }
 
     public void deleteRoom(User user, Room room) throws Exception {
-        if(!(user != null && user.getId() == Session.getInstance().getId() && user.getUserType() == UserType.ADMIN))
+        if(!(user != null && user.equals(Session.getUser()) && user.getUserType() == UserType.ADMIN))
             throw new Exception("User have no right to delete room!");
 
         roomService.deleteRoom(room);

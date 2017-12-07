@@ -1,6 +1,6 @@
 package final_project.demo;
 
-import final_project.controllers.Controller;
+import final_project.controllers.RoomController;
 import final_project.models.Hotel;
 import final_project.models.Room;
 import final_project.utils.Filter;
@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class DemoRoom {
     public static void main(String[] args) throws Exception{
-        Controller controller = new Controller();
+        RoomController controller = new RoomController();
         Hotel hotel1 = new Hotel("IBIS","BG", "Varna", "Maevska");
         Room room1 = new Room(3, 134,false,false, new Date(), hotel1);
         Room room2 = new Room(2, 164,true,false, new Date(), hotel1);
@@ -20,9 +20,8 @@ public class DemoRoom {
         Filter emptyFilter = new Filter();
         Filter filter = new Filter(2,0,true,false,null,null,null,null);
 
-        controller.getRooms();
-        controller.getRooms(emptyFilter);
-        controller.getRooms(filter);
+        controller.findRooms(emptyFilter);
+        controller.findRooms(filter);
 //        controller.addRoom(room1);
 //        controller.addRoom(room2);
 //        controller.addRoom(room3);

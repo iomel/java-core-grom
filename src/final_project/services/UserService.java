@@ -23,7 +23,7 @@ public class UserService {
 
         for (User userInDB : userDAO.getAll())
             if (name.equals(userInDB.getUserName()) && password.equals(userInDB.getPassword()))
-                Session.startSession(userInDB.getId());
+                Session.startSession(userInDB);
     }
 
     private void validate(User user)throws Exception{
